@@ -1,0 +1,19 @@
+{
+  "name": "sistem-acigi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistem Açığı: Özel Dedektif — çevrimdışı çalışan, prosedürel dedektiflik RPG'si",
+  "scripts": {
+    "sync": "npx cap sync",
+    "ios": "npx cap sync ios && npx cap open ios",
+    "android": "npx cap sync android && npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.2",
+    "@capacitor/core": "8.5.2",
+    "@capacitor/ios": "8.5.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.2"
+  }
+}
