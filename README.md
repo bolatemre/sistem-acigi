@@ -1,4 +1,4 @@
-# Sistem Açığı: Özel Dedektif
+# Yeni Galata Dedektifi
 
 Köhne bir iş hanında başlayıp şehrin gölgelerindeki örgütlere uzanan, sonu olmayan bir dedektiflik RPG'si. Oyun tamamen çevrimdışı çalışır: vakalar, şüpheliler, ipuçları ve diyaloglar cihazda prosedürel olarak üretilir. Yapay zekâ ya da dış servis kullanılmaz.
 
@@ -23,7 +23,7 @@ Köhne bir iş hanında başlayıp şehrin gölgelerindeki örgütlere uzanan, s
 
 Bir kez yapılacaklar:
 
-1. [App Store Connect](https://appstoreconnect.apple.com) > **Uygulamalar** > **+** ile yeni uygulama oluştur. Paket kimliği (Bundle ID) olarak `com.bolatemre.sistemacigi` seç; listede yoksa önce [Developer hesabında](https://developer.apple.com/account/resources/identifiers/list) oluştur.
+1. [App Store Connect](https://appstoreconnect.apple.com) > **Uygulamalar** > **+** ile yeni uygulama oluştur. Ad olarak **Yeni Galata Dedektifi**, paket kimliği (Bundle ID) olarak `com.bolatemre.sistemacigi` seç; listede yoksa önce [Developer hesabında](https://developer.apple.com/account/resources/identifiers/list) oluştur.
 2. App Store Connect > **Kullanıcılar ve Erişim** > **Entegrasyonlar** > **App Store Connect API** bölümünden **Admin** yetkili bir anahtar oluştur. `.p8` dosyasını indir (yalnızca bir kez indirilebilir), **Key ID** ve **Issuer ID** değerlerini not al.
 3. Bu depoda **Settings > Secrets and variables > Actions** bölümüne dört gizli anahtar ekle: `APPLE_TEAM_ID`, `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_P8` (.p8 dosyasının içeriğinin tamamı).
 
