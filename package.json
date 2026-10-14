@@ -4,9 +4,10 @@
   "private": true,
   "description": "Sistem Açığı: Özel Dedektif — çevrimdışı çalışan, prosedürel dedektiflik RPG'si",
   "scripts": {
-    "sync": "npx cap sync",
-    "ios": "npx cap sync ios && npx cap open ios",
-    "android": "npx cap sync android && npx cap open android"
+    "prepare:web": "node scripts/prepare-web.js",
+    "sync": "npm run prepare:web && npx cap sync",
+    "ios": "npm run prepare:web && npx cap sync ios && npx cap open ios",
+    "android": "npm run prepare:web && npx cap sync android && npx cap open android"
   },
   "dependencies": {
     "@capacitor/android": "8.5.2",
