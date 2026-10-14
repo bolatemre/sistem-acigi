@@ -6,18 +6,30 @@ Köhne bir iş hanında başlayıp şehrin gölgelerindeki örgütlere uzanan, s
 
 | Yol | Ne işe yarar |
 | --- | --- |
-| `www/index.html` | Oyunun tamamı (tek dosya: arayüz, vaka motoru, hikâye) |
-| `www/icerik-paketi.json` | Örnek içerik paketi (yeni vaka türleri, hikâye bölümleri) |
+| `index.html` | Oyunun tamamı (arayüz, vaka motoru, hikâye) |
+| `icerik-paketi.json` | Örnek içerik paketi (yeni vaka türleri, hikâye bölümleri) |
+| `icon.png`, `splash.png`, `splash-dark.png` | Uygulama simgesi ve açılış ekranı |
+| `scripts/prepare-web.js` | Dosyaları derleme öncesi `www/` ve `assets/` klasörlerine kopyalar |
+| `.github/workflows/ios-testflight.yml` | Bulutta derleyip TestFlight'a yükleyen otomasyon |
 | `capacitor.config.json` | Mobil uygulama ayarları (uygulama kimliği, adı) |
-| `package.json` | Capacitor bağımlılıkları |
+
+`www/` ve `assets/` klasörleri otomatik oluşturulur; depoya eklenmez.
 
 ## Tarayıcıda deneme
 
-`www/index.html` dosyasını tarayıcıda açman yeterli.
+`index.html` dosyasını tarayıcıda açman yeterli.
 
-## iOS uygulaması oluşturma (Mac gerekir)
+## Otomatik TestFlight yüklemesi (Mac gerekmez)
 
-Gerekenler: macOS, Xcode, Node.js ve bir Apple Developer hesabı.
+Bir kez yapılacaklar:
+
+1. [App Store Connect](https://appstoreconnect.apple.com) > **Uygulamalar** > **+** ile yeni uygulama oluştur. Paket kimliği (Bundle ID) olarak `com.bolatemre.sistemacigi` seç; listede yoksa önce [Developer hesabında](https://developer.apple.com/account/resources/identifiers/list) oluştur.
+2. App Store Connect > **Kullanıcılar ve Erişim** > **Entegrasyonlar** > **App Store Connect API** bölümünden **Admin** yetkili bir anahtar oluştur. `.p8` dosyasını indir (yalnızca bir kez indirilebilir), **Key ID** ve **Issuer ID** değerlerini not al.
+3. Bu depoda **Settings > Secrets and variables > Actions** bölümüne dört gizli anahtar ekle: `APPLE_TEAM_ID`, `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_P8` (.p8 dosyasının içeriğinin tamamı).
+
+Yüklemek için: **Actions > iOS TestFlight > Run workflow**. Her çalıştırmada yapı numarası otomatik artar; sürüm numarası `package.json` içindeki `version` alanından gelir.
+
+## Mac'te elle derleme (isteğe bağlı)
 
 ```bash
 npm install
@@ -25,48 +37,20 @@ npx cap add ios
 npm run ios
 ```
 
-Xcode açılınca:
-
-1. Sol menüden **App** hedefini seç, **Signing & Capabilities** sekmesinde kendi Apple Developer takımını seç.
-2. Uygulama simgesini **App/Assets.xcassets/AppIcon** içine ekle (1024×1024 PNG).
-3. Üst menüden **Product → Archive** ile arşiv oluştur.
-4. Açılan pencerede **Distribute App → App Store Connect** ile yükle.
-5. [App Store Connect](https://appstoreconnect.apple.com) üzerinden önce TestFlight ile dene, sonra incelemeye gönder.
-
-Oyunda her değişiklikten sonra `npm run ios` komutunu tekrar çalıştır.
-
-## Otomatik TestFlight yüklemesi (Mac gerekmez)
-
-`.github/workflows/ios-testflight.yml` oyunu GitHub'ın bulut Mac'lerinde derleyip TestFlight'a yükler.
-
-Bir kez yapılacaklar:
-
-1. [App Store Connect](https://appstoreconnect.apple.com) > **Uygulamalar** > **+** ile yeni uygulama oluştur. Paket kimliği (Bundle ID) olarak `com.bolatemre.sistemacigi` seç; yoksa önce [Developer hesabında](https://developer.apple.com/account/resources/identifiers/list) oluştur.
-2. App Store Connect > **Kullanıcılar ve Erişim** > **Entegrasyonlar** > **App Store Connect API** bölümünden **Admin** yetkili bir anahtar oluştur. `.p8` dosyasını indir (yalnızca bir kez indirilebilir), **Key ID** ve **Issuer ID** değerlerini not al.
-3. GitHub deposunda **Settings > Secrets and variables > Actions** bölümüne şu dört gizli anahtarı ekle: `APPLE_TEAM_ID`, `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_P8` (.p8 dosyasının içeriğinin tamamı).
-
-Yüklemek için: **Actions > iOS TestFlight > Run workflow**. Her çalıştırmada yapı numarası otomatik artar. Sürüm numarası `package.json` içindeki `version` alanından gelir.
-
-Uygulama simgesi ve açılış ekranı `assets/` klasöründen otomatik üretilir.
-
-## Android uygulaması
+## Android
 
 ```bash
 npx cap add android
 npm run android
 ```
 
-Android Studio'da **Build → Generate Signed Bundle** ile `.aab` dosyası oluşturup Google Play Console'a yükle.
-
 ## Yeni senaryo eklemek (güncelleme gerektirmez)
 
-`www/index.html` içindeki `CONTENT_URL` satırına kendi sunucundaki JSON dosyasının adresini yaz. Oyun açılışta bu dosyayı kontrol eder ve `version` numarası artmışsa yeni paketi indirir. Paket biçimi için `www/icerik-paketi.json` dosyasına bak.
+`index.html` içindeki `CONTENT_URL` satırına kendi sunucundaki JSON dosyasının adresini yaz. Oyun açılışta bu dosyayı kontrol eder ve `version` numarası artmışsa yeni paketi indirir. Biçim için `icerik-paketi.json` dosyasına bak.
 
 ## Yayın öncesi yapılacaklar
 
-- [ ] Uygulama simgesi ve açılış ekranı
-- [ ] Gizlilik politikası sayfası (App Store bunu zorunlu tutar)
-- [ ] Reklamlar şu an örnek: gerçek reklam için AdMob eklentisi bağlanacak
-- [ ] Reklamsız paket şu an örnek: gerçek satın alma için uygulama içi satın alma eklentisi bağlanacak
-- [ ] Kayıtlar şu an tarayıcı hafızasında: kalıcı olması için Capacitor Preferences eklentisine taşınacak
+- [ ] Gizlilik politikası sayfası (App Store zorunlu tutar)
+- [ ] Örnek reklamlar ve "Satın al (deneme)" düğmesi mağaza sürümünden kaldırılacak ya da gerçek AdMob / uygulama içi satın alma bağlanacak
+- [ ] Kayıtlar Capacitor Preferences eklentisine taşınacak (iOS tarayıcı hafızasını silebilir)
 - [ ] App Store ekran görüntüleri ve açıklama metni
