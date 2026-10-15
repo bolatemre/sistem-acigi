@@ -1,6 +1,6 @@
 {
-  "_not": "AdMob kimlikleri. Şu an Google'ın test kimlikleri var. Gerçek kimlikleri alınca değiştir ve testing değerini false yap.",
-  "appId": "ca-app-pub-3940256099942544~1458002511",
+  "_not": "appId gerçek AdMob uygulama kimliği. Reklam birimleri hâlâ Google test kimlikleri; gerçekleri gelince değiştir ve testing değerini false yap.",
+  "appId": "ca-app-pub-6236520075152909~2891561609",
   "rewarded": "ca-app-pub-3940256099942544/1712485313",
   "interstitial": "ca-app-pub-3940256099942544/4411468910",
   "banner": "ca-app-pub-3940256099942544/2934735716",
