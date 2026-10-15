@@ -1,0 +1,34 @@
+[
+ {
+  "find": "<script src=\"native.js\"></script>\n<script>\n",
+  "replace": "<script src=\"native.js\"></script>\n<script src=\"icerik.js\"></script>\n<script>\n"
+ },
+ {
+  "find": "const bossReady = () => S.cycle.nodes.length >= 5 && !(typeof campActive === \"function\" && campActive());\n",
+  "replace": "const bossReady = () => S.cycle.nodes.length >= 5 && tier() >= 3 && !(typeof campActive === \"function\" && campActive());\n"
+ },
+ {
+  "find": "const CONTENT_URL = \"\";\n",
+  "replace": "const CONTENT_URL = \"https://raw.githubusercontent.com/bolatemre/sistem-acigi/main/kuzgun-piramidi.json\";\n"
+ },
+ {
+  "find": "function loadCachedPack(){ try { const t = localStorage.getItem(PACK_KEY); if (t) applyPack(JSON.parse(t)); } catch { PACK = null; } }\n",
+  "replace": "function loadCachedPack(){ let ok = false; try { const t = localStorage.getItem(PACK_KEY); if (t) ok = !!applyPack(JSON.parse(t)); } catch {} if (!ok && typeof DEFAULT_PACK !== \"undefined\") applyPack(DEFAULT_PACK); }\n"
+ },
+ {
+  "find": "  const prev = PACK ? PACK.version : 0, prevId = PACK ? PACK.id : null;\n  const res = applyPack(pk);\n",
+  "replace": "  const prev = PACK ? PACK.version : 0, prevId = PACK ? PACK.id : null;\n  if (from === \"remote\"){ try { const peek = JSON.parse(text); if ((+peek.version || 0) <= prev) return false; } catch { return false; } }\n  const res = applyPack(pk);\n"
+ },
+ {
+  "find": "  if (from === \"remote\" && res.id === prevId && res.version <= prev) return false;\n",
+  "replace": ""
+ },
+ {
+  "find": "  <div class=\"sec\"><h2>İçerik paketi</h2><div class=\"panel\"><p class=\"brief\">${PACK ? `<b>${esc(PACK.id)}</b> (sürüm ${PACK.version}) yüklü: ${PACK.archs} yeni vaka türü, ${PACK.stories.length} hikâye bölümü${PACK.names ? `, ${PACK.names} yeni isim grubu` : \"\"}.` : \"Yüklü paket yok. Oyun yerleşik içerikle çalışıyor.\"}</p><p class=\"note\">Mobil sürümde paketler sunucundan otomatik iner. Burada bir JSON dosyası seçerek deneyebilirsin.</p><div class=\"row\" style=\"margin-top:10px\"><label class=\"btn\">Dosyadan yükle<input type=\"file\" id=\"packFile\" accept=\".json,application/json\" hidden></label>${PACK ? `<button class=\"btn danger\" id=\"packDel\">Paketi kaldır</button>` : \"\"}</div></div></div>\n",
+  "replace": "  <div class=\"sec\"><h2>İçerik paketi</h2><div class=\"panel\"><p class=\"brief\">${PACK ? `<b>${esc(PACK.id)}</b> (sürüm ${PACK.version}) yüklü: ${PACK.archs} yeni vaka türü, ${PACK.stories.length} hikâye bölümü${PACK.names ? `, ${PACK.names} yeni isim grubu` : \"\"}.` : \"Yüklü paket yok. Oyun yerleşik içerikle çalışıyor.\"}</p><p class=\"note\">Yeni senaryolar depodaki pakete eklendikçe oyun açılışta kendini günceller.</p><div class=\"row\" style=\"margin-top:10px\"><label class=\"btn\">Dosyadan yükle<input type=\"file\" id=\"packFile\" accept=\".json,application/json\" hidden></label>${localStorage.getItem(PACK_KEY) ? `<button class=\"btn danger\" id=\"packDel\">Yerleşik içeriğe dön</button>` : \"\"}</div></div></div>\n"
+ },
+ {
+  "find": "  on(\"packDel\", () => { try { localStorage.removeItem(PACK_KEY); } catch {} if (NAT()) NAT().storage.remove(PACK_KEY); applyPack(null); toast(\"Paket kaldırıldı.\"); save(); render(); });\n",
+  "replace": "  on(\"packDel\", () => { try { localStorage.removeItem(PACK_KEY); } catch {} if (NAT()) NAT().storage.remove(PACK_KEY); loadCachedPack(); toast(\"Yerleşik içeriğe dönüldü.\"); save(); render(); });\n"
+ }
+]
