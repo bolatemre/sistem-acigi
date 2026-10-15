@@ -1,0 +1,1469 @@
+{
+  "id": "kuzgun-piramidi",
+  "version": 3,
+  "campaign": {
+    "id": "kuzgun",
+    "name": "Kuzgun Piramidi",
+    "need": 5,
+    "min_tier": 2,
+    "branches": [
+      {
+        "id": "anahtarci",
+        "leader": "Anahtarcı",
+        "archetype": "hat_kasa",
+        "boss": "op_anahtarci"
+      },
+      {
+        "id": "hayalet",
+        "leader": "Hayalet",
+        "archetype": "hat_arac",
+        "boss": "op_hayalet"
+      },
+      {
+        "id": "kalpazan",
+        "leader": "Kalpazan",
+        "archetype": "hat_sahte",
+        "boss": "op_kalpazan"
+      },
+      {
+        "id": "orumcek",
+        "leader": "Örümcek",
+        "archetype": "hat_siber",
+        "boss": "op_orumcek"
+      },
+      {
+        "id": "kimyager",
+        "leader": "Kimyager",
+        "archetype": "hat_kimya",
+        "boss": "op_kimyager"
+      }
+    ],
+    "final": "zirve_kuzgun"
+  },
+  "archetypes": [
+    {
+      "id": "hat_kasa",
+      "tier": 2,
+      "type": "yüksek güvenlikli kasa soygunu",
+      "tag": "Anahtarcı Hücresi",
+      "link": "Suçlunun üzerinden 'Teslimat: Anahtarcı' damgalı bir fiş çıktı. Bu iş bağımsız bir hırsızlık değil, Anahtarcı adlı bir çete liderinin siparişiymiş.",
+      "vars": {
+        "hedef": [
+          "Osmanlı döneminden kalma zümrüt bir gerdanlık",
+          "kayıt dışı tutulan altın külçeler",
+          "sertifikasız ham pırlantalar",
+          "antika platin cep saatleri"
+        ],
+        "yontem": [
+          "alarm kabloları sıvı nitrojenle dondurularak",
+          "kilit göbeği özel bir asitle eritilerek",
+          "yan binanın bodrumundan duvar delinerek",
+          "elektronik kilit bir frekans bozucuyla kör edilerek"
+        ],
+        "kanit": [
+          "keskin bir badem ve yanık metal kokusu",
+          "kopmuş siyah bir eldiven parçası",
+          "kırmızı tuğla tozu",
+          "üzerinde 'A-1' kazılı kırık bir maymuncuk ucu"
+        ]
+      },
+      "title": [
+        "Sessiz Kasa",
+        "Asit İzi",
+        "Kadife Kutudaki Boşluk",
+        "Gece Kuyumcusu",
+        "Çelikteki Çatlak"
+      ],
+      "client": [
+        "çarşının en eski kuyumcusu",
+        "bir mücevher sigortacısı",
+        "bir pırlanta tüccarı",
+        "bir antika koleksiyoncusu"
+      ],
+      "brief": [
+        "{cl:gen} yüksek güvenlikli kasasından dün gece {hedef} çalındı. Kasa {yontem} açılmış. {cl}, kasanın yerini sadece içeriden birinin bilebileceğini söylüyor.",
+        "Sabah dükkânı açan {cl}, kasanın {yontem} açıldığını gördü. İçindeki {hedef} yok. Polis sıradan hırsızlık diyor ama işçilik fazla profesyonel."
+      ],
+      "event": "Soygun dün gece {time} sularında yapılmış.",
+      "trail": "gece {time} sularında elinde ağır bir metal çantayla hızla uzaklaşan birini",
+      "locs": [
+        {
+          "name": "Kasa odası",
+          "desc": "Çelik kapı hasar görmüş, içeride {kanit} dikkat çekiyor.",
+          "scene": "ofis",
+          "clues": [
+            "Kilit mekanizmasında sadece profesyonel çetelerin kullandığı özel bir asidin kalıntısı var.",
+            "Güvenlik kamerası tam {time} sularında içeriden bir şalterle kapatılmış."
+          ]
+        },
+        {
+          "name": "Yan hanın çay ocağı",
+          "desc": "Esnafın bütün gün girip çıktığı, sokağı gören bir köşe.",
+          "scene": "bar",
+          "clues": [
+            "Çaycı, dün akşam birinin telefonda 'Malı bu gece Anahtarcı'nın kuryesine vereceğim' dediğini duymuş.",
+            "Çöp kutusunda dükkânın kör noktalarının çizildiği buruşuk bir kroki var."
+          ]
+        },
+        {
+          "name": "Kilit atölyesi",
+          "desc": "Sanayi sitesinin arkasında, kasa tamiri yapılan karanlık bir dükkân.",
+          "scene": "depo",
+          "clues": [
+            "Tezgâhta soygunda kullanılan ekipmanın birebir aynısı duruyor.",
+            "Çekmecede 'Teslimat: Anahtarcı' yazan soğuk damgalı metal fişler var."
+          ]
+        },
+        {
+          "name": "Kapalıçarşı arka pasajı",
+          "desc": "Kayıt dışı altının el değiştirdiği dar bir koridor.",
+          "scene": "pazar",
+          "clues": [
+            "Köşedeki sarraf, bu sabah birinin çalıntı mal için acil alıcı aradığını söyledi."
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "r": "Kasa montaj teknisyeni",
+          "s": "işçi",
+          "questions": [
+            {
+              "q": "Kasanın {yontem} açılması için teknik şemayı bilmek gerekiyor. Şema sende var mıydı?",
+              "a_innocent": "Ben sadece montajı yaparım. Şemaların kopyasını tutmam.",
+              "a_guilty": "Şemalar herkeste olabilir... Geçen hafta bakım için açmıştım ama kimseye vermedim!"
+            }
+          ]
+        },
+        {
+          "r": "Sigorta eksperi",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Kasadaki eşyaların değer tespitini sen yapmışsın. Dün gece neredeydin?",
+              "a_innocent": "Evde rapor yazıyordum. Bilgisayarımın kayıtlarına bakabilirsin.",
+              "a_guilty": "Ofisteydim... Gerçi gece yarısı hava almak için çarşı tarafına inmiş olabilirim."
+            }
+          ]
+        },
+        {
+          "r": "Dükkânın eski kalfası",
+          "s": "sokak",
+          "questions": [
+            {
+              "q": "Kamera kör noktadan kapatılmış. Kör noktayı ancak içeride çalışmış biri bilir.",
+              "a_innocent": "Ayrılalı aylar oldu. Yeni kameraların nereye baktığını bilmiyorum.",
+              "a_guilty": "O kamerayı ben taktırmıştım ama... dün gece oradan geçerken sadece vitrine baktım!"
+            }
+          ]
+        },
+        {
+          "r": "Gece bekçisi",
+          "s": "polis",
+          "questions": [
+            {
+              "q": "Soygun saatinde devriye noktanı neden terk ettin?",
+              "a_innocent": "Üst sokakta bir araç alarmı çalıyordu. Telsiz kaydım var.",
+              "a_guilty": "Karnım ağrıyordu, kulübeye geçtim. Saate hiç bakmadım!"
+            }
+          ]
+        },
+        {
+          "r": "Kaçak taş komisyoncusu",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Pasajdaki sarraf, senin dün gece alıcı aradığını söylüyor.",
+              "a_innocent": "Ben komisyoncuyum, her gün onlarca taş sorarım.",
+              "a_guilty": "Sadece fiyat sordum! Bir müşterim meraktan sormuştu, o kadar."
+            }
+          ]
+        }
+      ],
+      "motives": [
+        {
+          "t": "{c}, kasa soygunlarını yöneten 'Anahtarcı' lakaplı çete liderinin siparişiyle kasayı açtı.",
+          "f": "Tamam, konuşacağım! Ben sadece taşeronum. Siparişi Anahtarcı verdi. Malı Kuzey Han'daki kuryesine bırakacaktım!"
+        },
+        {
+          "t": "{c}, kumar borcunu kapatmak için Anahtarcı'nın şebekesine içeriden bilgi sızdırdı.",
+          "f": "Başka şansım yoktu! Kasanın nasıl açılacağını Anahtarcı'ya ben anlattım. Borcumu sileceklerdi."
+        }
+      ]
+    },
+    {
+      "id": "hat_arac",
+      "tier": 2,
+      "type": "zırhlı araç kaçırma",
+      "tag": "Hayalet Lojistik",
+      "link": "Suçlunun üzerinden 'Sevk: Soykan Tersanesi - Hayalet' damgalı bir fiş çıktı. Bu iş bağımsız bir hırsızlık değil, Hayalet adlı bir çete liderinin siparişiymiş.",
+      "vars": {
+        "arac": [
+          "zırhlı bir para nakil minibüsü",
+          "hidrolik vinçli bir kamyon",
+          "kurşun geçirmez siyah bir sedan",
+          "mühürlü bir konteyner çekicisi",
+          "belediyenin tünel kazma makinesi"
+        ],
+        "yer": [
+          "Kuzey Çevreyolu viyadüğünün altında",
+          "gümrük antreposunun 4 numaralı kapısında",
+          "sanayi sitesinin tır garajında",
+          "Eski Tersane kavşağında"
+        ]
+      },
+      "title": [
+        "Kayıp Konvoy",
+        "Asfalttaki Hayalet",
+        "Gece Sevkiyatı",
+        "Kör Sinyal"
+      ],
+      "client": [
+        "bir lojistik firması sahibi",
+        "gümrük muhafaza müdürü",
+        "zırhlı araç güvenlik şefi",
+        "liman işletme müdürü"
+      ],
+      "brief": [
+        "{cl:gen} sorumluluğundaki {arac} dün gece {yer} radardan kayboldu. {cl}, GPS'in profesyonelce susturulduğunu ve rotanın içeriden sızdırıldığını düşünüyor.",
+        "Gizli bir rota izleyen {arac} {yer} pusuya düşürüldü ve iz bırakmadan çalındı. {cl} aracı hemen bulmanı istiyor."
+      ],
+      "event": "Araç dün gece {time} sularında GPS sinyali kesilerek kaçırılmış.",
+      "trail": "gece {time} sularında sahte plakalı bir araçta bekleyen birini",
+      "locs": [
+        {
+          "name": "Pusu noktası",
+          "desc": "Asfaltta yanmış lastik ve hidrolik yağ lekeleri var.",
+          "scene": "sokak",
+          "clues": [
+            "Yol kenarında bir sinyal bozucudan kopmuş bakır anten parçası var.",
+            "Trafik kamerası olaydan on dakika önce sprey boyayla kapatılmış."
+          ]
+        },
+        {
+          "name": "Tır garajı kahvehanesi",
+          "desc": "Şoförlerin vardiya değiştirdiği dumanlı bir lokal.",
+          "scene": "bar",
+          "clues": [
+            "Garson, birinin gece yarısı 'Hayalet'in garajına bir araç daha çekiyoruz' dediğini duymuş.",
+            "Masanın altında sevkiyat saatlerinin işaretlendiği bir çizelge bulundu."
+          ]
+        },
+        {
+          "name": "Kaçak modifiye garajı",
+          "desc": "Şasi numaralarının kazındığı gizli bir depo.",
+          "scene": "depo",
+          "clues": [
+            "Yerde sökülmüş bir GPS takip cihazı var.",
+            "Duvarda 'Soykan Tersanesi - Hayalet' yazılı bir sevk irsaliyesi asılı."
+          ]
+        },
+        {
+          "name": "Yedek parça çıkmacısı",
+          "desc": "Araç beyinlerinin ve plakaların el altından satıldığı yer.",
+          "scene": "pazar",
+          "clues": [
+            "Dükkân sahibi, dün birinin kopya kontak anahtarı kodlattığını itiraf etti."
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "r": "Sevkiyat planlama sorumlusu",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Rota son dakikada değiştirilmiş. Bunu senden başka kim biliyordu?",
+              "a_innocent": "Rotayı sistem atadı, ben sadece onayladım.",
+              "a_guilty": "Rotayı ben güncelledim ama... dosyayı masamda açık unutmuş olmalıyım!"
+            }
+          ]
+        },
+        {
+          "r": "Yedek şoför",
+          "s": "işçi",
+          "questions": [
+            {
+              "q": "Botlarında hidrolik yağ izi var. Dün gece neredeydin?",
+              "a_innocent": "Garajda kendi aracımın bakımını yapıyordum, her yerim yağ.",
+              "a_guilty": "O tarafa hiç gitmedim! Yani... sadece lastiğim patlamıştı, oradan geçtim."
+            }
+          ]
+        },
+        {
+          "r": "Araç takip teknisyeni",
+          "s": "hacker",
+          "questions": [
+            {
+              "q": "GPS sinyali içeriden bir kodla kapatılmış.",
+              "a_innocent": "Sinyal bozucu kullanmışlar. Merkezden müdahale yok.",
+              "a_guilty": "Kısa bir güncelleme yapmıştım. Tam o saate denk gelmesi tesadüf!"
+            }
+          ]
+        },
+        {
+          "r": "Gümrük memuru",
+          "s": "polis",
+          "questions": [
+            {
+              "q": "Sahte plakalı aracın geçişine neden izin verdin?",
+              "a_innocent": "Evrakları tamdı, şüpheli bir şey yoktu.",
+              "a_guilty": "Vardiya çok yoğundu, plakayı girmeyi atlamış olabilirim..."
+            }
+          ]
+        },
+        {
+          "r": "Oto elektrik ustası",
+          "s": "işçi",
+          "questions": [
+            {
+              "q": "Çıkmacı, senin kopya anahtar hazırladığını söylüyor.",
+              "a_innocent": "Ben arıza tespit cihazı satarım, kopya anahtar yapmam.",
+              "a_guilty": "Bana sadece yedek anahtar lazım dediler. Çalınacağını bilmiyordum!"
+            }
+          ]
+        }
+      ],
+      "motives": [
+        {
+          "t": "{c}, araç ve lojistik şebekesini yöneten 'Hayalet' lakaplı çete liderinin siparişiyle aracın kaçırılmasını organize etti.",
+          "f": "Aracı Hayalet istedi! Neden hep zırhlı araç ve iş makinesi topladığını bilmiyorum ama hepsini Eski Tersane'deki hangara çekiyoruz."
+        },
+        {
+          "t": "{c}, para karşılığında Hayalet'in adamlarına aracın gizli rotasını sattı.",
+          "f": "Paraya ihtiyacım vardı! Sadece saati ve rotayı ver, gerisine karışma dediler."
+        }
+      ]
+    },
+    {
+      "id": "hat_sahte",
+      "tier": 2,
+      "type": "sanat eseri ve resmi evrak sahteciliği",
+      "tag": "Kalpazan Atölyesi",
+      "link": "Suçlunun üzerinden 'Üstat Kalpazan - Sipariş' damgalı bir fiş çıktı. Bu iş bağımsız bir hırsızlık değil, Kalpazan adlı bir çete liderinin siparişiymiş.",
+      "vars": {
+        "eser": [
+          "Nuri Aksel'in ünlü tablosu",
+          "Meliha Turan'ın otoportresi",
+          "Arto Selyan'ın 'Karanlık Liman' tablosu",
+          "ıslak imzalı banka yetki belgeleri",
+          "altın varaklı eski bir ferman"
+        ]
+      },
+      "title": [
+        "Çerçevedeki Yalan",
+        "Galerideki Kopya",
+        "Mürekkep Lekesi",
+        "Kusursuz Taklit"
+      ],
+      "client": [
+        "bir galeri sahibi",
+        "bir müze müdürü",
+        "müzayede evi başkanı",
+        "bakanlık teftiş uzmanı"
+      ],
+      "brief": [
+        "{cl:gen} sorumluluğundaki {eser} bir uzman tarafından incelendi ve kusursuz bir kopya çıktı. Orijinali ortada yok.",
+        "{cl}, sigortaladığı {eser} için yaptırdığı ekspertizde kopya olduğunu öğrendi. Bu seviyede bir kopyayı ancak profesyonel bir şebeke yapabilir."
+      ],
+      "event": "Değişim dün gece {time} sularında, kameralar bakıma alındığında yapılmış.",
+      "trail": "gece {time} sularında elinde uzun bir silindir kutuyla çıkan birini",
+      "locs": [
+        {
+          "name": "Galeri salonu",
+          "desc": "Beyaz duvarlar, loş ışık ve hafif bir terebentin kokusu.",
+          "scene": "ofis",
+          "clues": [
+            "Eserin asılı olduğu duvarda henüz kurumamış verniğin izi var.",
+            "Alarm sensörünün arkasına manyetik bir devre kesici sıkıştırılmış."
+          ]
+        },
+        {
+          "name": "Restorasyon atölyesi",
+          "desc": "Boyalar, çözücüler ve yarım kalmış tuvaller.",
+          "scene": "depo",
+          "clues": [
+            "Çöpte eserin deneme eskizleri bulundu.",
+            "Masada 'Üstat Kalpazan - Sipariş No: 3' yazılı bir teslimat notu var."
+          ]
+        },
+        {
+          "name": "Müzayede evi arşivi",
+          "desc": "Kırmızı halılar ve kilitli kayıt dolapları.",
+          "scene": "ofis",
+          "clues": [
+            "Kayıt defterinde eser için sahte bir ekspertiz raporu düzenlendiği görülüyor."
+          ]
+        },
+        {
+          "name": "Eski matbaa",
+          "desc": "Eski baskı makineleri ve her boyda çerçeve.",
+          "scene": "pazar",
+          "clues": [
+            "Matbaa ustası, dün birinin mühürlü kâğıt ve eskitme verniği aldığını söyledi."
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "r": "Galeri müdürü",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Eser dün gece kasadan neden çıkarıldı? Anahtar sadece sende vardı.",
+              "a_innocent": "Nem yükseldiği için koruma odasına aldık, prosedür bu.",
+              "a_guilty": "Bakım yapılacağını sanıyordum... Kopyayla değiştirileceğini nereden bilebilirdim?"
+            }
+          ]
+        },
+        {
+          "r": "Baş restoratör",
+          "s": "işçi",
+          "questions": [
+            {
+              "q": "Önlüğünde aynı vernik izi var. Kopyayı sen mi hazırladın?",
+              "a_innocent": "Ben restoratörüm, her gün bu malzemelerle çalışırım.",
+              "a_guilty": "Malzemeyi ben temin ettim ama fırçayı ben tutmadım!"
+            }
+          ]
+        },
+        {
+          "r": "Sanat eleştirmeni",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Sahte eser için neden 'orijinaldir' diye imzalı rapor verdin?",
+              "a_innocent": "Kopya o kadar iyiydi ki mikroskopta bile ayırt edilemiyordu.",
+              "a_guilty": "Raporu imzalamam için... yani, emin olduğum için imzaladım!"
+            }
+          ]
+        },
+        {
+          "r": "Çerçeve ustası",
+          "s": "işçi",
+          "questions": [
+            {
+              "q": "Dün gece galeriye arka kapıdan çerçeve kutusuyla girmişsin.",
+              "a_innocent": "Gelecek haftaki sergi için boş çerçeve bıraktım, teslim fişim var.",
+              "a_guilty": "Kutunun içinde ne olduğunu sormadım! Bırak ve eskisini al dediler."
+            }
+          ]
+        },
+        {
+          "r": "Gece güvenlik görevlisi",
+          "s": "polis",
+          "questions": [
+            {
+              "q": "Kameralar kapandığında neden merkeze bildirmedin?",
+              "a_innocent": "Sistemde planlı güncelleme var diye not bırakılmıştı.",
+              "a_guilty": "Sadece on beş dakika gözümü yumdum!"
+            }
+          ]
+        }
+      ],
+      "motives": [
+        {
+          "t": "{c}, orijinal eseri satıp büyük bir operasyona para toplayan 'Kalpazan' lakaplı çete lideri için çalıştı.",
+          "f": "Kopyayı Kalpazan hazırladı, ben sadece yer değiştirdim! Satılan eserlerle büyük bir işin parasını topluyorlar. Resmi giriş belgelerini de o basıyor!"
+        },
+        {
+          "t": "{c}, şantaj altında Kalpazan şebekesinin değişimine göz yumdu.",
+          "f": "Fikir benim değildi! Kalpazan bütün sahte belgeleri eski matbaada basıyor. Beni de kukla gibi kullandı!"
+        }
+      ]
+    },
+    {
+      "id": "hat_siber",
+      "tier": 2,
+      "type": "sunucu sızıntısı",
+      "tag": "Örümcek Ağı",
+      "link": "Sızıntıda kullanılan yazılımın kodunda 'CORVUS_NET' imzası var. Bu imza, 'Örümcek' lakaplı bir çete liderinin işaretiymiş.",
+      "vars": {
+        "veri": [
+          "belediyenin yeraltı tünel haritaları",
+          "emniyetin gece devriye ve telsiz kodları",
+          "finans binasının kamera protokolleri",
+          "elektrik şebekesinin şalter yazılımları"
+        ]
+      },
+      "title": [
+        "Hayalet Protokol",
+        "Kör Kamera",
+        "Sızan Dosyalar",
+        "Arka Kapı"
+      ],
+      "client": [
+        "belediyenin bilgi işlem müdürü",
+        "bir siber suçlar komiseri",
+        "bir bankanın güvenlik direktörü",
+        "enerji şirketinin yöneticisi"
+      ],
+      "brief": [
+        "Kurumun sunucularından dün gece {veri} kopyalandı. {cl}, dışarıdan girilmesinin imkânsız olduğunu, birinin sunucuya fiziksel olarak eriştiğini söylüyor.",
+        "Gizli tutulan {veri} sızdırıldı. {cl}, arkasında organize bir siber şebeke olduğundan emin."
+      ],
+      "event": "Veriler dün gece {time} sularında sunucudan kopyalanmış.",
+      "trail": "gece geç saatte sunucu katından dizüstü çantasıyla çıkan birini",
+      "locs": [
+        {
+          "name": "Sunucu odası",
+          "desc": "Uğuldayan makineler ve mavi ışıklar.",
+          "scene": "lab",
+          "clues": [
+            "Ana kabinin arkasına küçük bir kablosuz verici gizlenmiş.",
+            "Kartlı geçiş sisteminde o saatin kaydı elle silinmiş."
+          ]
+        },
+        {
+          "name": "Yeraltı internet kafe",
+          "desc": "Kimsenin kimseye soru sormadığı karanlık bir salon.",
+          "scene": "bar",
+          "clues": [
+            "Köşedeki bilgisayardan 'Örümcek' kod adlı bir kullanıcıya dosya yüklendiği görülüyor."
+          ]
+        },
+        {
+          "name": "Kurum otoparkı",
+          "desc": "Kameraların görmediği beton kolonlar.",
+          "scene": "depo",
+          "clues": [
+            "Yerde boş bir hafıza kartı kutusu ve kurye makbuzu var."
+          ]
+        },
+        {
+          "name": "Elektronik çarşısı",
+          "desc": "Casus donanımların el altından satıldığı pasaj.",
+          "scene": "pazar",
+          "clues": [
+            "Bir satıcı, dün birinin özel bir kablosuz verici aldığını söyledi."
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "r": "Sistem yöneticisi",
+          "s": "hacker",
+          "questions": [
+            {
+              "q": "O klasöre erişim yetkisi sadece sende var.",
+              "a_innocent": "Yetki bende ama dün gece doğrulama kodum kopyalanmış. Ben girmedim.",
+              "a_guilty": "Ben sadece yedekleme yapıyordum! O arka kapıyı kimin açtığını bilmiyorum!"
+            }
+          ]
+        },
+        {
+          "r": "Bilgi işlem stajyeri",
+          "s": "sokak",
+          "questions": [
+            {
+              "q": "Mesain bittiği halde gece sunucu katında ne işin vardı?",
+              "a_innocent": "Kablo etiketleme işim bitmemişti, şefimin bilgisi var.",
+              "a_guilty": "Şarj aletimi unutmuştum! Kabinlere dokunmadım bile."
+            }
+          ]
+        },
+        {
+          "r": "Siber güvenlik danışmanı",
+          "s": "hacker",
+          "questions": [
+            {
+              "q": "Güvenlik duvarını o gece neden on dakikalığına kapattın?",
+              "a_innocent": "Planlı bir sızma testi vardı, takvimde yazıyor.",
+              "a_guilty": "Bir güncelleme hatası oldu... Tam o sırada veri çekileceğini nereden bilebilirdim?"
+            }
+          ]
+        },
+        {
+          "r": "Bilgi işlem müdür yardımcısı",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "İnternet kafedeki kamerada dosyaları yükleyen kişi sana çok benziyor.",
+              "a_innocent": "O saatte ailemle yemekteydim, restoranın kayıtlarına bakabilirsin.",
+              "a_guilty": "Bana... yani o ben değilim! Herkes birbirine benzer."
+            }
+          ]
+        },
+        {
+          "r": "Gece temizlik görevlisi",
+          "s": "işçi",
+          "questions": [
+            {
+              "q": "Senin kartın o gece sunucu odasında okutulmuş.",
+              "a_innocent": "Benim kartım sadece koridorları açar.",
+              "a_guilty": "Sadece çöpü aldım çıktım! Kabinin arkasına bakmadım bile."
+            }
+          ]
+        }
+      ],
+      "motives": [
+        {
+          "t": "{c}, şehrin dijital ağını ele geçirmeye çalışan 'Örümcek' lakaplı çete lideri için verileri sızdırdı.",
+          "f": "Verileri benden Örümcek istedi! Hem elektrik şebekesini hem tünel haritalarını topluyor. Büyük bir geceye hazırlanıyorlar!"
+        },
+        {
+          "t": "{c}, Örümcek şebekesinin elindeki şantaj kayıtları yüzünden sunucuya casus cihaz taktı.",
+          "f": "Kimin hangi kirli işi yaptığını biliyorlar! Örümcek bana cihazı verdi, sadece tak ve çık dedi."
+        }
+      ]
+    },
+    {
+      "id": "hat_kimya",
+      "tier": 2,
+      "type": "endüstriyel kimyasal hırsızlığı",
+      "tag": "Kimyager Laboratuvarı",
+      "link": "Suçlunun üzerinden 'Teslimat: Kimyager Laboratuvarı' damgalı bir fiş çıktı. Bu iş bağımsız bir hırsızlık değil, Kimyager adlı bir çete liderinin siparişiymiş.",
+      "vars": {
+        "madde": [
+          "çeliği eriten termit karışımı",
+          "sıvı nitrojen tüpleri",
+          "gecikmeli elektronik fünyeler",
+          "kokusuz uyutucu gaz kapsülleri",
+          "endüstriyel kesme yakıtı"
+        ]
+      },
+      "title": [
+        "Kayıp Variller",
+        "Kükürt Kokusu",
+        "Sessiz Madde",
+        "Laboratuvardaki Gölge"
+      ],
+      "client": [
+        "bir kimya fabrikası müdürü",
+        "maden ocağı başmühendisi",
+        "üniversite laboratuvarı şefi",
+        "endüstriyel gaz deposu sahibi"
+      ],
+      "brief": [
+        "{cl:gen} yüksek güvenlikli deposundan dün gece {madde} çalındı. Bu maddeler yanlış ellerde felakete yol açabilir.",
+        "Özel izinle saklanan {madde} depodan buharlaştı. {cl}, hırsızın kimya bilgisi yüksek biri olduğunu ve içeriden yardım aldığını düşünüyor."
+      ],
+      "event": "Malzemeler dün gece {time} sularında soğutuculu bir kamyonetle çıkarılmış.",
+      "trail": "gece {time} sularında yüzünde gaz maskesiyle depodan çıkan birini",
+      "locs": [
+        {
+          "name": "Kimyasal depo",
+          "desc": "Çelik raflar, uyarı levhaları ve yerde sararmış lekeler.",
+          "scene": "lab",
+          "clues": [
+            "Rafların önünde kırık bir gaz maskesi filtresi var.",
+            "Sıcaklık alarmı uzman biri tarafından köprülenerek susturulmuş."
+          ]
+        },
+        {
+          "name": "Fabrika kantini",
+          "desc": "İşçilerin mola verdiği plastik masalı salon.",
+          "scene": "bar",
+          "clues": [
+            "Dolaplardan birinde 'Kimyager Laboratuvarı' yazılı bir teslimat listesi bulundu."
+          ]
+        },
+        {
+          "name": "Terk edilmiş ilaç atölyesi",
+          "desc": "Camları karartılmış eski bir imalathane.",
+          "scene": "depo",
+          "clues": [
+            "İçeride tehlikeli madde taşımak için hazırlanmış yalıtımlı çantalar var."
+          ]
+        },
+        {
+          "name": "Sanayi pazarı",
+          "desc": "Koruyucu ekipman ve tüp satan dükkânlar.",
+          "scene": "pazar",
+          "clues": [
+            "Dükkân sahibi, dün birinin aynı seri numaralı gaz maskesi filtresi aldığını söyledi."
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "r": "Kimya mühendisi",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Bu maddeyi patlatmadan taşımanın yolunu sadece sen biliyorsun. Dün gece neredeydin?",
+              "a_innocent": "Laboratuvarda analiz yapıyordum, asistanım da yanımdaydı.",
+              "a_guilty": "Taşıma talimatını ben yazdım ama... onu kimseye vermedim!"
+            }
+          ]
+        },
+        {
+          "r": "Depo sevkiyat işçisi",
+          "s": "işçi",
+          "questions": [
+            {
+              "q": "Botlarında depodaki lekelerin aynısı var.",
+              "a_innocent": "Geçen hafta bir varil devrilmişti, ondan kalmıştır.",
+              "a_guilty": "Varilleri ben yükledim ama içinde ne olduğunu sormadım!"
+            }
+          ]
+        },
+        {
+          "r": "İş güvenliği uzmanı",
+          "s": "polis",
+          "questions": [
+            {
+              "q": "Alarmlar o gece neden elle kapatıldı?",
+              "a_innocent": "Sensörler arızalıydı, gündüzden servis çağırmıştım.",
+              "a_guilty": "Alarmlar çalsa bütün mahalle ayağa kalkardı! Sadece yirmi dakika kapattım."
+            }
+          ]
+        },
+        {
+          "r": "Laboratuvar teknisyeni",
+          "s": "hacker",
+          "questions": [
+            {
+              "q": "Stok kayıtlarında madde 'imha edildi' olarak görünüyor.",
+              "a_innocent": "Bana imzalı imha tutanağı geldi, ben de işledim.",
+              "a_guilty": "Eksik fark edilmesin diye... yani tutanağa göre düzelttim!"
+            }
+          ]
+        },
+        {
+          "r": "Tehlikeli madde şoförü",
+          "s": "sokak",
+          "questions": [
+            {
+              "q": "Gece soğutuculu aracı arka kapıya neden yanaştırdın?",
+              "a_innocent": "Sabahki sevkiyat için akşamdan perona çektim, anahtar güvenlikte.",
+              "a_guilty": "Aracı ben sürmedim! Yani sürdüm ama sadece park ettim."
+            }
+          ]
+        }
+      ],
+      "motives": [
+        {
+          "t": "{c}, çelik bir mahzeni delmek için malzeme toplayan 'Kimyager' lakaplı çete lideri adına maddeyi çaldı.",
+          "f": "Hepsini Kimyager istedi! Termit, nitrojen, uyutucu gaz... Delinmesi imkânsız bir mahzeni eriteceklerini söyledi!"
+        },
+        {
+          "t": "{c}, Kimyager'in şebekesinden aldığı rüşvetle stokları gizlice dışarı çıkardı.",
+          "f": "Ben sadece teslim ettim! Kimyager eski fabrikada bir şey hazırlıyor. Arkasında çok daha büyük bir patron var."
+        }
+      ]
+    },
+    {
+      "id": "op_anahtarci",
+      "tier": 3,
+      "campaign_only": true,
+      "type": "çete lideri 'Anahtarcı' operasyonu",
+      "tag": "Kuzgun Piramidi",
+      "link": "Anahtarcı'nın kasasından çıkan belgelerde şehirdeki beş çete liderinin kod adları var. Hepsi 'Kuzgun' adlı birine hizmet ediyor.",
+      "culprit": {
+        "role": "Eski darphane başmühendisi"
+      },
+      "vars": {
+        "in": [
+          "Kuzey Han'ın altındaki gizli dökümhane",
+          "terk edilmiş saat kulesinin mekanizma katı"
+        ]
+      },
+      "title": [
+        "Birinci Halka: Anahtarcı",
+        "Kilitlerin Efendisi",
+        "Dökümhane Baskını"
+      ],
+      "client": [
+        "Organize Suçlar Büro Amiri",
+        "Başsavcı Yardımcısı"
+      ],
+      "brief": [
+        "Çözdüğün kasa soygunlarının izleri tek bir çete liderinde birleşti: Anahtarcı. Şüpheliler {in} çevresinde toplanıyor. {cl}, Anahtarcı'nın kim olduğunu bulmanı istiyor."
+      ],
+      "event": "Anahtarcı bu gece {time} sularında erittiği külçeleri üst patronun kuryesine teslim edecek.",
+      "trail": "{in} kapısında şifreli çantalar taşıyan birini",
+      "locs": [
+        {
+          "name": "Gizli dökümhane",
+          "desc": "Çalıntı mücevherlerin eritildiği fırınlar.",
+          "scene": "lab",
+          "clues": [
+            "Fırının yanında 'A-1' kazılı maymuncuk uçlarıyla dolu bir kutu var."
+          ]
+        },
+        {
+          "name": "Plan arşivi",
+          "desc": "Şehrin büyük binalarının kilit şemalarının saklandığı oda.",
+          "scene": "ofis",
+          "clues": [
+            "Duvarda Merkez Rezerv Mahzeni'nin kapı şeması asılı."
+          ]
+        },
+        {
+          "name": "Yeraltı tünel çıkışı",
+          "desc": "Kuryelerin malzeme taşıdığı eski bir kanal bağlantısı.",
+          "scene": "depo",
+          "clues": [
+            "Tünelde altın tozu bulaşmış ayak izleri var."
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "r": "Eski darphane başmühendisi",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Darphanedeki kilit sistemlerini sen tasarlamıştın, değil mi?",
+              "a_innocent": "Yıllar önceydi. Emekli olduğumdan beri kilitlerle işim yok.",
+              "a_guilty": "Tasarladım, evet... Ama emekli bir adamın hobisi suç mu?"
+            }
+          ]
+        },
+        {
+          "r": "Kasa kırma uzmanı",
+          "s": "işçi"
+        },
+        {
+          "r": "Lonca kethüdası",
+          "s": "takım"
+        },
+        {
+          "r": "Kuyumcular derneği başkanı",
+          "s": "takım"
+        },
+        {
+          "r": "Dökümhane ustası",
+          "s": "işçi"
+        }
+      ],
+      "motives": [
+        {
+          "t": "{c}, kod adı 'Anahtarcı' olan çete lideriydi. Kuzgun için büyük vurgunun bir parçasını hazırlıyordu.",
+          "f": "Beni yakaladın ama bu hiçbir şeyi durdurmaz! Ben beş parmağın sadece biriyim. Hayalet araçları, Örümcek kameraları, Kimyager patlayıcıları, Kalpazan belgeleri hazırlıyor. Hepimiz Kuzgun için çalışıyoruz."
+        }
+      ]
+    },
+    {
+      "id": "op_hayalet",
+      "tier": 3,
+      "campaign_only": true,
+      "type": "çete lideri 'Hayalet' operasyonu",
+      "tag": "Kuzgun Piramidi",
+      "link": "Hayalet'in kasasından çıkan belgelerde şehirdeki beş çete liderinin kod adları var. Hepsi 'Kuzgun' adlı birine hizmet ediyor.",
+      "culprit": {
+        "role": "Eski özel harekât şoförü"
+      },
+      "vars": {
+        "in": [
+          "Soykan Tersanesi'ndeki karanlık hangar",
+          "sanayinin altındaki yeraltı tır garajı"
+        ]
+      },
+      "title": [
+        "İkinci Halka: Hayalet",
+        "Tersane Baskını",
+        "Konvoyun Sonu"
+      ],
+      "client": [
+        "Gümrük İstihbarat Müdürü",
+        "Organize Suçlar Büro Amiri"
+      ],
+      "brief": [
+        "Kaçırılan araçların son sinyalleri birleşince {in} ortaya çıktı. Hayalet buradan yönetiyor. {cl}, onun kim olduğunu bulmanı istiyor."
+      ],
+      "event": "Hayalet bu gece {time} sularında araçları büyük vurgun noktasına sevk edecek.",
+      "trail": "{in} içinde konvoyu yöneten birini",
+      "locs": [
+        {
+          "name": "Karanlık hangar",
+          "desc": "Çalıntı zırhlı araçların dizildiği dev bir alan.",
+          "scene": "depo",
+          "clues": [
+            "Araçların hepsinin plakaları aynı gece değiştirilmiş."
+          ]
+        },
+        {
+          "name": "Sinyal odası",
+          "desc": "GPS sinyallerini karıştıran antenlerin olduğu oda.",
+          "scene": "lab",
+          "clues": [
+            "Masada beş çete liderinin telsiz frekanslarının yazılı olduğu bir kâğıt var."
+          ]
+        },
+        {
+          "name": "Rıhtım ofisi",
+          "desc": "Sevk evraklarının hazırlandığı küçük bir oda.",
+          "scene": "liman",
+          "clues": [
+            "Evraklarda 'Kuzgun onayı' yazan bir mühür kullanılmış."
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "r": "Eski özel harekât şoförü",
+          "s": "sokak",
+          "questions": [
+            {
+              "q": "Kaçırılan araçların hepsini senin eski birliğinin teknikleriyle durdurmuşlar.",
+              "a_innocent": "O teknikleri yüzlerce kişi bilir. Ben artık sadece taksi şoförüyüm.",
+              "a_guilty": "Teknik dediğin herkesin elinde... Ben sadece eski arkadaşlarıma akıl verdim, o kadar."
+            }
+          ]
+        },
+        {
+          "r": "Lojistik koordinatörü",
+          "s": "takım"
+        },
+        {
+          "r": "Tersane bekçisi",
+          "s": "polis"
+        },
+        {
+          "r": "Vinç operatörü",
+          "s": "işçi"
+        },
+        {
+          "r": "Sahte plaka ustası",
+          "s": "işçi"
+        }
+      ],
+      "motives": [
+        {
+          "t": "{c}, kod adı 'Hayalet' olan çete lideriydi. Kuzgun için büyük vurgunun bir parçasını hazırlıyordu.",
+          "f": "Araçları yakaladın ama Kuzgun'u durduramazsın! O bu şehrin sahibi. Biz beş lider onun satranç tahtasındaki taşlarız."
+        }
+      ]
+    },
+    {
+      "id": "op_kalpazan",
+      "tier": 3,
+      "campaign_only": true,
+      "type": "çete lideri 'Kalpazan' operasyonu",
+      "tag": "Kuzgun Piramidi",
+      "link": "Kalpazan'ın kasasından çıkan belgelerde şehirdeki beş çete liderinin kod adları var. Hepsi 'Kuzgun' adlı birine hizmet ediyor.",
+      "culprit": {
+        "role": "Ünlü sanat eksperi"
+      },
+      "vars": {
+        "in": [
+          "Tarihi Yarımada'nın altındaki gizli matbaa",
+          "bir galerinin gizli çatı katı"
+        ]
+      },
+      "title": [
+        "Üçüncü Halka: Kalpazan",
+        "Gizli Matbaa",
+        "Sahte İmparatorluk"
+      ],
+      "client": [
+        "Mali Suçlar Kurulu Başkanı",
+        "Kültür Varlıkları Başmüfettişi"
+      ],
+      "brief": [
+        "Sahte eserlerdeki özel mürekkep bizi {in} adresine götürdü. Kalpazan burada çalışıyor. {cl}, kim olduğunu ve kimin için belge bastığını bulmanı istiyor."
+      ],
+      "event": "Kalpazan bu gece {time} sularında sahte bakanlık belgelerini teslim edecek.",
+      "trail": "{in} çevresinde mühürlü zarflar taşıyan birini",
+      "locs": [
+        {
+          "name": "Gizli matbaa",
+          "desc": "Sahte kimliklerin ve mühürlerin basıldığı tezgâhlar.",
+          "scene": "depo",
+          "clues": [
+            "Tezgâhta Merkez Rezerv Mahzeni için basılmış sahte giriş kartları var."
+          ]
+        },
+        {
+          "name": "Karanlık oda",
+          "desc": "Hologramların basıldığı küçük bir laboratuvar.",
+          "scene": "lab",
+          "clues": [
+            "Kurumaya bırakılmış bir kartta 'Kuzgun ekibi - görevli' yazıyor."
+          ]
+        },
+        {
+          "name": "Kâğıt deposu",
+          "desc": "Özel keten kâğıtların saklandığı oda.",
+          "scene": "ofis",
+          "clues": [
+            "İthalat faturaları tek bir paravan şirketin adına kesilmiş."
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "r": "Ünlü sanat eksperi",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Sahte eserlerin hepsine senin laboratuvarından ekspertiz verilmiş.",
+              "a_innocent": "Laboratuvarım herkese hizmet verir. Kopyalar gerçekten çok iyiydi.",
+              "a_guilty": "Hata payı her uzmanda olur... Benim imzam her şeyi kanıtlamaz."
+            }
+          ]
+        },
+        {
+          "r": "Gravür ustası",
+          "s": "işçi"
+        },
+        {
+          "r": "Matbaa sahibi",
+          "s": "takım"
+        },
+        {
+          "r": "Müzayede evi yöneticisi",
+          "s": "takım"
+        },
+        {
+          "r": "Kâğıt ithalatçısı",
+          "s": "takım"
+        }
+      ],
+      "motives": [
+        {
+          "t": "{c}, kod adı 'Kalpazan' olan çete lideriydi. Kuzgun için büyük vurgunun bir parçasını hazırlıyordu.",
+          "f": "Tablolar sadece masrafları çıkarmak içindi! Asıl işim Kuzgun'un adamlarının mahzene görevli gibi girebilmesi için belge basmaktı."
+        }
+      ]
+    },
+    {
+      "id": "op_orumcek",
+      "tier": 3,
+      "campaign_only": true,
+      "type": "çete lideri 'Örümcek' operasyonu",
+      "tag": "Kuzgun Piramidi",
+      "link": "Örümcek'in kasasından çıkan belgelerde şehirdeki beş çete liderinin kod adları var. Hepsi 'Kuzgun' adlı birine hizmet ediyor.",
+      "culprit": {
+        "role": "Eski istihbarat ağ uzmanı"
+      },
+      "vars": {
+        "in": [
+          "Bulut Veri Merkezi'nin yeraltı sığınağı",
+          "eski telekom binasının santral katı"
+        ]
+      },
+      "title": [
+        "Dördüncü Halka: Örümcek",
+        "Ağın Merkezinde",
+        "Karanlık Sunucu"
+      ],
+      "client": [
+        "Siber Suçlar Daire Başkanı",
+        "Siber Güvenlik Şefi"
+      ],
+      "brief": [
+        "Sızıntılardaki 'CORVUS_NET' kodlarını izleyerek {in} adresini bulduk. Örümcek buradan çalışıyor. {cl}, şehrin ağı çökertilmeden onun kim olduğunu bulmanı istiyor."
+      ],
+      "event": "Örümcek bu gece {time} sularında şehrin güvenlik ağını çökertmeye hazırlanıyor.",
+      "trail": "{in} çevresinde ağır ekipman çantalarıyla dolaşan birini",
+      "locs": [
+        {
+          "name": "Ana terminal odası",
+          "desc": "Şehrin bütün kameralarının izlendiği ekranlar.",
+          "scene": "lab",
+          "clues": [
+            "Ekranlardan birinde Merkez Rezerv Mahzeni'nin kameraları açık."
+          ]
+        },
+        {
+          "name": "Soğutma koridoru",
+          "desc": "Şifreli disklerin saklandığı soğuk bir koridor.",
+          "scene": "depo",
+          "clues": [
+            "Disklerden birinin etiketinde 'K - büyük gece' yazıyor."
+          ]
+        },
+        {
+          "name": "Santral katı",
+          "desc": "Telefon hatlarının birleştiği eski odalar.",
+          "scene": "ofis",
+          "clues": [
+            "Beş farklı hattın aynı numaraya yönlendirildiği görülüyor."
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "r": "Eski istihbarat ağ uzmanı",
+          "s": "hacker",
+          "questions": [
+            {
+              "q": "'CORVUS_NET' imzası senin eski birimin kullandığı bir yöntem.",
+              "a_innocent": "O yöntemi biz icat etmedik, internette anlatılıyor.",
+              "a_guilty": "Biriminin yöntemini bilmek suç mu? Ben sadece... bir kere göstermiştim."
+            }
+          ]
+        },
+        {
+          "r": "Sistem mimarı",
+          "s": "hacker"
+        },
+        {
+          "r": "Telekom santral teknisyeni",
+          "s": "işçi"
+        },
+        {
+          "r": "Veri merkezi müdürü",
+          "s": "takım"
+        },
+        {
+          "r": "Güvenlik yazılımı satıcısı",
+          "s": "takım"
+        }
+      ],
+      "motives": [
+        {
+          "t": "{c}, kod adı 'Örümcek' olan çete lideriydi. Kuzgun için büyük vurgunun bir parçasını hazırlıyordu.",
+          "f": "Kodlarımı kırdın demek... Ama Kuzgun'un kim olduğunu öğrendiğinde çok geç olacak. Beş liderin topladığı her şey onun tek emrine bakıyor."
+        }
+      ]
+    },
+    {
+      "id": "op_kimyager",
+      "tier": 3,
+      "campaign_only": true,
+      "type": "çete lideri 'Kimyager' operasyonu",
+      "tag": "Kuzgun Piramidi",
+      "link": "Kimyager'in kasasından çıkan belgelerde şehirdeki beş çete liderinin kod adları var. Hepsi 'Kuzgun' adlı birine hizmet ediyor.",
+      "culprit": {
+        "role": "Akademiden ihraç edilen metalurji profesörü"
+      },
+      "vars": {
+        "in": [
+          "Tuzla'daki terk edilmiş gübre fabrikası",
+          "eski bir maden ocağının laboratuvar galerisi"
+        ]
+      },
+      "title": [
+        "Beşinci Halka: Kimyager",
+        "Termit Reaktörü",
+        "Son Bileşen"
+      ],
+      "client": [
+        "Bomba İmha Amiri",
+        "Özel Soruşturma Ekibi"
+      ],
+      "brief": [
+        "Çalınan bütün kimyasalların birleştirildiği yer bulundu: {in}. Kimyager burada. {cl}, onu yakalarsak zirvedeki ismin ortaya çıkacağını söylüyor."
+      ],
+      "event": "Kimyager bu gece {time} sularında mahzenin çelik kapısını eritecek düzeneği teslim edecek.",
+      "trail": "{in} çevresinde koruyucu tulumla dolaşan birini",
+      "locs": [
+        {
+          "name": "Reaktör laboratuvarı",
+          "desc": "Termit düzeneklerinin hazırlandığı tehlikeli alan.",
+          "scene": "lab",
+          "clues": [
+            "Düzeneğin ölçüleri Merkez Rezerv Mahzeni'nin kapısıyla birebir aynı."
+          ]
+        },
+        {
+          "name": "Yükleme rampası",
+          "desc": "Kurşun kutuların araçlara yüklendiği çıkış.",
+          "scene": "depo",
+          "clues": [
+            "Kutuların üstünde Hayalet'in garajına ait sevk etiketleri var."
+          ]
+        },
+        {
+          "name": "Profesörün ofisi",
+          "desc": "Formüllerle dolu kara tahtalar.",
+          "scene": "ofis",
+          "clues": [
+            "Tahtanın köşesinde bir kuzgun çizimi ve 'zirve: S.' yazısı var."
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "r": "Akademiden ihraç edilen metalurji profesörü",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Termit karışımının bu formülü senin yasaklanan makalende var.",
+              "a_innocent": "O makale yıllar önce yayımlandı. Herkes okuyabilir.",
+              "a_guilty": "Bilim yasaklanamaz! Formülü yazan benim ama... kullanan başkası."
+            }
+          ]
+        },
+        {
+          "r": "Patlayıcı uzmanı",
+          "s": "işçi"
+        },
+        {
+          "r": "Fabrika bekçisi",
+          "s": "polis"
+        },
+        {
+          "r": "Kimyasal tedarikçisi",
+          "s": "takım"
+        },
+        {
+          "r": "Laboratuvar asistanı",
+          "s": "hacker"
+        }
+      ],
+      "motives": [
+        {
+          "t": "{c}, kod adı 'Kimyager' olan çete lideriydi. Kuzgun için büyük vurgunun bir parçasını hazırlıyordu.",
+          "f": "Beş lideri de yakaladın demek! Anahtarcı, Hayalet, Kalpazan, Örümcek ve ben... Hepimiz Kuzgun'dan emir aldık. Adını hiçbirimiz bilmiyoruz ama emirler hep şehrin en tepesinden gelirdi."
+        }
+      ]
+    },
+    {
+      "id": "zirve_kuzgun",
+      "tier": 3,
+      "campaign_only": true,
+      "type": "Kuzgun'un kimliğini ortaya çıkarma",
+      "tag": "Kuzgun Piramidi",
+      "link": "Kuzgun'un çatı katındaki panoda bütün piramit çizilmiş: sokak hırsızları, beş çete lideri ve en tepede tek bir isim.",
+      "culprit": {
+        "role": "Liman holdinginin yönetim kurulu başkanı",
+        "name": "Mümtaz Soykan"
+      },
+      "title": [
+        "Piramidin Zirvesi",
+        "Kuzgun'un Yuvası",
+        "Büyük Vurgun"
+      ],
+      "client": [
+        "Cumhuriyet Başsavcısı",
+        "Özel Soruşturma Komisyonu"
+      ],
+      "brief": [
+        "Beş çete liderinin ifadeleri aynı yeri gösteriyor: Kuzgun, şehrin en saygın beş isminden biri. Bu gece Merkez Rezerv Mahzeni soyulacak. {cl}, vurgun başlamadan Kuzgun'un kim olduğunu bulmanı istiyor."
+      ],
+      "event": "Büyük vurgun bu gece {time} sularında, şehrin iletişimi kesildiğinde başlayacak.",
+      "trail": "mahzenin önünde operasyonu bizzat yöneten birini",
+      "locs": [
+        {
+          "name": "Merkez Rezerv Mahzeni",
+          "desc": "Beş çetenin topladığı bütün ekipmanın kurulduğu dev kasa.",
+          "scene": "lab",
+          "clues": [
+            "Anahtarcı'nın şemaları, Kimyager'in düzeneği ve Örümcek'in cihazı ana kapıya bağlanmış.",
+            "Yerde altın bir kuzgun mührü taşıyan şifreli bir kumanda duruyor."
+          ]
+        },
+        {
+          "name": "Holding binasının çatı katı",
+          "desc": "Şehrin yukarıdan izlendiği bir komuta odası.",
+          "scene": "ofis",
+          "clues": [
+            "Duvardaki panoda bütün suç piramidi çizilmiş."
+          ]
+        },
+        {
+          "name": "Özel liman rıhtımı",
+          "desc": "Kaçış için bekleyen siyah bir kargo gemisi.",
+          "scene": "liman",
+          "clues": [
+            "Geminin evraklarında Kalpazan'ın sahte gümrük mühürleri var."
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "r": "Liman holdinginin yönetim kurulu başkanı",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Beş çete liderinin de emirleri 'şehrin en tepesinden' aldığını söylüyor. Bu gece neredeydin?",
+              "a_innocent": "Holdingin yıllık yemeğindeydim. Üç yüz kişi beni gördü.",
+              "a_guilty": "Yemekteydim... Sadece bir saatliğine çatı katına çıktım, o kadar."
+            }
+          ]
+        },
+        {
+          "r": "Emekli emniyet müdürü",
+          "s": "polis",
+          "questions": [
+            {
+              "q": "Devriye planlarının sızdığı tek yer senin eski ofisin.",
+              "a_innocent": "Emekli olalı iki yıl oldu. Planlara erişimim yok.",
+              "a_guilty": "Eski dostlarla arada bir konuşuruz, bu suç mu?"
+            }
+          ]
+        },
+        {
+          "r": "Belediye meclis üyesi",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Tünel haritalarının izni senin imzanla çıkmış.",
+              "a_innocent": "İmza yetkim var ama haritalar kurul kararıyla verildi.",
+              "a_guilty": "İmzaladım ama neye imza attığımı okumadım bile!"
+            }
+          ]
+        },
+        {
+          "r": "Ünlü bir avukat",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Yakalanan beş liderin hepsini aynı hafta sen savunmaya başladın.",
+              "a_innocent": "Avukatım. Savunma hakkı herkese var.",
+              "a_guilty": "Müvekkillerimi kim gönderdiğini söyleyemem... meslek sırrı."
+            }
+          ]
+        },
+        {
+          "r": "Hayır kurumu başkanı",
+          "s": "takım",
+          "questions": [
+            {
+              "q": "Kurumunun hesaplarından paravan şirketlere para gitmiş.",
+              "a_innocent": "Bağışları denetçiler yönetir, her şey kayıtlı.",
+              "a_guilty": "O bağışlar... yani onlar iyi niyetle yapılmış yatırımlardı."
+            }
+          ]
+        }
+      ],
+      "motives": [
+        {
+          "t": "{c}, 'Kuzgun' kod adıyla beş çete liderini ve onlarca hırsızı tek merkezden yönetip yüzyılın vurgununu planladı.",
+          "f": "Kusursuz bir piramit kurmuştum! Sokaktaki hırsızlar kime çalıştığını bilmiyordu, beş liderim de sadece kendi parçasını biliyordu. Sen hepsini birleştirdin. Evet, Kuzgun benim."
+        }
+      ]
+    }
+  ],
+  "names": [
+    {
+      "w": 6,
+      "f": [
+        "Kenan",
+        "Cihan",
+        "Ferit",
+        "Tarık",
+        "Yavuz",
+        "Sinan",
+        "Haldun",
+        "Zafer",
+        "Levent",
+        "Koray",
+        "İlker",
+        "Oğuz",
+        "Nalan",
+        "Berna",
+        "Cavidan",
+        "Defne",
+        "Leman",
+        "Perihan",
+        "Süreyya",
+        "Aylin",
+        "Meltem",
+        "Handan",
+        "Şebnem",
+        "Zerrin",
+        "Pınar",
+        "Aslı",
+        "Derya",
+        "Ceyda"
+      ],
+      "female": [
+        "Nalan",
+        "Berna",
+        "Cavidan",
+        "Defne",
+        "Leman",
+        "Perihan",
+        "Süreyya",
+        "Aylin",
+        "Meltem",
+        "Handan",
+        "Şebnem",
+        "Zerrin",
+        "Pınar",
+        "Aslı",
+        "Derya",
+        "Ceyda"
+      ],
+      "l": [
+        "Karadağ",
+        "Bozkurt",
+        "Vural",
+        "Demirkan",
+        "Korkmaz",
+        "Sertkaya",
+        "Aksoy",
+        "Erguvan",
+        "Şahiner",
+        "Köksal",
+        "Altınok",
+        "Çevik",
+        "Kandemir",
+        "Saruhan",
+        "Karahan",
+        "Dinçer",
+        "Sancak",
+        "Keskin",
+        "Üstündağ",
+        "Tezcan",
+        "Mertoğlu"
+      ]
+    }
+  ],
+  "tags": [
+    "Anahtarcı Hücresi",
+    "Hayalet Lojistik",
+    "Kalpazan Atölyesi",
+    "Örümcek Ağı",
+    "Kimyager Laboratuvarı",
+    "Kuzgun Piramidi"
+  ],
+  "story": [
+    {
+      "id": "kz_basla",
+      "on": "start",
+      "who": "Kahveci Rıza",
+      "title": "Görünmez el",
+      "text": "Rıza önüne demli bir çay bıraktı ve sesini alçalttı: \"Son günlerde garip hırsızlıklar oluyor {ad}. Kuyumcular, zırhlı araçlar, galeriler, sunucular, kimya depoları... Sanki görünmez bir el herkesi aynı anda harekete geçirdi.\"",
+      "choices": [
+        {
+          "label": "İpi çekip ucundan kim çıkacak bakalım"
+        }
+      ]
+    },
+    {
+      "id": "kz_ilk_lider",
+      "on": "captured_count:1",
+      "who": "Emniyet Amiri Cevdet",
+      "title": "İlk halka koptu",
+      "text": "Amir Cevdet dosyayı masana bıraktı: \"İlk çete liderini içeri aldın {ad}. Ama sorguda ne dediğini duydun: Kendisi gibi dört lider daha varmış. Her biri farklı bir alanda malzeme topluyor.\"",
+      "choices": [
+        {
+          "label": "Diğer dördünü de bulacağım"
+        }
+      ]
+    },
+    {
+      "id": "kz_ucuncu",
+      "on": "captured_count:3",
+      "who": "Jun Park, gazeteci",
+      "title": "Ortak hedef",
+      "text": "Jun Park bir harita açtı: \"Kasa şemaları, zırhlı araçlar, sahte giriş kartları... Hepsi aynı binayı gösteriyor {ad}: Merkez Rezerv Mahzeni. Biri yüzyılın vurgununu hazırlıyor.\"",
+      "choices": [
+        {
+          "label": "Kalan liderlere yetişmeliyim"
+        }
+      ]
+    },
+    {
+      "id": "kz_hepsi",
+      "on": "all_captured",
+      "who": "Emniyet Amiri Cevdet",
+      "title": "Kuzgun",
+      "text": "Cevdet'in elleri titriyordu: \"Beş lider de içeride {ad}. Hiçbiri patronun adını bilmiyor. Ama hepsi aynı şeyi söylüyor: Emirler şehrin en tepesinden, en saygın isimlerden birinden geliyormuş. Kod adı Kuzgun. Ve bu gece mahzeni vuracaklar.\"",
+      "choices": [
+        {
+          "label": "Kuzgun'u bu gece bulacağım"
+        }
+      ]
+    },
+    {
+      "id": "kz_son",
+      "on": "final",
+      "who": "Kahveci Rıza",
+      "title": "Sabah",
+      "text": "Rıza ocağın başında gazeteyi katladı. Manşette Mümtaz Soykan'ın fotoğrafı vardı. \"Bir kedi aramakla başladın {ad}, şehrin en tepesine kadar çıktın.\" Sonra gülümsedi: \"Ama bu şehirde boşluk uzun sürmez.\"",
+      "choices": [
+        {
+          "label": "Bir çay daha, Rıza"
+        }
+      ]
+    }
+  ]
+}
