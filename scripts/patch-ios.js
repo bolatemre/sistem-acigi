@@ -1,0 +1,22 @@
+// "npx cap sync ios" sonrasında otomatik çalışır (package.json > capacitor:sync:after).
+// iOS Info.plist dosyasına AdMob ve gizlilik ayarlarını ekler.
+const fs = require("fs");
+const path = require("path");
+
+if (process.env.CAPACITOR_PLATFORM_NAME && process.env.CAPACITOR_PLATFORM_NAME !== "ios") process.exit(0);
+const root = process.env.CAPACITOR_ROOT_DIR || path.join(__dirname, "..");
+const plist = path.join(root, "ios", "App", "App", "Info.plist");
+if (!fs.existsSync(plist)) { console.log("Info.plist bulunamadı, atlanıyor."); process.exit(0); }
+
+const ads = JSON.parse(fs.readFileSync(path.join(root, "ads.config.json"), "utf8"));
+let s = fs.readFileSync(plist, "utf8");
+const has = key => s.includes(`<key>${key}</key>`);
+const add = xml => { s = s.replace(/<\/dict>\s*<\/plist>\s*$/, `${xml}\n</dict>\n</plist>\n`); };
+
+if (!has("GADApplicationIdentifier")) add(`\t<key>GADApplicationIdentifier</key>\n\t<string>${ads.appId}</string>`);
+if (!has("SKAdNetworkItems")) add(`\t<key>SKAdNetworkItems</key>\n\t<array>\n\t\t<dict>\n\t\t\t<key>SKAdNetworkIdentifier</key>\n\t\t\t<string>cstr6suwn9.skadnetwork</string>\n\t\t</dict>\n\t</array>`);
+if (!has("NSUserTrackingUsageDescription")) add(`\t<key>NSUserTrackingUsageDescription</key>\n\t<string>Bu izin, oyunda sana daha uygun reklamlar gösterilmesi için kullanılır. İzin vermesen de oyun aynı şekilde çalışır.</string>`);
+if (!has("ITSAppUsesNonExemptEncryption")) add(`\t<key>ITSAppUsesNonExemptEncryption</key>\n\t<false/>`);
+
+fs.writeFileSync(plist, s);
+console.log("Info.plist güncellendi (AdMob, takip izni, şifreleme beyanı).");
