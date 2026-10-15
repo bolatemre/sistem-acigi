@@ -1,8 +1,8 @@
 {
-  "_not": "appId gerçek AdMob uygulama kimliği. Reklam birimleri hâlâ Google test kimlikleri; gerçekleri gelince değiştir ve testing değerini false yap.",
+  "_not": "Gerçek AdMob kimlikleri. testing=true iken test reklamları gösterilir (TestFlight aşaması). App Store'a göndermeden önce testing değerini false yap.",
   "appId": "ca-app-pub-6236520075152909~2891561609",
-  "rewarded": "ca-app-pub-3940256099942544/1712485313",
-  "interstitial": "ca-app-pub-3940256099942544/4411468910",
-  "banner": "ca-app-pub-3940256099942544/2934735716",
+  "rewarded": "ca-app-pub-6236520075152909/3899811936",
+  "interstitial": "ca-app-pub-6236520075152909/9568650596",
+  "banner": "ca-app-pub-6236520075152909/8551082393",
   "testing": true
 }
