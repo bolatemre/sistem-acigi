@@ -7,17 +7,36 @@ Köhne bir iş hanında başlayıp şehrin gölgelerindeki örgütlere uzanan, s
 | Yol | Ne işe yarar |
 | --- | --- |
 | `index.html` | Oyunun tamamı (arayüz, vaka motoru, hikâye) |
+| `native.js` | Telefona özel özellikler: AdMob reklamları ve kalıcı kayıt |
+| `ads.config.json` | AdMob uygulama ve reklam birimi kimlikleri |
 | `icerik-paketi.json` | Örnek içerik paketi (yeni vaka türleri, hikâye bölümleri) |
 | `icon.png`, `splash.png`, `splash-dark.png` | Uygulama simgesi ve açılış ekranı |
-| `scripts/prepare-web.js` | Dosyaları derleme öncesi `www/` ve `assets/` klasörlerine kopyalar |
+| `scripts/prepare-web.js` | Dosyaları derleme öncesi `www/` ve `assets/` klasörlerine hazırlar |
+| `scripts/patch-ios.js` | iOS ayarlarına AdMob kimliğini ve takip izni metnini ekler (otomatik çalışır) |
 | `.github/workflows/ios-testflight.yml` | Bulutta derleyip TestFlight'a yükleyen otomasyon |
 | `capacitor.config.json` | Mobil uygulama ayarları (uygulama kimliği, adı) |
 
-`www/` ve `assets/` klasörleri otomatik oluşturulur; depoya eklenmez.
+`www/`, `assets/` ve `ios/` klasörleri otomatik oluşturulur; depoya eklenmez.
 
 ## Tarayıcıda deneme
 
-`index.html` dosyasını tarayıcıda açman yeterli.
+`index.html` dosyasını tarayıcıda açman yeterli. Tarayıcıda örnek reklamlar gösterilir; gerçek AdMob reklamları yalnızca telefon uygulamasında çalışır.
+
+## AdMob
+
+`ads.config.json` şu an Google'ın test kimliklerini içerir; test reklamları gösterilir ve gelir oluşmaz. Yayından önce:
+
+1. [AdMob](https://admob.google.com) hesabında iOS uygulamasını ekle.
+2. Üç reklam birimi oluştur: **Ödüllü**, **Geçiş (Interstitial)** ve **Banner**.
+3. `ads.config.json` içindeki `appId` ve üç reklam birimi kimliğini gerçekleriyle değiştir, `testing` değerini `false` yap.
+
+Reklam yerleşimi:
+
+- **Ödüllü:** soru, hamle ve para bitince oyuncu kendisi seçer (günde en fazla 5).
+- **Geçiş:** her iki dosya kapatıldığında bir kez.
+- **Banner:** yalnızca Ofis ve Arşiv ekranlarında, sekme çubuğunun üstünde. Sorgu ve vaka ekranlarında gösterilmez.
+
+İlk açılışta iOS takip izni sorulur; AB'deki oyunculara Google'ın rıza formu gösterilir.
 
 ## Otomatik TestFlight yüklemesi (Mac gerekmez)
 
@@ -37,20 +56,16 @@ npx cap add ios
 npm run ios
 ```
 
-## Android
-
-```bash
-npx cap add android
-npm run android
-```
-
 ## Yeni senaryo eklemek (güncelleme gerektirmez)
 
 `index.html` içindeki `CONTENT_URL` satırına kendi sunucundaki JSON dosyasının adresini yaz. Oyun açılışta bu dosyayı kontrol eder ve `version` numarası artmışsa yeni paketi indirir. Biçim için `icerik-paketi.json` dosyasına bak.
 
 ## Yayın öncesi yapılacaklar
 
+- [x] Uygulama içi satın alma kaldırıldı
+- [x] AdMob entegrasyonu (test kimlikleriyle)
+- [x] Kalıcı kayıt (Capacitor Preferences)
+- [x] iOS takip izni metni ve şifreleme beyanı
+- [ ] Gerçek AdMob kimlikleri (`ads.config.json`)
 - [ ] Gizlilik politikası sayfası (App Store zorunlu tutar)
-- [ ] Örnek reklamlar ve "Satın al (deneme)" düğmesi mağaza sürümünden kaldırılacak ya da gerçek AdMob / uygulama içi satın alma bağlanacak
-- [ ] Kayıtlar Capacitor Preferences eklentisine taşınacak (iOS tarayıcı hafızasını silebilir)
 - [ ] App Store ekran görüntüleri ve açıklama metni
