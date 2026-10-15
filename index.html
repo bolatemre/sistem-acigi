@@ -406,6 +406,11 @@ textarea{flex:1;resize:none;border:1px solid var(--line);background:var(--bg);co
 .logo{line-height:1.1}
 body.has-banner main{padding-bottom:180px}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:9}
+.camp-row{padding:12px 14px}
+.camp-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.camp-head span{font-size:13px;color:var(--muted)}
+.camp-row.cap{opacity:.75}
+.camp-row.cap .progress i{background:var(--evid)}
 </style>
 </head>
 <body>
@@ -458,6 +463,8 @@ const KEY = "dedektif-v1";
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const FEMALE = new Set(["Elif", "Zeynep", "Selin", "Ayşe", "Deniz", "Burcu", "Nur", "Sevgi", "Gülay", "Melek", "Rojda", "Berfin", "Dilan", "Zilan", "Nairi", "Talin", "Anahit", "Eleni", "Katerina", "Milena", "Lejla", "Yasmin", "Rania", "Nadia", "Olga", "Sasha", "Yuki", "Aiko", "Ji-woo", "Seo-yeon", "Lucía", "Camila", "Amara", "Fatou", "Clara", "Giulia", "Necla", "Saniye", "Nika", "Leyla", "Nino", "Tamar", "Selma", "Meliha"]);
+const isFemale = n => FEMALE.has(String(n).replace(/^(Komiser Yrd\.|Kahveci|Tefeci)\s+/, "").split(/[ ,]/)[0]);
 
 const MODES = {
   calm:{label:"Sakin", desc:"Sakin, nötr bir soru."},
@@ -639,7 +646,7 @@ function news(text){ S.news.unshift({day:S.day, text}); S.news = S.news.slice(0,
 function toast(m){ toastMsg = m; }
 function contactOpen(c){ return c.req === "always" || c.req === "case" || (c.req === "selin" && S.rep >= 60 && S.vicdan >= 0) || (c.req === "jun" && level() >= 3) || (c.req === "nika" && S.up.hacker > 0) || (c.req === "kadir" && (S.vicdan <= -20 || S.story.kadirFriend)); }
 function lockText(c){ return {selin:"60 itibar ve temiz bir vicdan gerekir.", jun:"Seviye 3'te tanışırsın.", nika:"Ofis'ten işe alabilirsin.", kadir:"Vicdanın -20'nin altına inince kapını çalar."}[c.req] || ""; }
-const bossReady = () => S.cycle.nodes.length >= 5;
+const bossReady = () => S.cycle.nodes.length >= 5 && !(typeof campActive === "function" && campActive());
 
 /* ---------- art ---------- */
 function hsh(t){ let x = 2166136261; for (const ch of String(t)) x = Math.imul(x ^ ch.codePointAt(0), 16777619); return x >>> 0; }
@@ -674,13 +681,14 @@ function portrait(name, style, mood){
   const bg = pick(r, ["#2a2147", "#1f3b45", "#47213a", "#3a3220", "#203a2a"]);
   const coats = {"takım":"#2b2d42", "işçi":"#6a5236", "hacker":"#1d3b3a", "polis":"#1f2a4d", "sokak":"#5a2a3e"};
   const coat = coats[style] || pick(r, Object.values(coats));
-  const ht = Math.floor(r() * 5), gl = r() < .3, imp = r() < .12;
+  const fem = isFemale(name), ht = fem ? (r() < .7 ? 1 : 5) : pick(r, [0, 0, 2, 3, 4]), gl = r() < .3, imp = r() < .12, beard = !fem && r() < .35;
   const hairSvg = [
     `<path d="M27 33Q27 19 40 19Q53 19 53 33Q50 25 40 25Q30 25 27 33Z" fill="${hair}"/>`,
     `<path d="M25 52Q23 18 40 18Q57 18 55 52L51 52Q52 28 40 26Q28 28 29 52Z" fill="${hair}"/>`,
     ``,
     `<path d="M26 30Q27 17 40 17Q53 17 54 30Z" fill="${coat}"/><rect x="38" y="27" width="20" height="3.4" rx="1.7" fill="${coat}"/>`,
-    `<path d="M37.5 24L37 12L43 12L42.5 24Z" fill="#ff5c9a"/>`][ht];
+    `<path d="M37.5 24L37 12L43 12L42.5 24Z" fill="#ff5c9a"/>`,
+    `<path d="M27 33Q27 19 40 19Q53 19 53 33Q50 25 40 25Q30 25 27 33Z" fill="${hair}"/><circle cx="40" cy="15.5" r="6" fill="${hair}"/>`][ht];
   const ink = "#1a1222", lip = "#3a1d22";
   let eyes = `<circle cx="34.5" cy="36" r="1.6" fill="${ink}"/><circle cx="45.5" cy="36" r="1.6" fill="${ink}"/>`, brows = "", mouth = `<path d="M36 45.5H44" stroke="${lip}" stroke-width="1.4"/>`;
   if (mood === "korkmuş"){ eyes = `<circle cx="34.5" cy="36" r="2.3" fill="#fff"/><circle cx="45.5" cy="36" r="2.3" fill="#fff"/><circle cx="34.5" cy="36" r="1.1" fill="${ink}"/><circle cx="45.5" cy="36" r="1.1" fill="${ink}"/>`; mouth = `<ellipse cx="40" cy="45.5" rx="2" ry="2.4" fill="${lip}"/>`; brows = `<path d="M31 31.5L37 30M43 30L49 31.5" stroke="${ink}" stroke-width="1.3" fill="none"/>`; }
@@ -694,7 +702,7 @@ function portrait(name, style, mood){
     : style === "polis" ? `<rect x="49" y="63" width="6" height="7" rx="1" fill="#f0a640"/>`
     : style === "hacker" ? `<path d="M24 64Q40 52 56 64" stroke="#6cc2b7" stroke-width="1" fill="none" opacity=".7"/>`
     : style === "işçi" ? `<rect x="22" y="66" width="36" height="3" fill="#f0a640" opacity=".8"/>` : "";
-  return `<svg class="portrait" viewBox="0 0 80 80" role="img" aria-label="${esc(name)}"><circle cx="40" cy="40" r="40" fill="${bg}"/><g transform="translate(40 42) scale(1.28) translate(-40 -38)"><path d="M8 82Q12 57 40 55Q68 57 72 82Z" fill="${coat}"/>${collar}<rect x="36" y="45" width="8" height="12" fill="${skin}"/><ellipse cx="40" cy="36" rx="13" ry="15" fill="${skin}"/>${hairSvg}${brows}${eyes}${glasses}${mouth}${implant}</g></svg>`;
+  return `<svg class="portrait" viewBox="0 0 80 80" role="img" aria-label="${esc(name)}"><circle cx="40" cy="40" r="40" fill="${bg}"/><g transform="translate(40 42) scale(1.28) translate(-40 -38)"><path d="M8 82Q12 57 40 55Q68 57 72 82Z" fill="${coat}"/>${collar}<rect x="36" y="45" width="8" height="12" fill="${skin}"/><ellipse cx="40" cy="36" rx="13" ry="15" fill="${skin}"/>${hairSvg}${brows}${eyes}${glasses}${beard ? `<path d="M27.5 38Q28.5 53 40 53Q51.5 53 52.5 38Q50 47.5 40 47.5Q30 47.5 27.5 38Z" fill="${hair}" opacity=".9"/>` : ""}${mouth}${fem ? `<circle cx="27" cy="41" r="1.3" fill="#f0a640"/><circle cx="53" cy="41" r="1.3" fill="#f0a640"/>` : ""}${implant}</g></svg>`;
 }
 const LANG = `DİL KURALLARI (çok önemli):
 - Sade, akıcı, günlük Türkçe yaz. Okuyan bir kere okuyunca anlasın.
@@ -916,6 +924,7 @@ const SUF = {
 const past1 = w => w + ({a:"ydım", ı:"ydım", e:"ydim", i:"ydim", o:"ydum", u:"ydum", ö:"ydüm", ü:"ydüm"})[lastV(w)];
 const ucf = x => x ? x[0].toLocaleUpperCase("tr") + x.slice(1) : x;
 const lcf = x => x ? x[0].toLocaleLowerCase("tr") + x.slice(1) : x;
+const plc = n => /^\S+\s+[A-ZÇĞİÖŞÜ]/.test(n) ? n : lcf(n);
 function fill(tpl, ctx){ return String(tpl).replace(/\{(\w+)(?::(\w+))?\}/g, (m, k, c) => { const v = ctx[k]; if (v == null) return m; return c && SUF[c] ? SUF[c](v) : v; }); }
 const shuffle = (r, a) => a.map(x => [r(), x]).sort((p, q) => p[0] - q[0]).map(x => x[1]);
 
@@ -977,7 +986,7 @@ const TRAITS = {
     loc:v => v === "Solak" ? "Olay yerindeki izlere bakılırsa iş sol elle yapılmış. Fail büyük ihtimalle solak." : "Olay yerindeki izler, failin sağ elini kullandığını gösteriyor.",
     wit:v => v === "Solak" ? ["kaçan kişinin kapıyı sol eliyle açtığını gördü", "Kapıyı sol eliyle açtı, bunu net hatırlıyorum."] : null},
   smell:{vals:["Makine yağı", "Balık", "Lavanta", "Ucuz parfüm", "Kahve"], chip:v => `Kokusu: ${lcf(v)}`,
-    loc:v => `Odada hafif bir ${lcf(v)} kokusu kalmış.`,
+    loc:v => `Olay yerinde hafif bir ${lcf(v)} kokusu kalmış.`,
     wit:v => [`kaçan kişinin üzerinden ${lcf(v)} kokusu geldiğini söyledi`, `Yanımdan geçerken burnuma ${lcf(v)} kokusu geldi.`]}
 };
 const TRAIT_KEYS = Object.keys(TRAITS);
@@ -1148,6 +1157,20 @@ const EVENT = {
   fire:"Yangın dün gece {time} sularında başlamış.", container:"Konteyner dün gece {time} sularında rıhtımdan çıkarılmış.", journalist:"{victim} en son beş gün önce, gece {time} sularında görülmüş.",
   bribery:"Para çantası dün gece {time} sularında el değiştirmiş.", smuggle:"Koliler dün gece {time} sularında feribottan indirilmiş."
 };
+const TRAIL = {
+  pet:"dün elinde hayvan taşıma kafesiyle dolaşan birini", helmet:"dün elinde {obj} ile dolaşan birini", pots:"gece balkonların altında dolaşan birini",
+  keepsake:"dün eski bir eşyayı satmaya çalışan birini", charity:"elinde bağış kutusuyla kapı kapı dolaşan birini",
+  affair:"perşembe geceleri gelen gizemli birini", embezzle:"para eksildiği gece şirkete giren birini", hotel:"kameranın yerleştirildiği gece koridorda dolaşan birini",
+  insurance:"olay gecesi etrafta dolaşan birini", letters:"mektupları bırakan birini", fire:"yangından hemen önce fabrikadan çıkan birini",
+  container:"konteynerin kaybolduğu gece rıhtımda dolaşan birini", journalist:"{victim} ile en son görülen birini", bribery:"para çantasını taşıyan birini",
+  smuggle:"kolileri teslim alan birini", boss:"örgütün gizli toplantısına gelen birini"
+};
+const TRAIL_T = {
+  smoke:v => v === "Sigara içmiyor" ? null : `${lcf(v)} içiyormuş`,
+  vehicle:v => ({"Bisiklet":"bisikletle gelmiş", "Motosiklet":"motosikletle gelmiş", "Kamyonet":"bir kamyonetle gelmiş", "Eski sedan":"eski bir sedanla gelmiş"})[v] || null,
+  hand:v => v === "Solak" ? "solakmış" : "sağ elini kullanıyormuş",
+  smell:v => `üzerinden ${lcf(v)} kokusu geliyormuş`
+};
 const BOSS_ROLES = [R_("Saygın bir iş insanı", "takım"), R_("Belediye meclis üyesi", "takım"), R_("Liman müdürü", "takım"), R_("Hayır kurumu başkanı", "takım"), R_("Emekli emniyet müdürü", "polis"), R_("Ünlü bir avukat", "takım")];
 const CARTEL_A = ["Kızıl", "Kara", "Gümüş", "Sessiz", "Demir", "Gece", "Mavi", "Yaşlı", "Kör", "Tuzlu"];
 const CARTEL_N = ["Çapa", "Kanca", "Martı", "Fener", "Kule", "Akrep", "Yılan", "Pusula", "Mühür", "Kurt"];
@@ -1166,12 +1189,22 @@ const BOSS_LOCS = [{name:"Örgütün paravan şirketi", desc:"Pırıl pırıl bi
 function generateCase(opts = {}){
   const boss = !!opts.boss;
   const r = rng(hsh(S.player + "|" + S.day + "|" + S.solved + "|" + Math.random()));
-  const lvl = level(), t = boss ? 3 : tier();
-  const twist = !boss && t >= 2 && S.story.twistPending;
-  const recent = S.archive.slice(0, 3).map(a => a.type);
-  let pool = ARCH.filter(a => a.tier === t && !recent.includes(a.type));
-  if (!pool.length) pool = ARCH.filter(a => a.tier === t);
-  const A = boss ? null : twist ? ARCH.find(a => a.id === "affair") : pick(r, pool);
+  const lvl = level();
+  let t = boss ? 3 : tier(), A = null, cmeta = opts.camp || null;
+  const twist = !boss && !opts.arch && t >= 2 && S.story.twistPending;
+  if (opts.arch){ A = opts.arch; t = A.tier; }
+  else if (!boss && !twist){
+    const C = campActive() ? camp() : null;
+    const open = C ? C.branches.filter(b => !S.camp.captured.includes(b.id) && (S.camp.done[b.id] || 0) < C.need) : [];
+    if (open.length && r() < .6){ const b = pick(r, open); A = ARCH.find(a => a.id === b.archetype); cmeta = {kind:"branch", branch:b.id, leader:b.leader}; t = A.tier; }
+    else {
+      const recent = S.archive.slice(0, 3).map(a => a.type);
+      const okA = a => a.tier === t && !a.campaignOnly && !(C && C.branches.some(b => b.archetype === a.id));
+      let pool = ARCH.filter(a => okA(a) && !recent.includes(a.type));
+      if (!pool.length) pool = ARCH.filter(okA);
+      A = pick(r, pool);
+    }
+  } else if (twist) A = ARCH.find(a => a.id === "affair");
   const used = new Set([S.player, "Leyla", "Kadir"]);
   const ctx = {ad:S.player || "dedektif"};
   if (A) for (const k in A.vars) ctx[k] = pick(r, A.vars[k]);
@@ -1180,27 +1213,30 @@ function generateCase(opts = {}){
   // izler ve kancalar
   const nodeTags = [...new Set(S.cycle.nodes.map(n => n.tag))];
   const hook = !boss && S.hooks.length ? S.hooks[S.hooks.length - 1] : null;
-  const tag = hook && hook.tag ? hook.tag : nodeTags.length && r() < .55 ? pick(r, nodeTags) : pick(r, TAGS);
+  const tag = A && A.tag ? A.tag : hook && hook.tag ? hook.tag : nodeTags.length && r() < .55 ? pick(r, nodeTags) : pick(r, TAGS);
   ctx.tag = tag;
   const cartel = boss ? cartelName(r, S.history.map(h => h.cartel)) : null;
   ctx.cartel = cartel;
   // mekanlar
-  const locs = (boss ? BOSS_LOCS.map((l, i) => i === 2 && nodeTags[0] ? {...l, name:nodeTags[0] + " deposu"} : l) : shuffle(r, A.locs).slice(0, 3)).map((l, i) => ({id:"L" + (i + 1), ...l}));
+  const locs = (boss ? BOSS_LOCS.map((l, i) => i === 2 && nodeTags[0] ? {...l, name:nodeTags[0] + " deposu"} : l) : [A.locs[0], ...shuffle(r, A.locs.slice(1)).slice(0, 2)]).map((l, i) => ({id:"L" + (i + 1), ...l, desc:fill(l.desc || "", ctx)}));
   ctx.place = locs[0].name;
   // şüpheliler
   const roleSrc = boss ? BOSS_ROLES : A.roles;
   const n = Math.min(roleSrc.length, boss ? 5 : t === 1 ? 3 : t === 2 ? (lvl >= 4 ? 4 : 3) : (lvl >= 7 ? 5 : 4));
-  const roles = shuffle(r, roleSrc).slice(0, n);
+  const cr = A && A.culprit ? roleSrc.find(x => x.r === A.culprit.role) : null;
+  const roles = cr ? [cr, ...shuffle(r, roleSrc.filter(x => x !== cr)).slice(0, n - 1)] : shuffle(r, roleSrc).slice(0, n);
   const time = pick(r, TIMES); ctx.time = time;
   const returning = S.npcs.filter(x => x.outcome === "aklandı" || x.outcome === "haksız yere suçlandı");
   const sus = roles.map((ro, i) => {
-    let name = genName(r, used), known = false;
+    let name = genName(r, used), known = false, back = null;
     if (twist && i === 0) name = "Leyla Kadiroğlu";
-    else if (i === n - 1 && returning.length && r() < .3){ const b = pick(r, returning); if (!used.has(b.name)){ name = b.name; known = true; used.add(name); } }
+    else if (i === n - 1 && returning.length && r() < .3){ const b = pick(r, returning); if (!used.has(b.name)){ name = b.name; known = true; back = b; used.add(name); } }
     const tr = {}; TRAIT_KEYS.forEach(k => tr[k] = pick(r, TRAITS[k].vals));
-    return {id:"S" + (i + 1), name, known, role: twist && i === 0 ? "Gece kulübü şarkıcısı" : ro.r, style: twist && i === 0 ? "sokak" : ro.s, pk:pick(r, PKEYS), tr, ap:pick(r, ALIBI)};
+    return {id:"S" + (i + 1), name, known, role: twist && i === 0 ? "Gece kulübü şarkıcısı" : back ? back.role : ro.r, style: twist && i === 0 ? "sokak" : back ? (back.style || ro.s) : ro.s, pk:pick(r, PKEYS), tr, ap:pick(r, ALIBI)};
   });
-  const cul = sus[twist ? 0 : Math.floor(r() * n)];
+  const cul = sus[twist || cr ? 0 : Math.floor(r() * n)];
+  if (cr && A.culprit.name){ cul.name = A.culprit.name; cul.known = false; }
+  sus.forEach(x => { const ro = roleSrc.find(q => q.r === x.role); x.qs = ro && ro.questions ? ro.questions : []; });
   const innocents = sus.filter(s => s !== cul);
   ctx.c = cul.name;
   if (innocents.length >= 2 && r() < .5){ const [a, b] = shuffle(r, innocents); b.ap = a.ap; a.pal = b; b.pal = a; }
@@ -1220,36 +1256,43 @@ function generateCase(opts = {}){
   const clues = [];
   const witCount = t === 3 ? 1 : 2; let wi = 0;
   const witPool = shuffle(r, innocents);
+  const scene = locs[0], others = locs.slice(1);
+  const trailNoun = fill(TRAIL[boss ? "boss" : A.id] || "olay gecesi etrafta dolaşan birini", ctx);
+  const trailOk = k => TRAIL_T[k] && TRAIL_T[k](cul.tr[k]);
+  const trailClue = (k, L) => ({kind:"trait", key:k, text:`${ucf(lcf(L.name))} civarında konuştuğun biri, ${trailNoun} hatırlıyor. Tarif ettiğine göre o kişi ${TRAIL_T[k](cul.tr[k])}.`, source:L.id, pointsTo:cul.id});
+  const sceneClue = k => ({kind:"trait", key:k, text:TRAITS[k].loc(cul.tr[k]), source:scene.id, pointsTo:cul.id});
+  const rest = [];
   chosen.forEach(k => {
     const v = cul.tr[k], W = TRAITS[k].wit ? TRAITS[k].wit(v) : null;
     if (W && wi < witCount && witPool[wi]){ const w = witPool[wi++]; clues.push({kind:"trait", key:k, text:`${w.name}, ${W[0]}.`, source:w.id, pointsTo:cul.id, wline:W[1]}); }
-    else clues.push({kind:"trait", key:k, text:TRAITS[k].loc(v), source:"loc", pointsTo:cul.id});
+    else rest.push(k);
   });
+  // olay yerinde fiziksel izler, diğer mekanlarda o mekandaki birinin tarifi
+  let oi = 0;
+  rest.forEach((k, i) => { if (i === 0 || !trailOk(k) || !others.length) clues.push(sceneClue(k)); else clues.push(trailClue(k, others[oi++ % others.length])); });
+  locs.forEach(L => {
+    if (clues.some(x => x.source === L.id)) return;
+    if (L === scene){ clues.push(sceneClue(pick(r, chosen))); return; }
+    const ks = chosen.filter(trailOk), all = Object.keys(TRAIL_T).filter(trailOk);
+    clues.push(trailClue(ks.length ? pick(r, ks) : pick(r, all.length ? all : ["hand"]), L));
+  });
+  if (A && A.locClues) locs.forEach(L => { const src = A.locs.findIndex(x => x.name === L.name), pool = src >= 0 ? A.locClues[src] : []; if (pool && pool.length) clues.push({kind:"story", text:fill(pick(r, pool), ctx), source:L.id, pointsTo:null}); });
+  // mazereti çürüten ipucu: önce iddiayı, sonra çelişkiyi söyler
   if (t < 3 || r() < .5 || boss){
-    const w = wi === 0 ? witPool[0] : null;
-    clues.push(w ? {kind:"breaker", text:`${w.name}, olay gecesi ${cul.ap.nom} önünden geçtiğini ve ${SUF.acc(first(cul.name))} orada görmediğini söyledi.`, source:w.id, pointsTo:cul.id, wline:`O gece ${cul.ap.nom} önünden geçtim. ${first(cul.name)} orada değildi, eminim.`}
-      : {kind:"breaker", text:`${ucf(cul.ap.wit)}, ${SUF.acc(cul.name)} o gece hiç görmediğini söyledi.`, source:"ag", pointsTo:cul.id});
+    const w = wi === 0 ? witPool[0] : null, claim = `${cul.name}, o gece ${cul.ap.loc} olduğunu söylüyor.`;
+    clues.push(w ? {kind:"breaker", text:`${claim} Ama ${w.name}, o saatte ${cul.ap.nom} önünden geçtiğini ve ${SUF.acc(first(cul.name))} orada görmediğini söyledi.`, source:w.id, pointsTo:cul.id, wline:`O gece ${cul.ap.nom} önünden geçtim. ${first(cul.name)} orada değildi, eminim.`}
+      : {kind:"breaker", text:`${claim} Ama ${cul.ap.wit}, onu o gece hiç görmediğini söyledi.`, source:"ag", pointsTo:cul.id});
   }
-  if (t >= 2 || r() < .4) clues.push({kind:"motive", text:fill(pick(r, MOTIVE_EV), ctx), source: clues.some(x => x.source === "ag") ? "loc" : "ag", pointsTo:cul.id});
-  if (!clues.some(x => x.source === "ag")) clues.push({kind:"motive", text:fill(pick(r, MOTIVE_EV), ctx), source:"ag", pointsTo:cul.id});
+  if (t >= 2 || r() < .5 || !clues.some(x => x.source === "ag")) clues.push({kind:"motive", text:fill(pick(r, MOTIVE_EV), ctx), source:"ag", pointsTo:cul.id});
   const secs = shuffle(r, SECRETS);
   innocents.forEach((s, i) => { s.secret = secs[i % secs.length]; });
   const rh = t === 1 ? 1 : t === 2 ? (r() < .5 ? 1 : 2) : 2;
-  shuffle(r, innocents).slice(0, rh).forEach(s => clues.push({kind:"herring", text:fill(s.secret.t, {n:s.name, place:lcf(ctx.place)}), source:"loc", pointsTo:s.id}));
+  shuffle(r, innocents).slice(0, rh).forEach(s => clues.push({kind:"herring", text:"Söylentiye göre, " + fill(s.secret.t, {n:s.name, place:plc(ctx.place)}), source:"ag", pointsTo:s.id}));
   if (t >= 2){
     clues.push({kind:"tail", text:`${cul.name}, takipte gece yarısı ${tag} kapısından girerken fotoğraflandı.`, source:"takip", pointsTo:cul.id});
     const hi = pick(r, innocents); clues.push({kind:"herring", text:fill(hi.secret.tk, {n:hi.name}), source:"takip", pointsTo:hi.id});
   }
-  if (boss) nodeTags.slice(0, 2).forEach(tg => clues.push({kind:"motive", text:`${tg} kayıtlarındaki imzalar ${cul.name.split(" ").map(x => x[0] + ".").join(" ")} baş harfleriyle atılmış.`, source:"loc", pointsTo:cul.id}));
-  // mekanlara dağıt
-  const locClues = shuffle(r, clues.filter(x => x.source === "loc"));
-  while (locClues.length < 3){
-    const hs = innocents.find(s => !clues.some(x => x.kind === "herring" && x.pointsTo === s.id));
-    const x = hs ? {kind:"herring", text:fill(hs.secret.t, {n:hs.name, place:lcf(ctx.place)}), source:"loc", pointsTo:hs.id}
-      : {kind:"flavor", text:pick(r, ["Yerde yırtık bir otobüs bileti var. Kime ait olduğu belli değil.", "Duvarda taze bir sprey boya yazısı var: \"Geri döneceğim.\"", "Köşede ıslak bir şemsiye bırakılmış. Sahibi ortada yok."]), source:"loc", pointsTo:null};
-    clues.push(x); locClues.push(x);
-  }
-  locClues.forEach((x, i) => { x.source = locs[i % locs.length].id; });
+  if (boss) nodeTags.slice(0, 2).forEach(tg => clues.push({kind:"motive", text:`${tg} kayıtlarındaki imzalar ${cul.name.split(" ").map(x => x[0] + ".").join(" ")} baş harfleriyle atılmış.`, source:scene.id, pointsTo:cul.id}));
   shuffle(r, clues).forEach((x, i) => { x.id = "C" + (i + 1); });
   clues.sort((a, b) => +a.id.slice(1) - +b.id.slice(1));
   // diyalog bankası
@@ -1275,6 +1318,7 @@ function generateCase(opts = {}){
         : [`${SUF.acc(on)} pek tanımam.`, `${on} ile sadece selamlaşırız.`]);
     });
     lines.serbest = ["Bildiğim bu kadar, {ad}.", "Başka bir şey hatırlamıyorum.", "Bu konuda söyleyecek bir şeyim yok."];
+    const rq = (s.qs || []).map((q, qi) => { lines["rq" + qi] = [fill(isC ? q.a_guilty : q.a_innocent, ctx)]; return {topic:"rq" + qi, text:fill(q.q, ctx)}; });
     clues.forEach(cl => {
       let set = null;
       if (cl.pointsTo === s.id && isC) set = cl.kind === "breaker" ? [`${ucf(cul.ap.short)} beni hatırlamıyordur, o gece çok kalabalıktı.`, "Bu hiçbir şey kanıtlamaz."] : cl.kind === "trait" ? [`${ADMIT[cl.key](s.tr[cl.key])} Bu beni suçlu yapmaz.`, "Bunu bana yıkmaya mı çalışıyorsun?"] : ["Bu hiçbir şey kanıtlamaz.", "Bunu bana yıkmaya mı çalışıyorsun?"];
@@ -1282,7 +1326,7 @@ function generateCase(opts = {}){
       else if (cl.kind === "trait" && s.tr[cl.key] === cul.tr[cl.key]) set = [`${ADMIT[cl.key](s.tr[cl.key])} Ama bu şehirde benim gibi yüzlerce kişi var.`];
       if (set) lines["kanit:" + cl.id] = set;
     });
-    talk[s.id] = {lines, aggr:P.aggr, aggrMood:P.aggrMood, aggrReveal:!!P.aggrReveal && !isC, evDefault:["Bu bana bir şey söylemiyor.", "Bunun benimle ne ilgisi var?"], reveals:[],
+    talk[s.id] = {lines, rq, aggr:P.aggr, aggrMood:P.aggrMood, aggrReveal:!!P.aggrReveal && !isC, evDefault:["Bu bana bir şey söylemiyor.", "Bunun benimle ne ilgisi var?"], reveals:[],
       bribe: isC ? {accept:false, line:"Bana mı rüşvet? Asıl sen ne kadar istiyorsun, onu söyle."} : P.bribe === "free" ? {accept:true, free:true, line:"Paranı cebine koy. Sana zaten anlatırım."} : P.bribe ? {accept:true, line:"Para konuşur, değil mi? Peki, dinle."} : {accept:false, line:P.reject || "Paran sende kalsın."},
       confess: isC ? "Tamam! " + fill(mot.f, ctx) : null};
   });
@@ -1305,7 +1349,7 @@ function generateCase(opts = {}){
     clues:clues.map(x => ({id:x.id, text:x.text, source:x.source, pointsTo:x.pointsTo})),
     culpritId:cul.id, motive:fill(mot.t, ctx), talk,
     hook:fill(pick(r, HOOKS), {tag:newTag}), hookTag:newTag,
-    conspiracyLink: boss ? "" : fill(pick(r, LINKS[t - 1]), ctx), linkTag: boss ? "" : tag,
+    conspiracyLink: boss ? "" : A.link ? fill(A.link, ctx) : fill(pick(r, LINKS[Math.min(t, 3) - 1]), ctx), linkTag: boss ? "" : tag, camp: cmeta ? {kind:cmeta.kind, branch:cmeta.branch || "", leader:cmeta.leader || ""} : null,
     counterOffer, contact:{name:cs.name, role:cs.role, kind:ck, line:CONTACT_LINE[ck]},
     cartel: boss ? {name:cartel, desc:"Panodaki bütün izlerin arkasındaki örgüt."} : null,
     successors: boss ? [0, 1].map(i => ({id:"h" + S.cycle.n + "_" + i, name:cartelName(r, [cartel]), desc:pick(r, ["Eski örgütün kalıntılarından doğdu.", "Boşluğu doldurmak için limana çöktü.", "Sokak çetelerini tek çatı altında topluyor."]), power:40})) : []
@@ -1362,16 +1406,27 @@ function applyPack(pk){
     id:String(a.id), tier:+a.tier, type:String(a.type), vars:a.vars && typeof a.vars === "object" ? a.vars : {},
     title:a.title.map(String), client:a.client.map(String), brief:a.brief.map(String),
     locs:a.locs.map(l => ({name:String(l.name), desc:String(l.desc || ""), scene: SCENES.includes(l.scene) ? l.scene : guessScene(l.name)})),
-    roles:a.roles.map(x => ({r:String(x.r), s: ["takım", "işçi", "hacker", "polis", "sokak"].includes(x.s) ? x.s : "sokak"})),
-    motives:a.motives.map(m => ({t:String(m.t), f:String(m.f)}))
+    roles:a.roles.map(x => ({r:String(x.r), s: ["takım", "işçi", "hacker", "polis", "sokak"].includes(x.s) ? x.s : "sokak",
+      questions:(Array.isArray(x.questions) ? x.questions : []).filter(q => q && q.q && q.a_innocent && q.a_guilty).map(q => ({q:String(q.q), a_innocent:String(q.a_innocent), a_guilty:String(q.a_guilty)}))})),
+    motives:a.motives.map(m => ({t:String(m.t), f:String(m.f)})),
+    link: a.link ? String(a.link) : "", tag: a.tag ? String(a.tag) : "", campaignOnly: !!a.campaign_only,
+    culprit: a.culprit && a.culprit.role ? {role:String(a.culprit.role), name: a.culprit.name ? String(a.culprit.name) : ""} : null,
+    locClues: a.locs.map(l => (Array.isArray(l.clues) ? l.clues : []).map(String))
   }));
-  archs.forEach(a => { const i = ARCH.findIndex(x => x.id === a.id); if (i >= BASE.arch) ARCH[i] = a; else ARCH.push(a); EVENT[a.id] = String((pk.archetypes.find(x => x.id === a.id) || {}).event || "Olay dün gece {time} sularında yaşanmış."); });
+  archs.forEach(a => { const i = ARCH.findIndex(x => x.id === a.id); if (i >= BASE.arch) ARCH[i] = a; else ARCH.push(a); const src = pk.archetypes.find(x => x.id === a.id) || {}; EVENT[a.id] = String(src.event || "Olay dün gece {time} sularında yaşanmış."); if (src.trail) TRAIL[a.id] = String(src.trail); });
   let names = 0;
-  (pk.names || []).forEach(o => { if (o && Array.isArray(o.f) && Array.isArray(o.l) && o.f.length && o.l.length){ ORIGINS.push({w:clamp(+o.w || 1, 1, 9), f:o.f.map(String), l:o.l.map(String)}); names++; } });
+  (pk.names || []).forEach(o => { if (o && Array.isArray(o.f) && Array.isArray(o.l) && o.f.length && o.l.length){ ORIGINS.push({w:clamp(+o.w || 1, 1, 9), f:o.f.map(String), l:o.l.map(String)}); (Array.isArray(o.female) ? o.female : []).forEach(n => FEMALE.add(String(n))); names++; } });
   (pk.tags || []).forEach(tg => { if (typeof tg === "string" && tg.trim() && !TAGS.includes(tg)) TAGS.push(tg.trim()); });
-  const stories = (pk.story || []).filter(e => e && e.id && e.title && e.text).map(e => ({id:String(e.id), title:String(e.title), who:String(e.who || ""), text:String(e.text), minLevel:+e.minLevel || 1, minDay:+e.minDay || 1, minSolved:+e.minSolved || 0, choices:Array.isArray(e.choices) && e.choices.length ? e.choices.map(c => ({label:String(c.label || "Devam")})) : [{label:"Devam"}]}));
+  const stories = (pk.story || []).filter(e => e && e.id && e.title && e.text).map(e => ({id:String(e.id), title:String(e.title), who:String(e.who || ""), text:String(e.text), minLevel:+e.minLevel || 1, minDay:+e.minDay || 1, minSolved:+e.minSolved || 0, on: e.on ? String(e.on) : "", choices:Array.isArray(e.choices) && e.choices.length ? e.choices.map(c => ({label:String(c.label || "Devam")})) : [{label:"Devam"}]}));
   if (!archs.length && !stories.length && !names) return null;
-  PACK = {id:String(pk.id || "paket"), version:+pk.version || 1, archs:archs.length, names, stories};
+  let campaign = null;
+  const cp = pk.campaign;
+  if (cp && cp.id && Array.isArray(cp.branches) && cp.branches.length){
+    const has = id => ARCH.some(x => x.id === id);
+    const br = cp.branches.filter(b => b && b.id && has(b.archetype) && has(b.boss)).map(b => ({id:String(b.id), leader:String(b.leader || b.id), archetype:String(b.archetype), boss:String(b.boss)}));
+    if (br.length) campaign = {id:String(cp.id), name:String(cp.name || "Büyük dava"), need:clamp(+cp.need || 5, 1, 10), minTier:clamp(+cp.min_tier || 1, 1, 3), branches:br, final: has(cp.final) ? String(cp.final) : ""};
+  }
+  PACK = {id:String(pk.id || "paket"), version:+pk.version || 1, archs:archs.length, names, stories, campaign};
   return PACK;
 }
 function loadCachedPack(){ try { const t = localStorage.getItem(PACK_KEY); if (t) applyPack(JSON.parse(t)); } catch { PACK = null; } }
@@ -1391,12 +1446,44 @@ async function checkRemotePack(){
   if (!CONTENT_URL) return;
   try { const res = await fetch(CONTENT_URL, {cache:"no-store"}); if (!res.ok) return; const text = await res.text(); if (installPack(text, "remote")){ save(); render(); } } catch {}
 }
+/* ---------- kampanya (piramit) ---------- */
+function camp(){
+  const C = PACK && PACK.campaign; if (!C) return null;
+  if (!S.camp || S.camp.id !== C.id) S.camp = {id:C.id, done:{}, captured:[], final:false};
+  return C;
+}
+const campActive = () => { const C = camp(); return !!(C && !S.camp.final && tier() >= C.minTier); };
+function campNext(){
+  const C = camp(); if (!campActive()) return null;
+  const A = id => ARCH.find(a => a.id === id);
+  const ready = C.branches.find(b => (S.camp.done[b.id] || 0) >= C.need && !S.camp.captured.includes(b.id));
+  if (ready) return {kind:"sub", branch:ready.id, leader:ready.leader, arch:A(ready.boss)};
+  if (C.final && S.camp.captured.length >= C.branches.length) return {kind:"final", arch:A(C.final)};
+  return null;
+}
+function campCond(on){
+  if (!on) return true;
+  const C = camp(); if (!C) return false;
+  const [k, v] = on.split(":");
+  if (k === "start") return campActive() || S.camp.final;
+  if (k === "ready") return (S.camp.done[v] || 0) >= C.need;
+  if (k === "captured") return S.camp.captured.includes(v);
+  if (k === "captured_count") return S.camp.captured.length >= +v;
+  if (k === "all_captured") return S.camp.captured.length >= C.branches.length;
+  if (k === "final") return S.camp.final;
+  return false;
+}
 function checkPackStories(){
   if (!PACK) return;
   PACK.stories.forEach(e => {
     const k = "pack_" + PACK.id + "_" + e.id;
-    if (!S.story[k] && level() >= e.minLevel && S.day >= e.minDay && S.solved >= e.minSolved){ S.story[k] = true; queueStory("pack:" + e.id); }
+    if (!S.story[k] && level() >= e.minLevel && S.day >= e.minDay && S.solved >= e.minSolved && campCond(e.on)){ S.story[k] = true; queueStory("pack:" + e.id); }
   });
+}
+function takeCamp(){
+  const nx = campNext(); if (!nx || !nx.arch || busy) return;
+  busy = true; render();
+  setTimeout(() => { const data = generateCase({arch:nx.arch, camp:nx}); busy = false; openOffer(data); }, 900);
 }
 function packStoryEv(id){
   const e = PACK && PACK.stories.find(x => x.id === id); if (!e) return null;
@@ -1596,7 +1683,9 @@ function suggestQs(s, t){
   c.suspects.filter(o => o.id !== s.id).forEach(o => rest.push({topic:"kisi:" + o.id}));
   const r = rng(hsh(s.id + (t.turns || []).length));
   const shuffled = rest.filter(q => !asked.has(q.topic)).map(q => [r(), q]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
-  const out = [{topic:"alibi"}, ...first.slice(0, 1), ...shuffled];
+  const bank = (c.talk || {})[s.id] || {};
+  const rqs = (bank.rq || []).filter(q => !asked.has(q.topic));
+  const out = [{topic:"alibi"}, ...rqs.slice(0, 1), ...first.slice(0, 1), ...shuffled];
   if (out.length < 3) out.push(...rest.slice(0, 3 - out.length));
   return out.slice(0, 3);
 }
@@ -1795,6 +1884,11 @@ function finish(choice){
   if (level() > before) S.lvlUp = level();
   c.result.tierUp = tier() > beforeTier;
   if (c.demo) queueStory("landlord");
+  if (c.camp && c.status !== "lost" && camp()){
+    if (c.camp.kind === "branch") S.camp.done[c.camp.branch] = (S.camp.done[c.camp.branch] || 0) + 1;
+    if (c.camp.kind === "sub" && !S.camp.captured.includes(c.camp.branch)){ S.camp.captured.push(c.camp.branch); news(`${c.camp.leader} yakalandı. Piramitte bir halka daha koptu.`); }
+    if (c.camp.kind === "final"){ S.camp.final = true; news("Piramidin zirvesi düştü. Şehir derin bir nefes aldı."); }
+  }
   if (tier() >= 2 && !S.story.t2){ S.story.t2 = true; S.story.twistPending = true; queueStory("t2"); }
   if (tier() >= 3 && !S.story.t3){ S.story.t3 = true; queueStory("t3", {tags:[...new Set(S.cycle.nodes.map(n => n.tag))]}); }
   if (c.twist){ S.story.twistPending = false; if (c.status !== "lost") queueStory("kadir"); }
@@ -1958,7 +2052,7 @@ function stageSVG(s){
   const skins = ["#e8b48f", "#d29a6e", "#b07a52", "#86563a", "#5e3b28"];
   const hairC = ["#1b1420", "#3a2418", "#6a4424", "#9a9088", "#2a1a10"];
   const sty = s.style || pick(r, Object.keys(coats));
-  const so = {skin:pick(r, skins), coat:coats[sty] || "#3a3046", hair:pick(r, hairC), hairT: sty === "polis" || sty === "işçi" && r() < .5 ? "cap" : pick(r, ["short", "long", "short", "bald"]), style:sty, cuff:"#d8d4cc", rim:"#f0d9a0", accent:pick(r, ["#7a2f3a", "#2d5e8a", "#c27a26"])};
+  const so = {skin:pick(r, skins), coat:coats[sty] || "#3a3046", hair:pick(r, hairC), hairT: isFemale(s.name) ? "long" : sty === "polis" || sty === "işçi" && r() < .5 ? "cap" : pick(r, ["short", "short", "bald"]), style:sty, cuff:"#d8d4cc", rim:"#f0d9a0", accent:pick(r, ["#7a2f3a", "#2d5e8a", "#c27a26"])};
   const dO = {det:true, skin:"#c98d64", coat:"#1e1828", hair:"#1b1420", hairT:"fedora", cuff:"#bdb6a8", rim:"#f0d9a0"};
   const D = figureSVG("dt", dO), Su = figureSVG("su", so);
   let blinds = ""; for (let y = 18; y < 78; y += 6) blinds += `<line x1="24" x2="98" y1="${y}" y2="${y}" stroke="#120d1e" stroke-width="2.6"/>`;
@@ -2165,6 +2259,7 @@ function vOffice(){
   let today;
   if (open) today = `<div class="event">${eventIcon("envelope")}<div><b>Masanda açık bir dosya var</b><p>${esc(S.case.title)}</p><button class="btn primary" data-go="case">Dosyaya dön</button></div></div>`;
   else if (busy) today = `<div class="panel loading"><b>${S.demoDone && bossReady() ? "Büyük dosya açılıyor" : ev === "phone" ? "Telefonda biri konuşuyor" : "Zarfı açıyorsun"}</b>Bir dakika…</div>`;
+  else if (S.demoDone && campNext()){ const nx = campNext(); today = `<div class="event boss">${eventIcon("boss")}<div><b>${nx.kind === "final" ? "Piramidin zirvesi" : "Kırmızı ipler birleşti: " + esc(nx.leader)}</b><p>${nx.kind === "final" ? "Bütün çete liderleri içeride. Sıra hepsinin bağlı olduğu kişide." : "Çözdüğün vakaların izleri tek bir çete liderine çıkıyor."}</p><button class="btn primary" id="campJob">Operasyonu başlat</button></div></div>`; }
   else if (S.demoDone && bossReady()) today = `<div class="event boss">${eventIcon("boss")}<div><b>Kırmızı ipler birleşti</b><p>Panodaki beş iz aynı yere çıkıyor. Örgütün liderine giden büyük dosya hazır.</p><button class="btn primary" id="bossJob">Büyük dosyayı aç</button></div></div>`;
   else {
     const can = true;
@@ -2198,11 +2293,10 @@ function vCase(){
   if (!c) return `<div class="sec" style="padding-top:10px"><h2>Masan boş</h2><p class="lede">Ofiste seni bekleyen bir iş olabilir.</p><button class="btn primary" data-go="office">Ofise dön</button></div>`;
   const bl = c.locations[1] || c.locations[0];
   const head = `<article class="file"><div class="banner">${scene(bl.scene || guessScene(bl.name), c.title)}</div>
-    <p class="tier-pill">${c.boss ? "Büyük dosya" : "Kademe " + c.tier + ": " + esc(TIERS[c.tier - 1].name)}</p>
+    <p class="tier-pill">${c.boss ? "Büyük dosya" : c.camp && c.camp.kind === "final" ? "Final operasyonu" : c.camp && c.camp.kind === "sub" ? "Çete lideri operasyonu" : "Kademe " + c.tier + ": " + esc(TIERS[c.tier - 1].name)}${c.camp && c.camp.kind === "branch" ? " · " + esc(c.camp.leader) + " hattı" : ""}</p>
     <h1>${esc(c.title)}</h1>
     <div class="client">${portrait(c.client, null, "gergin")}<div><b>${esc(c.client)}</b><span>Ödül ${c.reward} kr</span></div></div>
     <p class="brief">${esc(c.brief)}</p>
-    ${c.fromHook ? `<p class="note">İz: ${esc(c.fromHook)}</p>` : ""}
     ${c.status === "active" ? `<div class="ap" aria-label="Kalan hamle ${c.ap}">${Array.from({length:c.maxAp}, (_, i) => `<i class="${i < c.ap ? "on" : ""}"></i>`).join("")}<span style="margin-left:6px">${c.ap} hamle</span></div>` : ""}
   </article>`;
   const head2 = `<div style="padding-top:6px"><p class="tier-pill">${c.boss ? "Büyük dosya" : "Kademe " + c.tier + ": " + esc(TIERS[c.tier - 1].name)}</p><h1 class="ctitle">${esc(c.title)}</h1><p class="note" style="margin:2px 0 0">${esc(c.client)}</p></div>`;
@@ -2258,8 +2352,10 @@ function vCase(){
 }
 function vBoard(){
   const n = S.cycle.nodes.length;
-  return `<div class="hero board-hero">${boardArt()}</div>
-  <div class="sec"><h2>${S.cycle.cartel ? esc(S.cycle.cartel) : "Gizli örgüt"}</h2><p class="lede">Çözdüğün her dosya şehrin karanlık bir köşesine bağlanıyor. Beş iz toplandığında örgütün liderine giden büyük dosya açılır. Lider düşerse yerine iki yeni grup doğar.</p>
+  const C = camp();
+  const campPanel = C ? `<div class="sec"><h2>${esc(C.name)}</h2><p class="lede">${campActive() || S.camp.final ? "Her hattaki vakalar seni o hattın çete liderine götürür. Hepsi düşünce zirve açılır." : `Bu dava Kademe ${C.minTier}'de başlar.`}</p><div class="list">${C.branches.map(b => { const d = Math.min(S.camp.done[b.id] || 0, C.need), cap = S.camp.captured.includes(b.id); return `<div class="panel camp-row${cap ? " cap" : ""}"><div class="camp-head"><b>${esc(b.leader)}</b><span>${cap ? "Yakalandı" : d >= C.need ? "Operasyona hazır" : d + "/" + C.need + " vaka"}</span></div><div class="progress"><i style="width:${cap ? 100 : d / C.need * 100}%"></i></div></div>`; }).join("")}${C.final ? `<div class="panel camp-row${S.camp.final ? " cap" : ""}"><div class="camp-head"><b>Zirve</b><span>${S.camp.final ? "Düştü" : S.camp.captured.length + "/" + C.branches.length + " lider"}</span></div></div>` : ""}</div></div>` : "";
+  return `<div class="hero board-hero">${boardArt()}</div>${campPanel}
+  <div class="sec"><h2>${S.cycle.cartel ? esc(S.cycle.cartel) : "Gizli örgüt"}</h2><p class="lede">${campActive() ? "Çözdüğün dosyaların bağlantıları burada birikir. Büyük dava sürdüğü sürece operasyonlar yukarıdaki piramitten açılır." : "Çözdüğün her dosya şehrin karanlık bir köşesine bağlanıyor. Beş iz toplandığında örgütün liderine giden büyük dosya açılır. Lider düşerse yerine iki yeni grup doğar."}</p>
     <div class="progress"><i style="width:${Math.min(100, n * 20)}%"></i></div><p class="note">${n}/5 iz · Döngü ${S.cycle.n}</p>
     ${bossReady() ? `<button class="btn primary block" data-go="office" style="margin-top:10px">Büyük dosya ofiste seni bekliyor</button>` : ""}</div>
   <div class="sec"><h2>Kırmızı ipler</h2>${n ? `<div class="list">${S.cycle.nodes.map(x => `<div class="panel"><b>${esc(x.tag)}</b><p class="note" style="margin:2px 0 0">${esc(x.link)}</p><p class="note" style="margin:2px 0 0;font-size:12px">"${esc(x.title)}" dosyasından, gün ${x.day}</p></div>`).join("")}</div>` : `<p class="empty">Henüz iz yok. İlk dosyanı çöz.</p>`}</div>
@@ -2316,6 +2412,7 @@ function render(){
   });
   on("takeJob", () => takeJob(false));
   on("bossJob", () => takeJob(true));
+  on("campJob", takeCamp);
   on("stopGen", () => genCtl && genCtl.abort());
   on("accept", acceptCase);
   on("reject", rejectCase);
