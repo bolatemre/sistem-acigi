@@ -2,7 +2,7 @@
 // www/    -> uygulamanın içine gömülen oyun
 // assets/ -> simge ve açılış ekranı kaynakları
 //
-// yamalar.json: index.html'e derleme sırasında uygulanan değişiklikler. Her yama:
+// yamalar.json ve yamalar-ek.json: index.html'e derleme sırasında sırayla uygulanan değişiklikler. Her yama:
 //   {"find": "eski metin"}                 -> bu metin (dosyada tam bir kez geçmeli) değiştirilir
 //   {"from": "başlangıç", "to": "bitiş"}   -> başlangıçtan bitişe kadar olan kısım değiştirilir (bitiş korunur)
 //   ve yeni metin {"replace": "..."} ya da {"block": "NN"} ile verilir.
@@ -19,33 +19,35 @@ const need = file => { const p = path.join(root, file); if (!fs.existsSync(p)) f
 const count = (s, x) => s.split(x).length - 1;
 fs.mkdirSync(www, { recursive: true });
 
-// 1) index.html + yamalar
+// 1) index.html + yamalar (önce yamalar.json, sonra varsa yamalar-ek.json)
 let html = fs.readFileSync(need("index.html"), "utf8").replace(/\r\n/g, "\n");
-const yp = path.join(root, "yamalar.json");
-if (fs.existsSync(yp)){
+const blocks = {};
+const bp = path.join(root, "yamalar.txt");
+if (fs.existsSync(bp)){
+  const parts = fs.readFileSync(bp, "utf8").replace(/\r\n/g, "\n").split(/^@@@@ (\w+)\n/m);
+  for (let i = 1; i < parts.length; i += 2) blocks[parts[i]] = parts[i + 1];
+}
+["yamalar.json", "yamalar-ek.json"].forEach(file => {
+  const yp = path.join(root, file);
+  if (!fs.existsSync(yp)) return;
   const patches = JSON.parse(fs.readFileSync(yp, "utf8"));
-  const blocks = {};
-  const bp = path.join(root, "yamalar.txt");
-  if (fs.existsSync(bp)){
-    const parts = fs.readFileSync(bp, "utf8").replace(/\r\n/g, "\n").split(/^@@@@ (\w+)\n/m);
-    for (let i = 1; i < parts.length; i += 2) blocks[parts[i]] = parts[i + 1];
-  }
   patches.forEach((p, i) => {
+    const where = `${file} yama ${i + 1}`;
     const rep = p.block != null ? blocks[p.block] : p.replace;
-    if (rep == null) fail(`Yama ${i + 1}: yeni metin yok (blok ${p.block}).`);
+    if (rep == null) fail(`${where}: yeni metin yok (blok ${p.block}).`);
     if (p.find != null){
       const n = count(html, p.find);
-      if (n !== 1) fail(`Yama ${i + 1} index.html içinde ${n} kez bulundu (1 olmalı). Başlangıcı: ${JSON.stringify(p.find.slice(0, 60))}`);
+      if (n !== 1) fail(`${where} index.html içinde ${n} kez bulundu (1 olmalı). Başlangıcı: ${JSON.stringify(p.find.slice(0, 60))}`);
       html = html.replace(p.find, () => rep);
     } else {
-      if (count(html, p.from) !== 1 || count(html, p.to) !== 1) fail(`Yama ${i + 1}: başlangıç ya da bitiş çapası tek değil. ${JSON.stringify(p.from.slice(0, 50))}`);
+      if (count(html, p.from) !== 1 || count(html, p.to) !== 1) fail(`${where}: başlangıç ya da bitiş çapası tek değil. ${JSON.stringify(p.from.slice(0, 50))}`);
       const a = html.indexOf(p.from), b = html.indexOf(p.to, a);
-      if (b < 0) fail(`Yama ${i + 1}: bitiş çapası başlangıçtan sonra yok.`);
+      if (b < 0) fail(`${where}: bitiş çapası başlangıçtan sonra yok.`);
       html = html.slice(0, a) + rep + html.slice(b);
     }
   });
-  console.log(`${patches.length} yama uygulandı.`);
-}
+  console.log(`${file}: ${patches.length} yama uygulandı.`);
+});
 fs.writeFileSync(path.join(www, "index.html"), html);
 
 // 2) parçalı dosyalar (varsa)
