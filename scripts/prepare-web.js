@@ -8,7 +8,9 @@
 //   ve yeni metin {"replace": "..."} ya da {"block": "NN"} ile verilir.
 // yamalar.txt: büyük yeni kod parçaları; her biri "@@@@ NN" satırıyla başlar.
 // kuzgun-piramidi.json: yerleşik içerik paketi; www/icerik.js olarak gömülür.
+// yamalar-ek.txt: ek yamaların büyük kod parçaları (yamalar.txt ile aynı biçim).
 // vakalar/vaka-XX.json: elle yazılmış hikâye dosyaları; sırayla www/vakalar.js olarak gömülür.
+// vakalar/zorluk.json: vakaların zorluk katmanı (hamle, yöntem/sebep, ipucu değişiklikleri, kanıt gerektiren tanıklar).
 const fs = require("fs");
 const path = require("path");
 
@@ -22,11 +24,12 @@ fs.mkdirSync(www, { recursive: true });
 // 1) index.html + yamalar (önce yamalar.json, sonra varsa yamalar-ek.json)
 let html = fs.readFileSync(need("index.html"), "utf8").replace(/\r\n/g, "\n");
 const blocks = {};
-const bp = path.join(root, "yamalar.txt");
-if (fs.existsSync(bp)){
+["yamalar.txt", "yamalar-ek.txt"].forEach(file => {
+  const bp = path.join(root, file);
+  if (!fs.existsSync(bp)) return;
   const parts = fs.readFileSync(bp, "utf8").replace(/\r\n/g, "\n").split(/^@@@@ (\w+)\n/m);
   for (let i = 1; i < parts.length; i += 2) blocks[parts[i]] = parts[i + 1];
-}
+});
 ["yamalar.json", "yamalar-ek.json"].forEach(file => {
   const yp = path.join(root, file);
   if (!fs.existsSync(yp)) return;
@@ -72,6 +75,25 @@ if (fs.existsSync(vdir)){
     d.clues.forEach(c => { if (c.points && !ids.has(c.points)) fail(`${f}: ${c.id} ipucu olmayan bir şüpheliyi gösteriyor.`); });
     return d;
   });
+  // zorluk katmanı: vakalar/zorluk.json
+  const zp = path.join(vdir, "zorluk.json");
+  if (fs.existsSync(zp)){
+    const Z = JSON.parse(fs.readFileSync(zp, "utf8"));
+    cases.forEach(d => {
+      const z = Z[d.id]; if (!z) return;
+      ["ap", "how", "why"].forEach(k => { if (z[k] != null) d[k] = z[k]; });
+      Object.entries(z.clues || {}).forEach(([id, o]) => { const c = d.clues.find(x => x.id === id); if (!c) fail(`zorluk.json ${d.id}: ${id} ipucu yok.`); Object.assign(c, o); });
+      Object.entries(z.needs || {}).forEach(([sid, m]) => {
+        const s = d.suspects.find(x => x.id === sid); if (!s) fail(`zorluk.json ${d.id}: ${sid} şüpheli yok.`);
+        Object.entries(m).forEach(([cid, need]) => {
+          const r = (s.reveals || []).find(x => x.clue === cid); if (!r) fail(`zorluk.json ${d.id}: ${sid} için ${cid} tanıklığı yok.`);
+          if (!d.clues.some(x => x.id === need)) fail(`zorluk.json ${d.id}: ${need} kanıtı yok.`);
+          r.needs = need;
+        });
+      });
+    });
+    console.log("Zorluk katmanı uygulandı.");
+  }
   fs.writeFileSync(path.join(www, "vakalar.js"), `const STORY_CASES = ${JSON.stringify(cases)};\n`);
   console.log(`${cases.length} hikâye dosyası gömüldü.`);
 }
