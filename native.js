@@ -1,12 +1,13 @@
 /* Yeni Galata Dedektifi: telefona özel özellikler.
  * Bu dosya yalnızca mobil uygulamada (Capacitor) çalışır. Tarayıcıda oyun kendi örnek reklamlarını kullanır.
- * Reklam kimlikleri ads.config.json dosyasından gelir (derleme sırasında window.ADS_CONFIG olarak eklenir). */
+ * Reklam kimlikleri ads.config.json dosyasından gelir (derleme sırasında window.ADS_CONFIG olarak eklenir).
+ * showRewarded: true = ödül kazanıldı, false = reklam erken kapatıldı, "nofill" = gösterilecek reklam yoktu. */
 (function () {
   const C = window.Capacitor;
   const isNative = !!(C && typeof C.isNativePlatform === "function" && C.isNativePlatform());
   const P = isNative ? C.Plugins : {};
   const CFG = window.ADS_CONFIG || {};
-  const AdMob = P.AdMob, Prefs = P.Preferences;
+  const AdMob = P.AdMob, Prefs = P.Preferences, LN = P.LocalNotifications;
 
   /* ---------- kalıcı kayıt ---------- */
   // Oyun localStorage kullanır; burada her kaydı uygulamanın kalıcı hafızasına da yazarız.
@@ -48,18 +49,18 @@
 
   function showRewarded() {
     return new Promise(async resolve => {
-      if (!ready) return resolve(false);
+      if (!ready) return resolve("nofill");
       let earned = false, done = false;
       const finish = ok => { if (done) return; done = true; prepRewarded(); resolve(ok); };
       const hs = [];
       try {
         hs.push(await AdMob.addListener("onRewardedVideoAdReward", () => { earned = true; }));
         hs.push(await AdMob.addListener("onRewardedVideoAdDismissed", () => { hs.forEach(h => h && h.remove && h.remove()); finish(earned); }));
-        hs.push(await AdMob.addListener("onRewardedVideoAdFailedToShow", () => { hs.forEach(h => h && h.remove && h.remove()); finish(false); }));
+        hs.push(await AdMob.addListener("onRewardedVideoAdFailedToShow", () => { hs.forEach(h => h && h.remove && h.remove()); finish("nofill"); }));
         if (!rewardedLoaded) await prepRewarded();
         rewardedLoaded = false;
         await AdMob.showRewardVideoAd();
-      } catch (e) { hs.forEach(h => h && h.remove && h.remove()); finish(false); }
+      } catch (e) { hs.forEach(h => h && h.remove && h.remove()); finish("nofill"); }
     });
   }
 
@@ -80,10 +81,35 @@
     AdMob.removeBanner().catch(() => {});
   }
 
+  /* ---------- yerel bildirimler ---------- */
+  // Takip bittiğinde, laboratuvar sonucu geldiğinde ve yeni dosya açıldığında haber verir.
+  let notifPerm = null;
+  async function notifReady() {
+    if (!LN) return false;
+    if (notifPerm !== null) return notifPerm;
+    try {
+      let p = await LN.checkPermissions();
+      if (p.display !== "granted") p = await LN.requestPermissions();
+      notifPerm = p.display === "granted";
+    } catch (e) { notifPerm = false; }
+    return notifPerm;
+  }
+  const notify = {
+    async schedule(id, title, body, at) {
+      if (!(await notifReady())) return;
+      try {
+        await LN.cancel({ notifications: [{ id }] }).catch(() => {});
+        await LN.schedule({ notifications: [{ id, title, body, schedule: { at: new Date(at), allowWhileIdle: true } }] });
+      } catch (e) {}
+    },
+    cancel(id) { if (LN) LN.cancel({ notifications: [{ id }] }).catch(() => {}); }
+  };
+
   window.Native = {
     isNative,
     storage,
     ads: { get ready() { return ready; }, showRewarded, showInterstitial, showBanner, hideBanner },
+    notify,
     init
   };
   if (isNative) init();
