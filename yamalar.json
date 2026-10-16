@@ -1,122 +1,56 @@
 [
- {
-  "find": ".camp-row.cap .progress i{background:var(--evid)}\n</style>\n",
-  "replace": ".camp-row.cap .progress i{background:var(--evid)}\n.job{border-color:var(--accent);margin-top:14px}\n.job-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}\n.job-head span{font-family:var(--head);font-size:20px;color:var(--accent)}\n.job .progress i{background:var(--accent);transition:width 1s linear}\n.traits span.unk{border-style:dashed;opacity:.8}\n</style>\n"
- },
- {
-  "find": "<script src=\"native.js\"></script>\n<script>\n",
-  "replace": "<script src=\"native.js\"></script>\n<script src=\"icerik.js\"></script>\n<script>\n"
- },
- {
-  "find": "  hook:\"Kartal Lojistik kamyonları gece yarısı limana ne taşıyor?\", hookTag:\"Kartal Lojistik\",\n",
-  "replace": "  hook:\"Kartal Lojistik kamyonları gece yarısı limana ne taşıyor?\", hookTag:\"Kartal Lojistik\", plea:\"Pamuk benim tek ailem, dedektif. Üç gündür uyuyamıyorum. Lütfen onu bulun.\",\n"
- },
- {
-  "find": "const bossReady = () => S.cycle.nodes.length >= 5 && !(typeof campActive === \"function\" && campActive());\n",
-  "replace": "const bossReady = () => S.cycle.nodes.length >= 5 && tier() >= 3 && !(typeof campActive === \"function\" && campActive());\n"
- },
- {
-  "find": "};\nconst BOSS_ROLES = [R_(\"Saygın bir iş insanı\", \"takım\"), R_(\"Belediye meclis üyesi\", \"takım\"), R_(\"Liman müdürü\", \"takım\"), R_(\"Hayır kurumu başkanı\", \"takım\"), R_(\"Emekli emniyet müdürü\", \"polis\"), R_(\"Ünlü bir avukat\", \"takım\")];\n",
-  "replace": "};\nconst PLEA = {\n  pet:\"{pet} benim tek ailem. Lütfen onu bulun, ne gerekiyorsa öderim.\", helmet:\"Polis 'bir {obj} için mi geldin' diye güldü. Ama o benim ekmek teknem.\",\n  pots:\"Kırk yıldır bu balkonda çiçek yetiştiriyorum. Beni buradan kimse kovamaz.\", keepsake:\"O {obj} bana annemden kaldı. Parası değil, hatırası önemli.\",\n  charity:\"İnsanların iyi niyetini sömürüyorlar. Buna biri dur demeli.\", affair:\"Belki de yanılıyorumdur. Ama bilmemek beni daha çok yıpratıyor.\",\n  embezzle:\"Bu şirketi sıfırdan kurdum. İçeriden biri beni soyuyor ve kim olduğunu bilmiyorum.\", hotel:\"Bu haber çıkarsa otel biter, elli kişi işsiz kalır.\",\n  insurance:\"Herkes sigortayı soymayı hak sanıyor. Bu sefer kanıtla gelmek istiyorum.\", letters:\"Geçmişimde utandığım şeyler var, evet. Ama bu mektuplar beni her gece uyutmuyor.\",\n  fire:\"O fabrikada otuz yıl çalıştım. Yangın kaza değil, biliyorum.\", container:\"İmzam olmadan o konteyner çıkamazdı. Biri benim adımı kullandı.\",\n  journalist:\"{victim} korkusuz biriydi. Sessizce kaybolacak biri değil.\", bribery:\"O tarihi han yüz yıllık. Bir gecede yıkım izni nasıl çıkar?\",\n  smuggle:\"Sahte ilaçlar yüzünden insanlar hastanelik oluyor. Bunun bir sonu olmalı.\"\n};\nconst PLEA_T = [\"Polis ilgilenmedi. Bütün umudum sende, dedektif.\", \"Bu iş sessizce çözülmeli. Adımın hiçbir yerde geçmemesi lazım.\", \"Bu iş sandığından büyük. Dikkatli ol, dedektif.\"];\nconst BOSS_ROLES = [R_(\"Saygın bir iş insanı\", \"takım\"), R_(\"Belediye meclis üyesi\", \"takım\"), R_(\"Liman müdürü\", \"takım\"), R_(\"Hayır kurumu başkanı\", \"takım\"), R_(\"Emekli emniyet müdürü\", \"polis\"), R_(\"Ünlü bir avukat\", \"takım\")];\n"
- },
- {
-  "find": "  const data = {\n    time, tier:t, boss, twist, type: boss ? \"örgüt lideri\" : A.type,\n",
-  "replace": "  const data = {\n    plea: boss ? \"\" : fill((A.plea && A.plea.length ? pick(r, A.plea) : PLEA[A.id]) || PLEA_T[Math.min(t, 3) - 1], ctx),\n    time, tier:t, boss, twist, type: boss ? \"örgüt lideri\" : A.type,\n"
- },
- {
-  "find": "    suspects:sus.map(s => ({id:s.id, name:s.name, known:s.known, role:s.role, style:s.style, factionId: s === cul && t >= 2 && !boss && fac0 ? fac0.id : null, persona:PERSONAS[s.pk].label, alibi:`O gece ${s.ap.loc} olduğunu söylüyor.`, secret: s.secret ? s.secret.e : \"\", traits:TRAIT_KEYS.map(k => TRAITS[k].chip(s.tr[k]))})),\n",
-  "replace": "    suspects:sus.map(s => ({id:s.id, name:s.name, known:s.known, role:s.role, style:s.style, factionId: s === cul && t >= 2 && !boss && fac0 ? fac0.id : null, persona:PERSONAS[s.pk].label, alibi:`O gece ${s.ap.loc} olduğunu söylüyor.`, secret: s.secret ? s.secret.e : \"\", traits:TRAIT_KEYS.map(k => TRAITS[k].chip(s.tr[k])), hid: t >= 2 ? shuffle(r, [0, 1, 2, 3, 4]).slice(0, t >= 3 ? 3 : 2) : []})),\n"
- },
- {
-  "find": "const CONTENT_URL = \"\";\n",
-  "replace": "const CONTENT_URL = \"https://raw.githubusercontent.com/bolatemre/sistem-acigi/main/kuzgun-piramidi.json\";\n"
- },
- {
-  "find": "    motives:a.motives.map(m => ({t:String(m.t), f:String(m.f)})),\n    link: a.link ? String(a.link) : \"\", tag: a.tag ? String(a.tag) : \"\", campaignOnly: !!a.campaign_only,\n",
-  "replace": "    motives:a.motives.map(m => ({t:String(m.t), f:String(m.f)})),\n    plea:(Array.isArray(a.plea) ? a.plea : a.plea ? [a.plea] : []).map(String),\n    link: a.link ? String(a.link) : \"\", tag: a.tag ? String(a.tag) : \"\", campaignOnly: !!a.campaign_only,\n"
- },
- {
-  "find": "function loadCachedPack(){ try { const t = localStorage.getItem(PACK_KEY); if (t) applyPack(JSON.parse(t)); } catch { PACK = null; } }\n",
-  "replace": "function loadCachedPack(){ let ok = false; try { const t = localStorage.getItem(PACK_KEY); if (t) ok = !!applyPack(JSON.parse(t)); } catch {} if (!ok && typeof DEFAULT_PACK !== \"undefined\") applyPack(DEFAULT_PACK); }\n"
- },
- {
-  "find": "  const prev = PACK ? PACK.version : 0, prevId = PACK ? PACK.id : null;\n  const res = applyPack(pk);\n",
-  "replace": "  const prev = PACK ? PACK.version : 0, prevId = PACK ? PACK.id : null;\n  if (from === \"remote\"){ try { const peek = JSON.parse(text); if ((+peek.version || 0) <= prev) return false; } catch { return false; } }\n  const res = applyPack(pk);\n"
- },
- {
-  "find": "  if (from === \"remote\" && res.id === prevId && res.version <= prev) return false;\n",
-  "replace": ""
- },
- {
-  "find": "function reveal(id){ if (id && clue(id) && !S.case.found.includes(id)){ S.case.found.push(id); return clue(id); } return null; }\nfunction search(locId){\n",
-  "replace": "function reveal(id){ if (id && clue(id) && !S.case.found.includes(id)){ S.case.found.push(id); return clue(id); } return null; }\n/* saha işleri gerçek zamanlı sürer; reklamla erken bitirilebilir */\nfunction jobDur(kind){\n  const c = S.case, t = c.tier || 1;\n  if (c.demo) return kind === \"tail\" ? 30 : 20;\n  let d = {search:[60, 180, 300], tail:[180, 360, 600]}[kind][Math.min(t, 3) - 1];\n  if (c.camp && c.camp.kind !== \"branch\") d = Math.round(d * 1.5);\n  if (kind === \"tail\" && S.up.araba) d = Math.round(d * (S.up.araba > 1 ? .6 : .8));\n  return d;\n}\nfunction startJob(kind, target){\n  const c = S.case;\n  if (c.job){ toast(\"Şu an başka bir işle meşgulsün.\"); render(); return false; }\n  const dur = jobDur(kind);\n  c.job = {kind, target, dur, ends:Date.now() + dur * 1000};\n  save(); render(); return true;\n}\nfunction finishJob(){\n  const c = S.case; if (!c || !c.job) return;\n  const j = c.job; c.job = null;\n  if (j.kind === \"search\") doSearch(j.target); else doTail(j.target);\n}\nconst fmtLeft = ms => { const s = Math.max(0, Math.ceil(ms / 1000)); return Math.floor(s / 60) + \":\" + String(s % 60).padStart(2, \"0\"); };\nsetInterval(() => {\n  const c = S.case; if (!c || !c.job || c.status !== \"active\") return;\n  const left = c.job.ends - Date.now();\n  if (left <= 0){ finishJob(); return; }\n  const el = document.getElementById(\"jobLeft\"), bar = document.getElementById(\"jobBar\");\n  if (el) el.textContent = fmtLeft(left);\n  if (bar) bar.style.width = (100 - left / (c.job.dur * 1000) * 100).toFixed(1) + \"%\";\n}, 1000);\nfunction search(locId){\n"
- },
- {
-  "find": "function search(locId){\n  if (!spend(1)) return;\n",
-  "replace": "function search(locId){\n  if (S.case.job || S.case.ap < 1) return;\n  if (!spend(1)) return;\n"
- },
- {
-  "find": "  if (!spend(1)) return;\n  const got = S.case.clues.filter(c => c.source === locId && !S.case.found.includes(c.id)).slice(0, 1).map(c => reveal(c.id)).filter(Boolean);\n",
-  "replace": "  if (!spend(1)) return;\n  startJob(\"search\", locId);\n}\nfunction doSearch(locId){\n  const got = S.case.clues.filter(c => c.source === locId && !S.case.found.includes(c.id)).slice(0, 1).map(c => reveal(c.id)).filter(Boolean);\n"
- },
- {
-  "find": "  const c = S.case, cost = S.up.araba ? 1 : 2, s = sus(sid);\n  if (c.tailed[sid] || !spend(cost)) return;\n  c.tailed[sid] = true;\n",
-  "replace": "  const c = S.case, cost = S.up.araba ? 1 : 2;\n  if (c.job || c.tailed[sid] || c.ap < cost) return;\n  spend(cost); c.tailed[sid] = true;\n  startJob(\"tail\", sid);\n}\nfunction doTail(sid){\n  const c = S.case, s = sus(sid);\n  s.hid = [];\n"
- },
- {
-  "find": "      mood: t ? t.mood : \"sakin\", stress: t ? Math.min(t.stress, 50) : 20, trust: t ? t.trust : 20, confessed: t ? t.confessed : false};\n    if (t) S.case.talks[sid].turns.push({who:\"sys\", text:\"Yeni oturum. Biraz sakinleşmiş görünüyor.\"});\n",
-  "replace": "      mood: t ? t.mood : \"sakin\", stress: t ? Math.min(t.stress, 50) : 20, trust: t ? t.trust : 20, confessed: t ? t.confessed : false};\n    const sv = sus(sid);\n    if (sv.hid && sv.hid.length){ const seen = sv.hid.slice(0, 2); sv.hid = sv.hid.slice(2); toast(`${first(sv.name)} ile konuşurken öğrendiklerin: ${seen.map(i => sv.traits[i]).join(\", \")}.`); }\n    if (t) S.case.talks[sid].turns.push({who:\"sys\", text:\"Yeni oturum. Biraz sakinleşmiş görünüyor.\"});\n"
- },
- {
-  "find": "    if (kind === \"rewarded\"){\n      if (adsLeft() <= 0){ toast(\"Bugünkü reklam hakkın doldu.\"); render(); return; }\n",
-  "replace": "    if (kind === \"rewarded\" || kind === \"skip\"){\n      if (kind === \"rewarded\" && adsLeft() <= 0){ toast(\"Bugünkü reklam hakkın doldu.\"); render(); return; }\n"
- },
- {
-  "find": "      nat.ads.showRewarded().then(ok => { if (ok){ S.ads.count++; onReward && onReward(); } else toast(\"Reklam şu an yüklenemedi. Biraz sonra tekrar dene.\"); save(); render(); if (talkSid) renderTalk(); });\n",
-  "replace": "      nat.ads.showRewarded().then(ok => { if (ok){ if (kind === \"rewarded\") S.ads.count++; onReward && onReward(); } else toast(\"Reklam şu an yüklenemedi. Biraz sonra tekrar dene.\"); save(); render(); if (talkSid) renderTalk(); });\n"
- },
- {
-  "find": "  const ad = ADS[Math.floor(Math.random() * ADS.length)], rewarded = kind === \"rewarded\";\n  if (rewarded && adsLeft() <= 0){ toast(\"Bugünkü reklam hakkın doldu.\"); render(); return; }\n",
-  "replace": "  const ad = ADS[Math.floor(Math.random() * ADS.length)], rewarded = kind !== \"interstitial\";\n  if (kind === \"rewarded\" && adsLeft() <= 0){ toast(\"Bugünkü reklam hakkın doldu.\"); render(); return; }\n"
- },
- {
-  "find": "  btn.onclick = () => { if (rewarded){ S.ads.count++; onReward && onReward(); } close(); };\n",
-  "replace": "  btn.onclick = () => { if (rewarded){ if (kind === \"rewarded\") S.ads.count++; onReward && onReward(); } close(); };\n"
- },
- {
-  "find": "  <div class=\"sec\"><h2>İçerik paketi</h2><div class=\"panel\"><p class=\"brief\">${PACK ? `<b>${esc(PACK.id)}</b> (sürüm ${PACK.version}) yüklü: ${PACK.archs} yeni vaka türü, ${PACK.stories.length} hikâye bölümü${PACK.names ? `, ${PACK.names} yeni isim grubu` : \"\"}.` : \"Yüklü paket yok. Oyun yerleşik içerikle çalışıyor.\"}</p><p class=\"note\">Mobil sürümde paketler sunucundan otomatik iner. Burada bir JSON dosyası seçerek deneyebilirsin.</p><div class=\"row\" style=\"margin-top:10px\"><label class=\"btn\">Dosyadan yükle<input type=\"file\" id=\"packFile\" accept=\".json,application/json\" hidden></label>${PACK ? `<button class=\"btn danger\" id=\"packDel\">Paketi kaldır</button>` : \"\"}</div></div></div>\n",
-  "replace": "  <div class=\"sec\"><h2>İçerik paketi</h2><div class=\"panel\"><p class=\"brief\">${PACK ? `<b>${esc(PACK.id)}</b> (sürüm ${PACK.version}) yüklü: ${PACK.archs} yeni vaka türü, ${PACK.stories.length} hikâye bölümü${PACK.names ? `, ${PACK.names} yeni isim grubu` : \"\"}.` : \"Yüklü paket yok. Oyun yerleşik içerikle çalışıyor.\"}</p><p class=\"note\">Yeni senaryolar depodaki pakete eklendikçe oyun açılışta kendini günceller.</p><div class=\"row\" style=\"margin-top:10px\"><label class=\"btn\">Dosyadan yükle<input type=\"file\" id=\"packFile\" accept=\".json,application/json\" hidden></label>${localStorage.getItem(PACK_KEY) ? `<button class=\"btn danger\" id=\"packDel\">Yerleşik içeriğe dön</button>` : \"\"}</div></div></div>\n"
- },
- {
-  "find": "    <p class=\"brief\">${esc(c.brief)}</p>\n    ${c.status === \"active\" ? `<div class=\"ap\" aria-label=\"Kalan hamle ${c.ap}\">${Array.from({length:c.maxAp}, (_, i) => `<i class=\"${i < c.ap ? \"on\" : \"\"}\"></i>`).join(\"\")}<span style=\"margin-left:6px\">${c.ap} hamle</span></div>` : \"\"}\n",
-  "replace": "    <p class=\"brief\">${esc(c.brief)}</p>\n    ${c.plea && c.status === \"offer\" ? `<p class=\"quote\">\"${esc(c.plea.replace(/\\{ad\\}/g, S.player || \"dedektif\"))}\"</p>` : \"\"}\n    ${c.status === \"active\" ? `<div class=\"ap\" aria-label=\"Kalan hamle ${c.ap}\">${Array.from({length:c.maxAp}, (_, i) => `<i class=\"${i < c.ap ? \"on\" : \"\"}\"></i>`).join(\"\")}<span style=\"margin-left:6px\">${c.ap} hamle</span></div>` : \"\"}\n"
- },
- {
-  "find": "      <div class=\"panel\" style=\"text-align:left\"><p class=\"brief\"><b>Suçlu:</b> ${esc(cu.name)}</p><p class=\"brief\"><b>Neden:</b> ${esc(c.motive)}</p><p class=\"note\">${esc(R.note || \"\")}${R.pay ? ` +${R.pay} kr.` : \"\"}</p></div>\n",
-  "replace": "      <div class=\"panel\" style=\"text-align:left\"><p class=\"brief\"><b>Suçlu:</b> ${esc(cu.name)}</p><p class=\"brief\"><b>Neden:</b> ${esc(c.motive)}</p>${c.demo || c.boss || (c.camp && c.camp.kind !== \"branch\") ? \"\" : `<p class=\"quote\">${esc(first(c.client))}: \"${esc(({won:\"Size nasıl teşekkür edeceğimi bilmiyorum. Haklı olduğumu biliyordum!\", bought:\"Demek bir şey bulamadınız... Paramı boşa harcamışım.\", blackmail:\"Bir şey bulamadınız mı? Garip, mahallede başka şeyler konuşuluyor.\", lost:\"Masum birini suçladınız! Size güvenmiştim.\", cold:\"Demek pes ettiniz. Başkasını bulurum.\"})[c.status] || \"\")}\"</p>`}<p class=\"note\">${esc(R.note || \"\")}${R.pay ? ` +${R.pay} kr.` : \"\"}</p></div>\n"
- },
- {
-  "find": "  return head +\n  (c.ap === 0 ? `<div class=\"panel\" style=\"margin-top:14px\"><p class=\"brief\">Hamlen bitti. Elindeki kanıtlarla suçlamanı yap.</p>${(c.adAp || 0) < 2 && adsLeft() > 0 ? `<button class=\"btn primary block\" id=\"adAp\" style=\"margin-top:10px\">Reklam izle: +2 hamle</button>` : \"\"}</div>` : \"\") +\n",
-  "replace": "  return head +\n  (c.job ? (() => { const j = c.job, left = j.ends - Date.now(), what = j.kind === \"search\" ? (c.locations.find(l => l.id === j.target) || {}).name + \" araştırılıyor\" : first(sus(j.target).name) + \" takip ediliyor\"; return `<div class=\"panel job\"><div class=\"job-head\"><b>${esc(what)}</b><span id=\"jobLeft\">${fmtLeft(left)}</span></div><div class=\"progress\"><i id=\"jobBar\" style=\"width:${Math.max(0, 100 - left / (j.dur * 1000) * 100).toFixed(1)}%\"></i></div><p class=\"note\">${j.kind === \"search\" ? \"Olay yerini didik didik ediyorsun.\" : \"Arabanda bekliyorsun, fotoğraf makinen hazır.\"} Bu sırada şüphelileri sorgulayabilirsin.</p><button class=\"btn primary block\" id=\"jobSkip\" style=\"margin-top:8px\">Reklam izle: hemen bitir</button></div>`; })() : \"\") +\n  (c.ap === 0 ? `<div class=\"panel\" style=\"margin-top:14px\"><p class=\"brief\">Hamlen bitti. Elindeki kanıtlarla suçlamanı yap.</p>${(c.adAp || 0) < 2 && adsLeft() > 0 ? `<button class=\"btn primary block\" id=\"adAp\" style=\"margin-top:10px\">Reklam izle: +2 hamle</button>` : \"\"}</div>` : \"\") +\n"
- },
- {
-  "find": "      return `<div class=\"item\">${scene(l.scene || guessScene(l.name), c.title + l.id)}<div class=\"in\"><div><h3>${esc(l.name)}</h3><p>${esc(l.desc)}</p></div><button class=\"btn\" data-search=\"${l.id}\" ${c.ap < 1 ? \"disabled\" : \"\"}>${left ? \"Ara\" : \"Tekrar ara\"}</button></div></div>`;\n",
-  "replace": "      return `<div class=\"item\">${scene(l.scene || guessScene(l.name), c.title + l.id)}<div class=\"in\"><div><h3>${esc(l.name)}</h3><p>${esc(l.desc)}</p></div><button class=\"btn\" data-search=\"${l.id}\" ${c.ap < 1 || c.job ? \"disabled\" : \"\"}>${c.job && c.job.target === l.id ? \"Aranıyor…\" : left ? `Ara · ${fmtLeft(jobDur(\"search\") * 1000)}` : \"Tekrar ara\"}</button></div></div>`;\n"
- },
- {
-  "find": "      return `<div class=\"item sus${clr ? \" cleared\" : \"\"}\"><div class=\"who\">${portrait(s.name, s.style, t ? t.mood : \"sakin\")}<div><h3>${esc(s.name)}${s.known ? '<span class=\"badge\">Tanıdık</span>' : \"\"}</h3><p>${esc(s.role)}${t ? \" · \" + esc(t.mood) : \"\"}</p>${s.traits ? `<div class=\"traits\">${s.traits.map(x => `<span>${esc(x)}</span>`).join(\"\")}</div>` : \"\"}</div></div><div class=\"acts\">${clr ? `<button class=\"btn\" disabled>Aklandı</button>` : (!t || t.left <= 0) && c.ap < 1 ? (canAdAp ? `<button class=\"btn primary\" data-adap=\"1\">▶ +2 hamle</button>` : `<button class=\"btn\" disabled>Hamle yok</button>`) : `<button class=\"btn\" data-talk=\"${s.id}\">${t && t.left > 0 ? `Devam (${t.left})` : \"Sorgula\"}</button>`}${c.tier >= 2 && !clr ? `<button class=\"btn\" data-tail=\"${s.id}\" ${c.tailed[s.id] || c.ap < tailCost ? \"disabled\" : \"\"}>${c.tailed[s.id] ? \"Takip edildi\" : `Takip et (${tailCost})`}</button>` : \"\"}</div></div>`;\n",
-  "replace": "      return `<div class=\"item sus${clr ? \" cleared\" : \"\"}\"><div class=\"who\">${portrait(s.name, s.style, t ? t.mood : \"sakin\")}<div><h3>${esc(s.name)}${s.known ? '<span class=\"badge\">Tanıdık</span>' : \"\"}</h3><p>${esc(s.role)}${t ? \" · \" + esc(t.mood) : \"\"}</p>${s.traits ? `<div class=\"traits\">${s.traits.map((x, i) => (s.hid || []).includes(i) ? `<span class=\"unk\">${[\"Ayakkabı\", \"Sigara\", \"Araç\", \"El\", \"Koku\"][i]}: ?</span>` : `<span>${esc(x)}</span>`).join(\"\")}</div>` : \"\"}</div></div><div class=\"acts\">${clr ? `<button class=\"btn\" disabled>Aklandı</button>` : (!t || t.left <= 0) && c.ap < 1 ? (canAdAp ? `<button class=\"btn primary\" data-adap=\"1\">▶ +2 hamle</button>` : `<button class=\"btn\" disabled>Hamle yok</button>`) : `<button class=\"btn\" data-talk=\"${s.id}\">${t && t.left > 0 ? `Devam (${t.left})` : \"Sorgula\"}</button>`}${c.tier >= 2 && !clr ? `<button class=\"btn\" data-tail=\"${s.id}\" ${c.tailed[s.id] || c.ap < tailCost || c.job ? \"disabled\" : \"\"}>${c.job && c.job.target === s.id ? \"Takipte…\" : c.tailed[s.id] ? \"Takip edildi\" : `Takip et (${tailCost})`}</button>` : \"\"}</div></div>`;\n"
- },
- {
-  "find": "function render(){\n  renderStatus();\n",
-  "replace": "function render(){\n  if (S.case && S.case.job && S.case.status === \"active\" && Date.now() >= S.case.job.ends){ finishJob(); return; }\n  renderStatus();\n"
- },
- {
-  "find": "  on(\"adAp\", adAp);\n  v.querySelectorAll(\"[data-adap]\").forEach(b => b.onclick = adAp);\n",
-  "replace": "  on(\"adAp\", adAp);\n  on(\"jobSkip\", () => showAd(\"skip\", () => { if (S.case && S.case.job){ S.case.job.ends = Date.now(); finishJob(); } }));\n  v.querySelectorAll(\"[data-adap]\").forEach(b => b.onclick = adAp);\n"
- },
- {
-  "find": "  on(\"packDel\", () => { try { localStorage.removeItem(PACK_KEY); } catch {} if (NAT()) NAT().storage.remove(PACK_KEY); applyPack(null); toast(\"Paket kaldırıldı.\"); save(); render(); });\n",
-  "replace": "  on(\"packDel\", () => { try { localStorage.removeItem(PACK_KEY); } catch {} if (NAT()) NAT().storage.remove(PACK_KEY); loadCachedPack(); toast(\"Yerleşik içeriğe dönüldü.\"); save(); render(); });\n"
- }
+{"find": ".camp-row.cap .progress i{background:var(--evid)}\n</style>\n", "block": "01"},
+{"find": "<div class=\"snack\" id=\"snack\" role=\"status\" hidden></div>\n<section class=\"intro\" id=\"intro\" hidden>\n", "replace": "<div class=\"snack\" id=\"snack\" role=\"status\" hidden></div>\n<div class=\"jobbar\" id=\"jobbar\" role=\"status\" hidden></div>\n<section class=\"intro\" id=\"intro\" hidden>\n"},
+{"find": "<script src=\"native.js\"></script>\n<script>\n", "replace": "<script src=\"native.js\"></script>\n<script src=\"vakalar.js\"></script>\n<script src=\"icerik.js\"></script>\n<script>\n"},
+{"find": "];\nconst KIND_LABEL = {esnaf:\"Esnaf\", muhbir:\"Muhbir\", polis:\"Polis\", gazeteci:\"Gazeteci\", hacker:\"Hacker\", \"karanlık\":\"Karanlık\"};\n", "block": "02"},
+{"find": "  hook:\"Kartal Lojistik kamyonları gece yarısı limana ne taşıyor?\", hookTag:\"Kartal Lojistik\",\n", "replace": "  hook:\"Kartal Lojistik kamyonları gece yarısı limana ne taşıyor?\", hookTag:\"Kartal Lojistik\", plea:\"Pamuk benim tek ailem, dedektif. Üç gündür uyuyamıyorum. Lütfen onu bulun.\",\n"},
+{"find": "S.story = S.story || {}; S.storyQ = S.storyQ || [];\n", "replace": "S.story = S.story || {}; S.storyQ = S.storyQ || []; S.inf = S.inf || {riza:1};\n"},
+{"find": "const bossReady = () => S.cycle.nodes.length >= 5 && !(typeof campActive === \"function\" && campActive());\n", "replace": "const bossReady = () => !STORY_MODE && S.cycle.nodes.length >= 5 && tier() >= 3 && !(typeof campActive === \"function\" && campActive());\n"},
+{"find": "  const open = S.contacts.filter(contactOpen), all = S.contacts.slice(0, 10);\n  const cx = 200, cy = 130, n = all.length;\n", "replace": "  const cx = 200, cy = 130, n = INF.length;\n"},
+{"from": "  const pos = all.map((c, i) => { const a = -Math.PI / 2 + i", "to": "  g += `<circle cx=\"${cx}\" cy=\"${cy}\" r=", "block": "03"},
+{"from": "  all.forEach((c, i) => {\n    const [x, y] = pos[i], on = co", "to": "    else g += `<circle cx=\"${f1(x)}\" cy=", "block": "04"},
+{"find": "  return `<svg viewBox=\"0 0 400 260\" role=\"img\" aria-label=\"İletişim ağı: ${open.length} kişi\">${g}</svg>`;\n", "replace": "  return `<svg viewBox=\"0 0 400 260\" role=\"img\" aria-label=\"Muhbir ağı\">${g}</svg>`;\n"},
+{"find": "};\nconst BOSS_ROLES = [R_(\"Saygın bir iş insanı\", \"takım\"), R_(\"Belediye meclis üyesi\", \"takım\"), R_(\"Liman müdürü\", \"takım\"), R_(\"Hayır kurumu başkanı\", \"takım\"), R_(\"Emekli emniyet müdürü\", \"polis\"), R_(\"Ünlü bir avukat\", \"takım\")];\n", "block": "05"},
+{"find": "  const data = {\n    time, tier:t, boss, twist, type: boss ? \"örgüt lideri\" : A.type,\n", "replace": "  const data = {\n    plea: boss ? \"\" : fill((A.plea && A.plea.length ? pick(r, A.plea) : PLEA[A.id]) || PLEA_T[Math.min(t, 3) - 1], ctx),\n    time, tier:t, boss, twist, type: boss ? \"örgüt lideri\" : A.type,\n"},
+{"from": "    suspects:sus.map(s => ({id:s.id, name:s.name, known:s.kn", "to": "    clues:clues.map(x => ({id:x.id, text", "block": "06"},
+{"find": "const CONTENT_URL = \"\";\n", "replace": "const STORY_MODE = typeof STORY_CASES !== \"undefined\" && Array.isArray(STORY_CASES) && STORY_CASES.length > 0;\nconst CONTENT_URL = \"https://raw.githubusercontent.com/bolatemre/sistem-acigi/main/kuzgun-piramidi.json\";\n"},
+{"find": "    motives:a.motives.map(m => ({t:String(m.t), f:String(m.f)})),\n    link: a.link ? String(a.link) : \"\", tag: a.tag ? String(a.tag) : \"\", campaignOnly: !!a.campaign_only,\n", "replace": "    motives:a.motives.map(m => ({t:String(m.t), f:String(m.f)})),\n    plea:(Array.isArray(a.plea) ? a.plea : a.plea ? [a.plea] : []).map(String),\n    link: a.link ? String(a.link) : \"\", tag: a.tag ? String(a.tag) : \"\", campaignOnly: !!a.campaign_only,\n"},
+{"find": "function loadCachedPack(){ try { const t = localStorage.getItem(PACK_KEY); if (t) applyPack(JSON.parse(t)); } catch { PACK = null; } }\n", "replace": "function loadCachedPack(){ let ok = false; try { const t = localStorage.getItem(PACK_KEY); if (t) ok = !!applyPack(JSON.parse(t)); } catch {} if (!ok && typeof DEFAULT_PACK !== \"undefined\") applyPack(DEFAULT_PACK); }\n"},
+{"find": "  const prev = PACK ? PACK.version : 0, prevId = PACK ? PACK.id : null;\n  const res = applyPack(pk);\n", "replace": "  const prev = PACK ? PACK.version : 0, prevId = PACK ? PACK.id : null;\n  if (from === \"remote\"){ try { const peek = JSON.parse(text); if ((+peek.version || 0) <= prev) return false; } catch { return false; } }\n  const res = applyPack(pk);\n"},
+{"find": "  if (from === \"remote\" && res.id === prevId && res.version <= prev) return false;\n", "replace": ""},
+{"find": "  const C = PACK && PACK.campaign; if (!C) return null;\n", "replace": "  const C = !STORY_MODE && PACK && PACK.campaign; if (!C) return null;\n"},
+{"find": "}\nfunction takeCamp(){\n", "block": "07"},
+{"find": "function reveal(id){ if (id && clue(id) && !S.case.found.includes(id)){ S.case.found.push(id); return clue(id); } return null; }\nfunction search(locId){\n", "block": "08"},
+{"find": "function search(locId){\n  if (!spend(1)) return;\n  const got = S.case.clues.filter(c => c.source === locId && !S.case.found.includes(c.id)).slice(0, 1).map(c => reveal(c.id)).filter(Boolean);\n", "block": "09"},
+{"find": "  toast(got.length ? `${loc.name}: bir ipucu buldun.` : `${loc.name}: burada işe yarar bir şey kalmadı.`);\n", "replace": "  toast(got.length ? `${loc.name}: bir ipucu buldun, panoya eklendi.` : `${loc.name}: burada işe yarar bir şey kalmadı.`);\n"},
+{"find": "  const c = S.case, cost = S.up.araba ? 1 : 2, s = sus(sid);\n  if (c.tailed[sid] || !spend(cost)) return;\n  c.tailed[sid] = true;\n", "replace": "  const c = S.case, cost = S.up.araba ? 1 : 2;\n  if (c.job || c.tailed[sid] || c.ap < cost) return;\n  spend(cost); c.tailed[sid] = true;\n  startJob(\"tail\", sid);\n}\nfunction doTail(sid){\n  const c = S.case, s = sus(sid);\n  s.hid = [];\n"},
+{"find": "  const c = S.case, ct = S.contacts.find(x => x.id === id);\n  if (!ct || c.called[id] || c.ap < 1 || S.money < ct.fee) return;\n  spend(1); S.money -= ct.fee; c.called[id] = true;\n", "replace": "  const c = S.case, inf = INF.find(x => x.id === id), lv = (S.inf || {})[id] || 0;\n  if (!inf || !lv || c.called[id] || c.ap < 1) return;\n  const fee = infFee(inf, lv); if (S.money < fee) return;\n  spend(1); S.money -= fee; c.called[id] = true;\n"},
+{"from": "  let pool;\n  if (ct.kind === \"karanlık\"){ pool = c.clues.fi", "to": "  flashIds = got.map(x => x.id);\n  const line = pick(rng(hsh", "block": "10"},
+{"find": "  const line = pick(rng(hsh(id + S.day)), CALL_LINES[ct.kind] || [\"...\"]);\n  toast(got.length ? `${ct.name}: \"${line}\"` : `${ct.name} yeni bir şey bilmiyor.`);\n", "replace": "  const line = pick(rng(hsh(id + S.day)), CALL_LINES[inf.kind] || [\"...\"]);\n  toast(got.length ? `${inf.name}: \"${line}\" ${got.length} bilgi panoya eklendi.` : `${inf.name} bu dosyada yeni bir şey bilmiyor.`);\n"},
+{"from": "      mood: t ? t.mood : \"sakin\", stress: t ? Math.min(t.str", "to": "    save();\n  }\n  if (NAT()) NAT().ads.h", "block": "11"},
+{"find": "  if (c.demo){ S.demoDone = true; queueStory(\"landlord\"); }\n  remember(c); endDay();\n  S.archive.unshift({title:c.title, type:c.type, day:S.day, result:\"Yanlış suçlama\", culprit:culprit.name, motive:c.motive, tier:c.tier});\n", "replace": "  if (c.demo){ S.demoDone = true; queueStory(\"landlord\"); }\n  remember(c); storyDone(c); endDay();\n  S.archive.unshift({title:c.title, type:c.type, day:S.day, result:\"Yanlış suçlama\", culprit:culprit.name, motive:c.motive, tier:c.tier});\n"},
+{"from": "  if (c.twist){ S.story.twistPending = false; if (c.status !", "to": "  if (c.demo) S.demoDone = true;\n  save(); render(); window.scrollTo(0, 0);\n}\nfunction hydra(c){\n  c", "block": "12"},
+{"find": "  news(`\"${c.title}\" dosyası soğudu.`);\n  remember(c); endDay();\n  S.archive.unshift({title:c.title, type:c.type, day:S.day, result:\"Soğudu\", culprit:sus(c.culpritId).name, motive:c.motive, tier:c.tier});\n", "replace": "  news(`\"${c.title}\" dosyası soğudu.`);\n  remember(c); storyDone(c); endDay();\n  S.archive.unshift({title:c.title, type:c.type, day:S.day, result:\"Soğudu\", culprit:sus(c.culpritId).name, motive:c.motive, tier:c.tier});\n"},
+{"find": "    if (kind === \"rewarded\"){\n      if (adsLeft() <= 0){ toast(\"Bugünkü reklam hakkın doldu.\"); render(); return; }\n", "replace": "    if (kind === \"rewarded\" || kind === \"skip\"){\n      if (kind === \"rewarded\" && adsLeft() <= 0){ toast(\"Bugünkü reklam hakkın doldu.\"); render(); return; }\n"},
+{"find": "      nat.ads.showRewarded().then(ok => { if (ok){ S.ads.count++; onReward && onReward(); } else toast(\"Reklam şu an yüklenemedi. Biraz sonra tekrar dene.\"); save(); render(); if (talkSid) renderTalk(); });\n", "replace": "      nat.ads.showRewarded().then(ok => { if (ok){ if (kind === \"rewarded\") S.ads.count++; onReward && onReward(); } else toast(\"Reklam şu an yüklenemedi. Biraz sonra tekrar dene.\"); save(); render(); if (talkSid) renderTalk(); });\n"},
+{"find": "  const ad = ADS[Math.floor(Math.random() * ADS.length)], rewarded = kind === \"rewarded\";\n  if (rewarded && adsLeft() <= 0){ toast(\"Bugünkü reklam hakkın doldu.\"); render(); return; }\n", "replace": "  const ad = ADS[Math.floor(Math.random() * ADS.length)], rewarded = kind !== \"interstitial\";\n  if (kind === \"rewarded\" && adsLeft() <= 0){ toast(\"Bugünkü reklam hakkın doldu.\"); render(); return; }\n"},
+{"find": "  btn.onclick = () => { if (rewarded){ S.ads.count++; onReward && onReward(); } close(); };\n", "replace": "  btn.onclick = () => { if (rewarded){ if (kind === \"rewarded\") S.ads.count++; onReward && onReward(); } close(); };\n"},
+{"from": "  const list = S.contacts.filter(contactOpen).map(ct => {\n  ", "to": "  }).join(\"\");\n  $(\"pickBody\").innerHTML", "block": "13"},
+{"find": "  $(\"pickBody\").innerHTML = `<h2>İletişim ağını ara</h2><p class=\"note\" style=\"margin:0 0 12px\">Her arama 1 hamle. Her kişiyi bu dosyada bir kez arayabilirsin. Güveni 60'ı geçenler iki ipucu verir.</p><div class=\"list\">${list}</div>`;\n", "replace": "  $(\"pickBody\").innerHTML = `<h2>Muhbirlerini ara</h2><p class=\"note\" style=\"margin:0 0 12px\">Her arama 1 hamle. Seviyesi yüksek muhbir daha çok ve daha isabetli bilgi getirir. Kiralamak ve seviye atlatmak için Ağ sekmesine bak.</p><div class=\"list\">${list}</div>`;\n"},
+{"from": "  else if (busy) today = `<div class=\"panel loading\"><b>${S.", "to": "  else if (S.demoDone && bossReady()) to", "block": "14"},
+{"from": "  <div class=\"sec\"><h2>İçerik paketi</h2><div class=\"panel\">", "to": "  <div class=\"sec\"><h2>Ayarlar</h2><div ", "block": "15"},
+{"from": "    <p class=\"tier-pill\">${c.boss ? \"Büyük dosya\" : c.camp &", "to": "    <h1>${esc(c.title)}</h1>\n    <div cl", "block": "16"},
+{"from": "    <p class=\"brief\">${esc(c.brief)}</p>\n    ${c.status === ", "to": "  </article>`;\n  const head2 = `<div sty", "block": "17"},
+{"from": "  const head2 = `<div style=\"padding-top:6px\"><p class=\"tier", "to": "  const cu = sus(c.culpritId);\n  if (c.s", "block": "18"},
+{"find": "      <div class=\"panel\" style=\"text-align:left\"><p class=\"brief\"><b>Suçlu:</b> ${esc(cu.name)}</p><p class=\"brief\"><b>Neden:</b> ${esc(c.motive)}</p><p class=\"note\">${esc(R.note || \"\")}${R.pay ? ` +${R.pay} kr.` : \"\"}</p></div>\n", "block": "19"},
+{"find": "  const openContacts = S.contacts.filter(contactOpen);\n", "replace": "  const openContacts = INF.filter(x => (S.inf[x.id] || 0) > 0);\n"},
+{"from": "      return `<div class=\"item\">${scene(l.scene || guessScen", "to": "    }).join(\"\")}</div></div>\n  <div class=\"sec\"><h2>İletişim", "block": "20"},
+{"from": "  <div class=\"sec\"><h2>İletişim ağı</h2><div class=\"item\"><d", "to": "  <div class=\"sec\"><h2>Şüpheliler</h2><d", "block": "21"},
+{"from": "      return `<div class=\"item sus${clr ? \" cleared\" : \"\"}\">", "to": "    }).join(\"\")}</div></div>\n  <div class=\"sec\" id=\"evidence", "block": "22"},
+{"find": "  const open = S.contacts.filter(contactOpen), locked = S.contacts.filter(c => !contactOpen(c));\n", "replace": ""},
+{"from": "  <div class=\"sec\"><h2>İletişim ağın</h2><p class=\"lede\">Çöz", "to": "}\nfunction vArchive(){\n  const faces = S", "block": "23"},
+{"find": "  renderStatus();\n", "replace": "  if (S.case && S.case.job && S.case.status === \"active\" && Date.now() >= S.case.job.ends){ finishJob(); return; }\n  renderStatus(); renderJobBar();\n"},
+{"find": "  on(\"campJob\", takeCamp);\n  on(\"stopGen\", () => genCtl && genCtl.abort());\n", "replace": "  on(\"campJob\", takeCamp);\n  on(\"storyJob\", openStoryCase);\n  on(\"storyAd\", () => showAd(\"skip\", () => { scState().unlockAt = 0; save(); render(); }));\n  on(\"stopGen\", () => genCtl && genCtl.abort());\n"},
+{"find": "  on(\"adAp\", adAp);\n  v.querySelectorAll(\"[data-adap]\").forEach(b => b.onclick = adAp);\n", "block": "24"},
+{"find": "  on(\"packDel\", () => { try { localStorage.removeItem(PACK_KEY); } catch {} if (NAT()) NAT().storage.remove(PACK_KEY); applyPack(null); toast(\"Paket kaldırıldı.\"); save(); render(); });\n", "replace": "  on(\"packDel\", () => { try { localStorage.removeItem(PACK_KEY); } catch {} if (NAT()) NAT().storage.remove(PACK_KEY); loadCachedPack(); toast(\"Yerleşik içeriğe dönüldü.\"); save(); render(); });\n"}
 ]
