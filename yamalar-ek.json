@@ -6,5 +6,8 @@
 {"from": "  <div class=\"sec\"><h2>İçerik paketi</h2>", "to": "  <div class=\"sec\"><h2>Ayarlar</h2>", "replace": ""},
 {"find": "${esc(done && left ? \"Gözden bir şey kaçmış olabilir.\" : l.desc)}</p>", "replace": "${done && left ? `<span class=\"miss\">Bir ipucu gözden kaçmış olabilir. Geri dönüp tekrar ara.</span>` : esc(l.desc)}</p>"},
 {"find": "left ? \"▶ Geri dön\" : \"Arandı\"", "replace": "left ? \"▶ Tekrar ara\" : \"Arandı\""},
-{"find": ".traits span.unk{border-style:dashed;opacity:.8}\n", "replace": ".traits span.unk{border-style:dashed;opacity:.8}\n.miss{color:var(--accent);font-weight:600}\n"}
+{"find": ".traits span.unk{border-style:dashed;opacity:.8}\n", "replace": ".traits span.unk{border-style:dashed;opacity:.8}\n.miss{color:var(--accent);font-weight:600}\n"},
+{"find": "if (st.next === c.sidx){ st.next++; const d = new Date(); d.setHours(24, 0, 0, 0); st.unlockAt = d.getTime(); }", "replace": "if (st.next === c.sidx){ st.next++; st.unlockAt = Date.now() + SC_WAIT; }"},
+{"find": "function scState(){ if (!S.sc) S.sc = {next:0, unlockAt:0, done:[]}; return S.sc; }", "replace": "const SC_WAIT = 5 * 60 * 1000;\nfunction scState(){ if (!S.sc) S.sc = {next:0, unlockAt:0, done:[]}; if (S.sc.unlockAt - Date.now() > SC_WAIT) S.sc.unlockAt = Date.now() + SC_WAIT; return S.sc; }"},
+{"find": "<b>Sıradaki dosya: ${esc(d.title)}</b><p>Masana yarın gelecek. Kalan süre:", "replace": "<b>Sıradaki dosya: ${esc(d.title)}</b><p>Dosya hazırlanıyor, birazdan masanda. Kalan süre:"}
 ]
