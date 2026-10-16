@@ -32,5 +32,12 @@
 {"from": "  <div class=\"sec\" id=\"evidence\"><h2>Kanıt panosu</h2><div c", "to": "    <div class=\"list\">${c.suspects.map(s", "block": "E12"},
 {"find": "  if (S.case && S.case.job && S.case.status === \"active\" && Date.now() >= S.case.job.ends){ finishJob(); return; }\n  renderStatus(); renderJobBar();\n", "replace": "  if (S.case && S.case.job && S.case.status === \"active\" && Date.now() >= S.case.job.ends){ finishJob(); return; }\n  if (processPending()) return;\n  renderStatus(); renderJobBar();\n"},
 {"find": "  on(\"storyAd\", () => showAd(\"skip\", () => { scState().unlockAt = 0; save(); render(); }));\n", "replace": "  on(\"storyAd\", () => showAd(\"skip\", () => { const st = scState(), nd = STORY_CASES[st.next]; st.unlockAt = 0; if (nd) notifyCancel(\"story:\" + nd.id); save(); render(); }));\n"},
-{"from": "  on(\"adAp\", adAp);\n  v.querySelectorAll(\"[data-inf]\").forEa", "to": "  v.querySelectorAll(\"[data-adap]\").forE", "block": "E13"}
+{"from": "  on(\"adAp\", adAp);\n  v.querySelectorAll(\"[data-inf]\").forEa", "to": "  v.querySelectorAll(\"[data-adap]\").forE", "block": "E13"},
+{"find": "(canAdAp ? `<button class=\"btn primary\" data-adap=\"1\">▶ +2 hamle</button>` : `<button class=\"btn\" disabled>Hamle yok</button>`)", "replace": "`<button class=\"btn\" disabled>Hamle yok</button>`"},
+{"find": "<p class=\"brief\">Hamlen bitti. Elindeki kanıtlarla suçlamanı yap.</p>${(c.adAp || 0) < 2 && adsLeft() > 0 ? `<button class=\"btn primary block\" id=\"adAp\" style=\"margin-top:10px\">Reklam izle: +2 hamle</button>` : \"\"}</div>", "replace": "<p class=\"brief\">Hamlen bitti. Elindeki kanıtlarla suçlamanı yap.</p></div>"},
+{"find": "\n      ${adsLeft() > 0 ? `<button class=\"btn block\" id=\"adQ\" style=\"margin-top:8px\">Reklam izle: +2 soru (hamle harcamadan)</button>` : \"\"}`;", "replace": "`;"},
+{"find": "const daily = adsLeft() > 0 && !busy ? ", "replace": "const daily = adsLeft() > 0 && !busy && S.money < 150 ? "},
+{"find": "  if (c.searched[locId]){ showAd(\"skip\", () => doSearch(locId)); return; }\n", "replace": "  if (c.searched[locId]){ if (c.ap < 1) return; spend(1); doSearch(locId); return; }\n"},
+{"find": "data-search=\"${l.id}\" ${(!done && c.ap < 1) || (done && !left) ? \"disabled\" : \"\"}>${!done ? \"Ara\" : left ? \"▶ Tekrar ara\" : \"Arandı\"}", "replace": "data-search=\"${l.id}\" ${c.ap < 1 || (done && !left) ? \"disabled\" : \"\"}>${!done ? \"Ara\" : left ? \"Tekrar ara\" : \"Arandı\"}"},
+{"find": "<button class=\"btn primary block\" data-pskip=\"${p.id}\" style=\"margin-top:8px\">▶ Reklam izle: 5 dk kısalt</button>", "replace": "<button class=\"btn block\" data-pskip=\"${p.id}\" style=\"margin-top:8px\">▶ 5 dk kısalt</button>"}
 ]
