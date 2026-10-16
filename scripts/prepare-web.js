@@ -10,7 +10,7 @@
 // kuzgun-piramidi.json: yerleşik içerik paketi; www/icerik.js olarak gömülür.
 // yamalar-ek.txt: ek yamaların büyük kod parçaları (yamalar.txt ile aynı biçim).
 // vakalar/vaka-XX.json: elle yazılmış hikâye dosyaları; sırayla www/vakalar.js olarak gömülür.
-// vakalar/zorluk.json: vakaların zorluk katmanı (hamle, yöntem/sebep, ipucu değişiklikleri, kanıt gerektiren tanıklar).
+// vakalar/zorluk.json: vakaların zorluk katmanı (hamle, yöntem/sebep, ipucu değişiklikleri, kanıt gerektiren tanıklar, şüpheli özellikleri).
 const fs = require("fs");
 const path = require("path");
 
@@ -81,7 +81,16 @@ if (fs.existsSync(vdir)){
     const Z = JSON.parse(fs.readFileSync(zp, "utf8"));
     cases.forEach(d => {
       const z = Z[d.id]; if (!z) return;
-      ["ap", "how", "why"].forEach(k => { if (z[k] != null) d[k] = z[k]; });
+      ["ap", "how", "why", "hide", "hideKeys"].forEach(k => { if (z[k] != null) d[k] = z[k]; });
+      (z.add || []).forEach(c => {
+        if (d.clues.some(x => x.id === c.id)) fail(`zorluk.json ${d.id}: ${c.id} ipucu zaten var.`);
+        if (!d.locations.some(l => l.id === c.source) && !["ag", "takip"].includes(c.source)) fail(`zorluk.json ${d.id}: ${c.id} kaynağı yok.`);
+        d.clues.push(Object.assign({}, c));
+      });
+      if (z.traits){
+        d.traitKeys = z.traits.keys;
+        d.suspects.forEach(s => { const t = z.traits[s.id]; if (!Array.isArray(t) || t.length !== d.traitKeys.length) fail(`zorluk.json ${d.id}: ${s.id} özellikleri eksik.`); s.traits = t; });
+      }
       Object.entries(z.clues || {}).forEach(([id, o]) => { const c = d.clues.find(x => x.id === id); if (!c) fail(`zorluk.json ${d.id}: ${id} ipucu yok.`); Object.assign(c, o); });
       Object.entries(z.needs || {}).forEach(([sid, m]) => {
         const s = d.suspects.find(x => x.id === sid); if (!s) fail(`zorluk.json ${d.id}: ${sid} şüpheli yok.`);
