@@ -1,8 +1,8 @@
 {
-  "_not": "Gerçek AdMob kimlikleri, canlı mod. Kendi reklamlarına tıklama; test etmek için testing değerini true yap.",
+  "_not": "TEST MODU: Google'ın deneme reklamları gösterilir. App Store'a gönderilecek son derlemeden önce testing değerini false yap.",
   "appId": "ca-app-pub-6236520075152909~2891561609",
   "rewarded": "ca-app-pub-6236520075152909/3899811936",
   "interstitial": "ca-app-pub-6236520075152909/9568650596",
   "banner": "ca-app-pub-6236520075152909/8551082393",
-  "testing": false
+  "testing": true
 }
