@@ -1,0 +1,4 @@
+[
+{"find": "${c.story ? \"\" : `<button class=\"btn block\" id=\"reject\">Reddet</button>`}", "replace": "${c.story ? \"\" : c.demo ? `<button class=\"btn block\" id=\"skipDemo\">Eğitimi atla</button>` : `<button class=\"btn block\" id=\"reject\">Reddet</button>`}"},
+{"find": "  on(\"storyJob\", openStoryCase);\n", "replace": "  on(\"storyJob\", openStoryCase);\n  on(\"skipDemo\", () => { S.case = null; S.demoDone = true; S.tab = \"office\"; news(\"Eğitimi atladın. İlk dosya masanda.\"); save(); render(); window.scrollTo(0, 0); });\n"}
+]
