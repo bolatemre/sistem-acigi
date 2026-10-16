@@ -1,14 +1,18 @@
-# Yeni Galata Dedektifi: Gizlilik Politikası
+# Şüphe Ağı: Gizlilik Politikası
 
 Son güncelleme: 16 Ekim 2026
 
-Yeni Galata Dedektifi ("oyun"), Emre Bolat tarafından geliştirilen, çevrimdışı oynanan bir dedektiflik oyunudur. Bu politika, oyunu oynarken hangi bilgilerin işlendiğini açıklar.
+Şüphe Ağı ("oyun"), Emre Bolat tarafından geliştirilen, çevrimdışı oynanan bir dedektiflik oyunudur. Bu politika, oyunu oynarken hangi bilgilerin işlendiğini açıklar.
 
 ## Oyunun kendisi hangi bilgileri toplar?
 
 Hiçbirini. Oyunda hesap, kayıt veya giriş yoktur. Oyuncu adı, ilerleme, para ve vaka kayıtları yalnızca cihazınızda saklanır; bize veya üçüncü kişilere gönderilmez. Uygulamayı sildiğinizde bu kayıtlar da silinir.
 
 Oyun, yeni senaryoları indirmek için açılışta herkese açık bir içerik dosyasını (GitHub) kontrol edebilir. Bu istek kişisel bilgi içermez.
+
+## Bildirimler
+
+Oyun; laboratuvar sonucu geldiğinde, takip bittiğinde ve yeni dosya açıldığında size yalnızca cihazınızda oluşturulan yerel bildirimler gönderir. Bu bildirimler için hiçbir bilgi dışarı gönderilmez. İzni istediğiniz zaman iPhone Ayarlar'ından kapatabilirsiniz.
 
 ## Reklamlar
 
@@ -37,6 +41,6 @@ Sorularınız için: https://github.com/bolatemre/sistem-acigi/issues
 
 ---
 
-# Yeni Galata Dedektifi: Privacy Policy (English)
+# Şüphe Ağı: Privacy Policy (English)
 
-The game itself collects no personal data. There are no accounts; your progress is stored only on your device. The game shows ads via Google AdMob, which may process your device advertising identifier (only if you allow tracking), approximate location derived from your IP address, ad interactions, usage and crash data. You can play without allowing tracking and change this at any time in iOS Settings > Privacy & Security > Tracking. The game is not directed at children under 13. Contact: https://github.com/bolatemre/sistem-acigi/issues
+The game itself collects no personal data. There are no accounts; your progress is stored only on your device. Local notifications are created on your device and send no data anywhere. The game shows ads via Google AdMob, which may process your device advertising identifier (only if you allow tracking), approximate location derived from your IP address, ad interactions, usage and crash data. You can play without allowing tracking and change this at any time in iOS Settings > Privacy & Security > Tracking. The game is not directed at children under 13. Contact: https://github.com/bolatemre/sistem-acigi/issues
