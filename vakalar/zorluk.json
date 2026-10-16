@@ -1,0 +1,108 @@
+{
+  "_not": "Vakaların zorluk katmanı. Derleme sırasında vakalar/vaka-XX.json dosyalarının üzerine işlenir. clues: ipucu metni/bekleme süresi değişiklikleri; needs: tanığın bu bilgiyi vermesi için gösterilmesi gereken kanıt.",
+  "v01": {
+    "ap": 6,
+    "how": {"ok": "Devre arasında kalecinin eldivenlerine silikon sprey sıktı", "wrong": ["Hakemi rüşvetle penaltı vermeye ikna etti", "Kaleciye maçı satması için para verdi"]},
+    "why": {"ok": "Kardeşinin Atlas Danışmanlık'a olan borcunu kapatmak", "wrong": ["Kulüpten kovulacağı için intikam almak", "Rakip kulübe transfer olabilmek"]},
+    "clues": {
+      "C1": {"wait": 10, "waitLabel": "Eldivenlerin laboratuvar analizi"},
+      "C2": {"text": "Malzeme odasının kart kayıtları: devre arasında içeri iki kart girmiş. Biri malzemecinin, diğeri yönetim kadrosuna verilen kırmızı askılı bir kart. O gece statta yönetimden tek bir kişi vardı."},
+      "C7": {"text": "Murat Kaya bir ay önce iflas etmiş ve Atlas Danışmanlık'a ağır bir borcu var. Ablası Galata Spor'da çalışıyormuş."}
+    },
+    "needs": {"S4": {"C4": "C2"}}
+  },
+  "v02": {
+    "ap": 6,
+    "how": {"ok": "Reklam arasında Derya'nın çayına uyku ilacı kattı", "wrong": ["Makyaj malzemesine ilaç sürdü", "Derya'nın su şişesine ilaç kattı"]},
+    "why": {"ok": "Sponsoru ifşa edecek haberi durdurmak", "wrong": ["Derya'nın yerine Ece'yi geçirmek", "Derya'yla eski bir kişisel kavga"]},
+    "clues": {
+      "C1": {"wait": 10, "waitLabel": "Bardaktaki tozun analizi"},
+      "C3": {"text": "Yayın akışı kayıtları: 'Sponsor skandalı' haberi saat 20.30'da yapımcı hesabından silinmiş."}
+    },
+    "needs": {"S4": {"C4": "C2"}}
+  },
+  "v03": {
+    "ap": 6,
+    "how": {"ok": "Bakım panosundan çeker ocağın fanını kapattı", "wrong": ["Barış'ın çayına zehir kattı", "Gaz tüpünün vanasını açık bıraktı"]},
+    "why": {"ok": "Stoklardaki açığın ortaya çıkmasını engellemek", "wrong": ["Barış'ın tez çalışmasını çalmak", "Barış'la aralarındaki kişisel bir kavga"]},
+    "clues": {
+      "C1": {"wait": 10, "waitLabel": "Çeker ocak kayıt cihazının çözümlenmesi"},
+      "C2": {"text": "Bakım panosunun kilidini yalnızca depo sorumlusunun anahtarı açıyor. Yedek anahtar yok."},
+      "C9": {"text": "Kargo rampası kamerası: 22.18'de gri bir kamyonete koliler yükleniyor. Plaka okunmuyor ama yükleyen kişi beyaz bir laboratuvar önlüğü giyiyor."}
+    },
+    "needs": {"S3": {"C8": "C1"}}
+  },
+  "v04": {
+    "ap": 6,
+    "how": {"ok": "Olmayan yıkamaları sisteme girerek kirli parayı kasadan geçirdi", "wrong": ["Bahşiş kutularından para çaldı", "Şirket hesabından ortağı adına para çekti"]},
+    "why": {"ok": "Atlas'ın parasını aklayıp her işlemden pay almak", "wrong": ["Şirketi ucuza satın almak", "Ortağı Rıfat'ı batırmak"]},
+    "clues": {
+      "C3": {"text": "Şirket her ay Atlas Danışmanlık'a yüklü bir 'danışmanlık ücreti' ödüyor. Ödeme talimatları muhasebe bilgisayarından hazırlanmış."},
+      "C5": {"text": "Marinadaki Temiz Sayfa adlı yat, üç ay önce peşin parayla alınmış. Kayıtta sahibinin yalnızca baş harfleri okunuyor: C. Y.", "wait": 10, "waitLabel": "Liman kayıtlarının sorgulanması"}
+    },
+    "needs": {"S2": {"C6": "C2"}}
+  },
+  "v05": {
+    "ap": 6,
+    "how": {"ok": "Aslı yemekteyken onun terminalinden para çekti", "wrong": ["Bilgi işlemden uzaktan sisteme sızdı", "Müdürün imzasını taklit edip havale yaptı"]},
+    "why": {"ok": "Annesinin hastane borcunu ödemek", "wrong": ["Aslı'yı işten attırmak", "Kripto paraya yatırım yapmak"]},
+    "clues": {
+      "C2": {"wait": 10, "waitLabel": "Kamera görüntüsünün netleştirilmesi"},
+      "C3": {"text": "Uyuyan hesap listesi her ay yalnızca iki kişiye gidiyor: şube müdürü ve operasyon şefi."},
+      "C5": {"text": "Şube yöneticilerinden birinin annesinin özel hastanede yüklü bir ameliyat borcu vardı. Borç geçen ay nakit olarak kapanmış."}
+    },
+    "needs": {"S2": {"C7": "C1"}}
+  },
+  "v06": {
+    "ap": 6,
+    "how": {"ok": "Şartnameyi kardeşinin firmasına sızdırdı, Oğuz'u tehdit mektubuyla susturmaya çalıştı", "wrong": ["İhale komisyonunu rüşvetle satın aldı", "Oğuz'u kaçırıp saklattı"]},
+    "why": {"ok": "Kardeşinin batmak üzere olan firmasını kurtarmak", "wrong": ["Daire başkanlığı koltuğuna oturmak", "İlker Toprak'tan intikam almak"]},
+    "clues": {
+      "C1": {"text": "Şartname dosyası ihaleden bir hafta önce gece 23.40'ta ihale komisyonu üyelerinden birinin hesabıyla açılıp bir USB belleğe kopyalanmış. Hesap kodu: HG-3."},
+      "C4": {"text": "Tehdit mektubu üçüncü kattaki ortak yazıcıdan basılmış. Gönderen bilgisayar komisyon odasındaki iki bilgisayardan biri.", "wait": 10, "waitLabel": "Yazıcı kayıtlarının çözümlenmesi"}
+    },
+    "needs": {"S3": {"C3": "C2"}, "S4": {"C5": "C6"}}
+  },
+  "v07": {
+    "ap": 6,
+    "how": {"ok": "Teknenin dip tapasını söktü ve Ferit'i şişme botla kaçırdı", "wrong": ["Tekneye patlayıcı yerleştirdi", "Ferit'i denize itti"]},
+    "why": {"ok": "Ferit'le birlikte sigorta parasını almak", "wrong": ["Pınar'ın kocasını elinden almak", "Koray'ın borcunu kapatmak"]},
+    "clues": {
+      "C2": {"text": "Poliçe artışı acentedeki temsilci bilgisayarından yapılmış. Müşterinin ıslak imzası yok, sadece e-imza."},
+      "C5": {"wait": 10, "waitLabel": "Telefon kayıtlarının çözülmesi"},
+      "C3": {"text": "Koyun karşı kıyısındaki yazlıklardan birinin iskelesinde kırmızı bir şişme bot bağlı. Yazlık tapuda bir sigortacı adına kayıtlı."},
+      "C4": {"text": "Ferit'in kayıp telefonu, 'ölümünden' iki gün sonra koyun karşı kıyısındaki yazlıklara yakın bir baz istasyonuna bağlanmış."}
+    },
+    "needs": {"S4": {"C9": "C10"}, "S1": {"C6": "C7"}}
+  },
+  "v08": {
+    "ap": 6,
+    "how": {"ok": "Mektuplardan imzayı çalışıp sahte vasiyet düzenledi, deftere sonradan kayıt düştü", "wrong": ["Cevat Bey'e hastanede zorla imza attırdı", "Asıl vasiyeti avukatın kasasından çaldı"]},
+    "why": {"ok": "Atlas'tan aldığı para karşılığında hisseleri Atlas'a kazandırmak", "wrong": ["Zerrin'le olan gizli akrabalığı", "Emir Aral'dan intikam almak"]},
+    "clues": {
+      "C3": {"wait": 10, "waitLabel": "Kâğıt filigranının analizi"},
+      "C4": {"text": "Noterlik çalışanlarından birinin hesabına, vasiyetin ortaya çıktığı hafta Atlas Danışmanlık'tan büyük bir ödeme yapılmış."}
+    },
+    "needs": {"S2": {"C7": "C2"}}
+  },
+  "v09": {
+    "ap": 6,
+    "how": {"ok": "Bir ay boyunca kopyasını yapıp gösteri gecesi orijinaliyle değiştirdi", "wrong": ["Kemanı sahne arkasından kapıp kaçtı", "Sigorta için kemanın çalındığını uydurdu"]},
+    "why": {"ok": "Borcu yüzünden orijinali yurt dışındaki koleksiyoncuya satmak", "wrong": ["Igor'u kariyerinden etmek", "Aiko'ya baş kemancılık yolu açmak"]},
+    "clues": {
+      "C2": {"wait": 10, "waitLabel": "Kalıbın ölçü karşılaştırması"},
+      "C11": {"text": "Koridordaki yangın dolabının arkasına boş, uzun bir alet çantası kılıfı sıkıştırılmış. Etiketindeki atölye logosu kazınmış, ama altında bir keman çizimi seçiliyor."}
+    },
+    "needs": {"S4": {"C4": "C11"}}
+  },
+  "v10": {
+    "ap": 7,
+    "how": {"ok": "Bir garsonu paravan sahip yapıp Atlas üzerinden bütün kirli parayı yönetti", "wrong": ["Bankadaki uyuyan hesapları kendisi boşalttı", "Selim Vardar'ı tehdit ederek şirketi ele geçirdi"]},
+    "why": {"ok": "Bütün parayı toplayıp ülkeden kaçmak", "wrong": ["Selim Vardar'dan intikam almak", "Hukuk bürosunu iflastan kurtarmak"]},
+    "clues": {
+      "C2": {"text": "Atlas'ın kuruluş belgeleri bir hukuk bürosunda hazırlanmış. Kurucu ortağın yerine vekil olarak imza atan avukatın baş harfleri: N.T."},
+      "C4": {"wait": 10, "waitLabel": "Grafoloji incelemesi"}
+    },
+    "needs": {"S1": {"C6": "C3"}, "S4": {"C8": "C1"}}
+  }
+}
