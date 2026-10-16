@@ -1,5 +1,5 @@
 // "npx cap sync ios" sonrasında otomatik çalışır (package.json > capacitor:sync:after).
-// iOS Info.plist dosyasına AdMob ve gizlilik ayarlarını ekler.
+// iOS Info.plist dosyasına AdMob ve gizlilik ayarlarını ekler, uygulamayı yalnızca iPhone ve dikey ekran yapar.
 const fs = require("fs");
 const path = require("path");
 
@@ -18,5 +18,19 @@ if (!has("SKAdNetworkItems")) add(`\t<key>SKAdNetworkItems</key>\n\t<array>\n\t\
 if (!has("NSUserTrackingUsageDescription")) add(`\t<key>NSUserTrackingUsageDescription</key>\n\t<string>Bu izin, oyunda sana daha uygun reklamlar gösterilmesi için kullanılır. İzin vermesen de oyun aynı şekilde çalışır.</string>`);
 if (!has("ITSAppUsesNonExemptEncryption")) add(`\t<key>ITSAppUsesNonExemptEncryption</key>\n\t<false/>`);
 
+// Yalnızca dikey ekran
+const portrait = `<array>\n\t\t<string>UIInterfaceOrientationPortrait</string>\n\t</array>`;
+s = s.replace(/(<key>UISupportedInterfaceOrientations<\/key>\s*)<array>[\s\S]*?<\/array>/, `$1${portrait}`);
+s = s.replace(/\s*<key>UISupportedInterfaceOrientations~ipad<\/key>\s*<array>[\s\S]*?<\/array>/, "");
+if (!has("UISupportedInterfaceOrientations")) add(`\t<key>UISupportedInterfaceOrientations</key>\n\t${portrait}`);
+if (!has("UIRequiresFullScreen")) add(`\t<key>UIRequiresFullScreen</key>\n\t<true/>`);
+
 fs.writeFileSync(plist, s);
-console.log("Info.plist güncellendi (AdMob, takip izni, şifreleme beyanı).");
+
+// Yalnızca iPhone (iPad ekran görüntüsü gerekmez)
+const pbx = path.join(root, "ios", "App", "App.xcodeproj", "project.pbxproj");
+if (fs.existsSync(pbx)){
+  const p = fs.readFileSync(pbx, "utf8").replace(/TARGETED_DEVICE_FAMILY = "?1,2"?;/g, "TARGETED_DEVICE_FAMILY = 1;");
+  fs.writeFileSync(pbx, p);
+}
+console.log("Info.plist ve proje güncellendi (AdMob, takip izni, şifreleme beyanı, yalnızca iPhone, dikey ekran).");
