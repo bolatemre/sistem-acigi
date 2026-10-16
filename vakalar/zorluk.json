@@ -1,5 +1,5 @@
 {
-  "_not": "Vakaların zorluk katmanı. Derleme sırasında vakalar/vaka-XX.json dosyalarının üzerine işlenir. clues: ipucu metni/bekleme süresi değişiklikleri; needs: tanığın bu bilgiyi vermesi için gösterilmesi gereken kanıt.",
+  "_not": "Vakaların zorluk katmanı. Derleme sırasında vakalar/vaka-XX.json dosyalarının üzerine işlenir. clues: ipucu metni/bekleme süresi değişiklikleri; needs: tanığın bu bilgiyi vermesi için gösterilmesi gereken kanıt; traits: şüpheli özellikleri (keys başlıklar, her şüpheliye aynı sırada değerler); hideKeys: herkeste gizli gelen özellik sütunları (sorgu ya da takiple açılır); add: eklenen ipuçları.",
   "v01": {
     "ap": 6,
     "how": {"ok": "Devre arasında kalecinin eldivenlerine silikon sprey sıktı", "wrong": ["Hakemi rüşvetle penaltı vermeye ikna etti", "Kaleciye maçı satması için para verdi"]},
@@ -9,7 +9,10 @@
       "C2": {"text": "Malzeme odasının kart kayıtları: devre arasında içeri iki kart girmiş. Biri malzemecinin, diğeri yönetim kadrosuna verilen kırmızı askılı bir kart. O gece statta yönetimden tek bir kişi vardı."},
       "C7": {"text": "Murat Kaya bir ay önce iflas etmiş ve Atlas Danışmanlık'a ağır bir borcu var. Ablası Galata Spor'da çalışıyormuş."}
     },
-    "needs": {"S4": {"C4": "C2"}}
+    "needs": {"S4": {"C4": "C2"}},
+    "traits": {"keys": ["Koku", "El", "Ayakkabı"], "S1": ["Ter ve çim", "Sağlak", "44"], "S2": ["Tıraş losyonu", "Sağlak", "43"], "S3": ["Çiçek parfümü", "Solak", "37"], "S4": ["Makine yağı", "Solak", "42"]},
+    "add": [{"id": "C10", "source": "L1", "points": "S3", "text": "Silikon sıkılan eldivenin bilekliğinde hafif bir çiçek parfümü kokusu kalmış."}],
+    "hideKeys": [0]
   },
   "v02": {
     "ap": 6,
@@ -19,7 +22,10 @@
       "C1": {"wait": 10, "waitLabel": "Bardaktaki tozun analizi"},
       "C3": {"text": "Yayın akışı kayıtları: 'Sponsor skandalı' haberi saat 20.30'da yapımcı hesabından silinmiş."}
     },
-    "needs": {"S4": {"C4": "C2"}}
+    "needs": {"S4": {"C4": "C2"}},
+    "traits": {"keys": ["Saat", "El", "Koku"], "S1": ["İnce gümüş", "Sağlak", "Vanilya parfümü"], "S2": ["Altın, büyük kadran", "Solak", "Puro"], "S3": ["Saat takmıyor", "Sağlak", "Pudra"], "S4": ["Dijital spor saati", "Solak", "Sigara"]},
+    "add": [{"id": "C11", "source": "L2", "points": "S2", "text": "Çay ocağı kamerasında, kupayı dolduran kişi çaydanlığı sol eliyle tutuyor."}],
+    "hideKeys": [1]
   },
   "v03": {
     "ap": 6,
@@ -30,7 +36,10 @@
       "C2": {"text": "Bakım panosunun kilidini yalnızca depo sorumlusunun anahtarı açıyor. Yedek anahtar yok."},
       "C9": {"text": "Kargo rampası kamerası: 22.18'de gri bir kamyonete koliler yükleniyor. Plaka okunmuyor ama yükleyen kişi beyaz bir laboratuvar önlüğü giyiyor."}
     },
-    "needs": {"S3": {"C8": "C1"}}
+    "needs": {"S3": {"C8": "C1"}},
+    "traits": {"keys": ["Ayakkabı", "Araç", "Koku"], "S1": ["43", "Sedan", "Pipo tütünü"], "S2": ["38", "Gri kamyonet", "Çamaşır suyu"], "S3": ["42", "Motosiklet", "Kahve"], "S4": ["44", "Aracı yok", "Sigara"]},
+    "add": [{"id": "C12", "source": "L1", "points": "S2", "text": "Çeker ocağın önünde, dökülmüş solüsyonun üzerinde 38 numara küçük bir ayakkabı izi var."}],
+    "hideKeys": [0]
   },
   "v04": {
     "ap": 6,
@@ -40,7 +49,10 @@
       "C3": {"text": "Şirket her ay Atlas Danışmanlık'a yüklü bir 'danışmanlık ücreti' ödüyor. Ödeme talimatları muhasebe bilgisayarından hazırlanmış."},
       "C5": {"text": "Marinadaki Temiz Sayfa adlı yat, üç ay önce peşin parayla alınmış. Kayıtta sahibinin yalnızca baş harfleri okunuyor: C. Y.", "wait": 10, "waitLabel": "Liman kayıtlarının sorgulanması"}
     },
-    "needs": {"S2": {"C6": "C2"}}
+    "needs": {"S2": {"C6": "C2"}},
+    "traits": {"keys": ["Saat", "El", "Araç"], "S1": ["İsviçre yapımı, pahalı", "Solak", "Yeni cip"], "S2": ["Plastik", "Sağlak", "Toplu taşıma"], "S3": ["İnce altın", "Sağlak", "Şoförlü sedan"], "S4": ["Eski çelik", "Sağlak", "Eski sedan"]},
+    "add": [{"id": "C10", "source": "L2", "points": "S1", "text": "Kayıt defterindeki sahte sayıların hepsi sola yatık bir el yazısıyla düzeltilmiş. Yazan kişi solak."}],
+    "hideKeys": [1]
   },
   "v05": {
     "ap": 6,
@@ -51,7 +63,10 @@
       "C3": {"text": "Uyuyan hesap listesi her ay yalnızca iki kişiye gidiyor: şube müdürü ve operasyon şefi."},
       "C5": {"text": "Şube yöneticilerinden birinin annesinin özel hastanede yüklü bir ameliyat borcu vardı. Borç geçen ay nakit olarak kapanmış."}
     },
-    "needs": {"S2": {"C7": "C1"}}
+    "needs": {"S2": {"C7": "C1"}},
+    "traits": {"keys": ["Koku", "Ayakkabı", "El"], "S1": ["Meyveli parfüm", "Spor ayakkabı", "Sağlak"], "S2": ["Enerji içeceği", "Spor ayakkabı", "Solak"], "S3": ["Tıraş losyonu", "Deri ayakkabı", "Sağlak"], "S4": ["Lavanta kolonyası", "Topuklu ayakkabı", "Sağlak"]},
+    "add": [{"id": "C11", "source": "L1", "points": "S4", "text": "Aslı'nın klavyesinde ve sandalyesinde ağır bir lavanta kolonyası kokusu var. Aslı lavanta kullanmıyor."}],
+    "hideKeys": [0]
   },
   "v06": {
     "ap": 6,
@@ -61,7 +76,10 @@
       "C1": {"text": "Şartname dosyası ihaleden bir hafta önce gece 23.40'ta ihale komisyonu üyelerinden birinin hesabıyla açılıp bir USB belleğe kopyalanmış. Hesap kodu: HG-3."},
       "C4": {"text": "Tehdit mektubu üçüncü kattaki ortak yazıcıdan basılmış. Gönderen bilgisayar komisyon odasındaki iki bilgisayardan biri.", "wait": 10, "waitLabel": "Yazıcı kayıtlarının çözümlenmesi"}
     },
-    "needs": {"S3": {"C3": "C2"}, "S4": {"C5": "C6"}}
+    "needs": {"S3": {"C3": "C2"}, "S4": {"C5": "C6"}},
+    "traits": {"keys": ["El", "Koku", "Araç"], "S1": ["Sağlak", "Pahalı parfüm", "Makam aracı"], "S2": ["Solak", "Nane şekeri", "Beyaz hatchback"], "S3": ["Sağlak", "Çimento tozu", "Kamyonet"], "S4": ["Sağlak", "Sigara", "Otobüs"]},
+    "add": [{"id": "C10", "source": "L3", "points": "S2", "text": "Tehdit mektubunun zarfındaki adres solak birinin eliyle yazılmış; mürekkep sağa doğru sürtülmüş."}],
+    "hideKeys": [0]
   },
   "v07": {
     "ap": 6,
@@ -73,7 +91,10 @@
       "C3": {"text": "Koyun karşı kıyısındaki yazlıklardan birinin iskelesinde kırmızı bir şişme bot bağlı. Yazlık tapuda bir sigortacı adına kayıtlı."},
       "C4": {"text": "Ferit'in kayıp telefonu, 'ölümünden' iki gün sonra koyun karşı kıyısındaki yazlıklara yakın bir baz istasyonuna bağlanmış."}
     },
-    "needs": {"S4": {"C9": "C10"}, "S1": {"C6": "C7"}}
+    "needs": {"S4": {"C9": "C10"}, "S1": {"C6": "C7"}},
+    "traits": {"keys": ["Ayakkabı", "Koku", "Araç"], "S1": ["Topuklu", "Tatlı parfüm", "Taksi"], "S2": ["Çalışma botu", "Motor yağı", "Motosiklet"], "S3": ["Deniz ayakkabısı, 38", "Güneş kremi", "Kırmızı şişme bot"], "S4": ["Lastik çizme", "Balık", "Kayık"]},
+    "add": [{"id": "C12", "source": "L1", "points": "S3", "text": "Teknenin güvertesinde, ıslak tahtada 38 numara bir deniz ayakkabısı izi var. Ferit 44 giyiyordu."}],
+    "hideKeys": [0]
   },
   "v08": {
     "ap": 6,
@@ -83,7 +104,10 @@
       "C3": {"wait": 10, "waitLabel": "Kâğıt filigranının analizi"},
       "C4": {"text": "Noterlik çalışanlarından birinin hesabına, vasiyetin ortaya çıktığı hafta Atlas Danışmanlık'tan büyük bir ödeme yapılmış."}
     },
-    "needs": {"S2": {"C7": "C2"}}
+    "needs": {"S2": {"C7": "C2"}},
+    "traits": {"keys": ["El", "Parmaklar", "Gözlük"], "S1": ["Sağlak", "Temiz, ojeli", "Yok"], "S2": ["Sağlak", "Sigara sarısı", "Yok"], "S3": ["Sağlak", "Temiz", "Okuma gözlüğü"], "S4": ["Solak", "Nasırlı", "Yok"], "S5": ["Solak", "Mürekkep lekeli", "Okuma gözlüğü"]},
+    "add": [{"id": "C12", "source": "L2", "points": "S5", "text": "Mektuplardaki imzaların üzerinden kurşun kalemle geçen kişi solakmış; parmak izleri mürekkep lekeli."}],
+    "hideKeys": [1]
   },
   "v09": {
     "ap": 6,
@@ -93,7 +117,10 @@
       "C2": {"wait": 10, "waitLabel": "Kalıbın ölçü karşılaştırması"},
       "C11": {"text": "Koridordaki yangın dolabının arkasına boş, uzun bir alet çantası kılıfı sıkıştırılmış. Etiketindeki atölye logosu kazınmış, ama altında bir keman çizimi seçiliyor."}
     },
-    "needs": {"S4": {"C4": "C11"}}
+    "needs": {"S4": {"C4": "C11"}},
+    "traits": {"keys": ["El", "Parmaklar", "Koku"], "S1": ["Sağlak", "Uzun tırnaklı", "Kolonya"], "S2": ["Sağlak", "Kalın nasırlı", "Yasemin"], "S3": ["Solak", "Vernik lekeli", "Terebentin"], "S4": ["Sağlak", "Kalın", "Sigara"]},
+    "add": [{"id": "C12", "source": "L1", "points": "S3", "text": "Kopya kemanın verniğindeki fırça izleri sağdan sola çekilmiş. Solak bir usta işi."}],
+    "hideKeys": [0]
   },
   "v10": {
     "ap": 7,
@@ -103,6 +130,9 @@
       "C2": {"text": "Atlas'ın kuruluş belgeleri bir hukuk bürosunda hazırlanmış. Kurucu ortağın yerine vekil olarak imza atan avukatın baş harfleri: N.T."},
       "C4": {"wait": 10, "waitLabel": "Grafoloji incelemesi"}
     },
-    "needs": {"S1": {"C6": "C3"}, "S4": {"C8": "C1"}}
+    "needs": {"S1": {"C6": "C3"}, "S4": {"C8": "C1"}},
+    "traits": {"keys": ["El", "Koku", "Kalem"], "S1": ["Sağlak", "Mutfak kokusu", "Tükenmez kalem"], "S2": ["Solak", "Ağır amber parfüm", "Yeşil mürekkepli dolma kalem"], "S3": ["Sağlak", "Pahalı parfüm", "Altın kalem"], "S4": ["Sağlak", "Tıraş losyonu", "Kurşun kalem"], "S5": ["Solak", "Sigara", "Kalemi yok"]},
+    "add": [{"id": "C11", "source": "L2", "points": "S2", "text": "Arşivdeki talimatlarda 'N.T.' parafları yeşil mürekkepli bir dolma kalemle atılmış."}],
+    "hideKeys": [2]
   }
 }
