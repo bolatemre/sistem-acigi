@@ -1,0 +1,87 @@
+@@@@ E01
+@media (prefers-reduced-motion:no-preference){.jb-dot{animation:flick 1.2s steps(1) infinite}}
+.draft{border:2px solid var(--accent);border-radius:16px;padding:14px;background:var(--card, #f7f0e1)}
+.draft h3{margin:14px 0 8px;font-size:15px}
+.btn.opt{text-align:left;justify-content:flex-start;font-weight:500;white-space:normal;line-height:1.35}
+.btn.opt.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+</style>
+@@@@ E02
+function scState(){ if (!S.sc) S.sc = {next:0, unlockAt:0, done:[]}; if (S.sc.unlockAt - Date.now() > SC_WAIT) S.sc.unlockAt = Date.now() + SC_WAIT; return S.sc; }
+function scOpts(o, seed){
+  if (!o || !o.ok || !Array.isArray(o.wrong) || !o.wrong.length) return null;
+  const opts = shuffle(rng(hsh(seed)), [o.ok, ...o.wrong]);
+  return {opts, ok:opts.indexOf(o.ok)};
+}
+function buildStoryCase(d, idx){
+@@@@ E03
+function storyDone(c){ if (!c.story) return; const st = scState(); if (!st.done.includes(c.sid)) st.done.push(c.sid); if (st.next === c.sidx){ st.next++; st.unlockAt = Date.now() + SC_WAIT; const nd = STORY_CASES[st.next]; if (nd) notifyAt("story:" + nd.id, "Yeni dosya masanda", `${nd.title}: ${nd.teaser || "Yeni bir vaka seni bekliyor."}`, st.unlockAt); } }
+@@@@ E04
+}, 1000);
+function notifyAt(key, title, body, at){ try { const n = NAT(); if (n && n.notify && at - Date.now() > 3000) n.notify.schedule(hsh(key) % 2000000000, title, body, at); } catch {} }
+function notifyCancel(key){ try { const n = NAT(); if (n && n.notify) n.notify.cancel(hsh(key) % 2000000000); } catch {} }
+function processPending(){
+  const c = S.case; if (!c || c.status !== "active" || !c.pending || !c.pending.length) return false;
+  const now = Date.now(), due = c.pending.filter(p => p.ready <= now);
+  if (!due.length) return false;
+  c.pending = c.pending.filter(p => p.ready > now);
+  const got = due.map(p => reveal(p.id)).filter(Boolean);
+  if (got.length){ flashIds = got.map(x => x.id); toast(`${due[0].label} tamamlandı. Yeni ipucu panoya eklendi.`); }
+  save(); render(); return true;
+}
+setInterval(() => {
+  if (processPending()) return;
+  const c = S.case; if (!c || !c.pending) return;
+  c.pending.forEach(p => { const el = document.getElementById("pl-" + p.id); if (el) el.textContent = fmtLeft(p.ready - Date.now()); });
+}, 1000);
+function pendPanel(c){
+  if (!c.pending || !c.pending.length) return "";
+  return c.pending.map(p => `<div class="panel job"><div class="job-head"><b>${esc(p.label)}</b><span id="pl-${p.id}">${fmtLeft(p.ready - Date.now())}</span></div><p class="note">${esc(p.loc)}: sonuç bekleniyor. Bu sırada diğer ipuçlarıyla uğraşabilirsin.</p><button class="btn primary block" data-pskip="${p.id}" style="margin-top:8px">▶ Reklam izle: 5 dk kısalt</button></div>`).join("");
+}
+function renderJobBar(){
+@@@@ E05
+  const c0 = S.case, nx = c0.clues.find(c => c.source === locId && !c0.found.includes(c.id) && !isPending(c0, c.id));
+  if (nx && nx.wait){
+    const loc = c0.locations.find(l => l.id === locId), label = nx.waitLabel || "Laboratuvar analizi";
+    c0.pending = c0.pending || [];
+    c0.pending.push({id:nx.id, label, loc:loc.name, ready:Date.now() + nx.wait * 60000, total:nx.wait * 60000});
+    notifyAt("pend:" + nx.id + c0.title, "Sonuç geldi", `${label} tamamlandı. Yeni ipucu panonda.`, Date.now() + nx.wait * 60000);
+    toast(`${loc.name}: örnek alındı. ${label} ${nx.wait} dakika sürecek.`);
+    save(); render(); return;
+  }
+  const got = (nx ? [nx] : []).map(c => reveal(c.id)).filter(Boolean);
+@@@@ E06
+  const rvs = (bank.reveals || (bank.reveal ? [bank.reveal] : [])).filter(x => !c.found.includes(x.clue));
+  const rv = rvs.filter(x => !x.needs)[0];
+  const rvEv = act.kind === "ev" ? rvs.find(x => x.needs === act.clueId) : null;
+  if (rvEv) return {reply:nm(rvEv.line), mood:"korkmuş", revealClue:rvEv.clue, reaction:"Kanıta uzun uzun baktı, sonra konuşmaya başladı."};
+@@@@ E07
+  const c = S.case; if (!c || c.status !== "active") return;
+  if (c.story && c.how && c.why && !c.draftGo){ c.draft = {sid, how:null, why:null}; save(); render(); setTimeout(() => { const e = document.getElementById("draft"); if (e) e.scrollIntoView({block:"start", behavior:"smooth"}); }, 60); return; }
+  c.draftGo = false; c.draft = null;
+  c.accused = sid;
+@@@@ E08
+    pay = Math.round(c.reward * (1 + .15 * S.up.ofis) * (S.vicdan >= 40 ? 1.1 : 1));
+    if (c.story && c.how && c.why){ const k = (c.howOk ? 1 : 0) + (c.whyOk ? 1 : 0); pay = Math.round(pay * [.5, .75, 1][k]); if (k === 2) S.rep += 5; }
+    S.rep += 8 + level() * 5; S.vicdan = clamp(S.vicdan + 8, -100, 100); c.status = "won";
+@@@@ E09
+    note = "Delilleri müşteriye verdin. Adın dürüst bir dedektif olarak duyuluyor.";
+    if (c.story && c.how && c.why) note += c.howOk && c.whyOk ? " Yöntemi ve sebebi de doğru kurdun; dava eksiksiz (+5 itibar)." : ` ${c.howOk ? "Yöntem doğru" : "Yöntem yanlış"}, ${c.whyOk ? "sebep doğru" : "sebep yanlış"}. Dava eksik kaldı, ödülün bir kısmı kesildi.`;
+    if (c.confessed === c.culpritId){ S.rep += 5; note += " Alınan itiraf dosyayı sağlamlaştırdı (+5 itibar)."; }
+@@@@ E10
+      nat.ads.showRewarded().then(ok => { if (ok === true){ if (kind === "rewarded") S.ads.count++; onReward && onReward(); } else if (ok === "nofill" && kind === "skip"){ onReward && onReward(); toast("Şu an gösterilecek reklam yok; bu seferlik ücretsiz."); } else toast(ok === "nofill" ? "Reklam şu an yüklenemedi. Biraz sonra tekrar dene." : "Ödül için reklamı sonuna kadar izlemelisin."); save(); render(); if (talkSid) renderTalk(); });
+@@@@ E11
+  return head +
+  pendPanel(c) +
+  (c.ap === 0 ? `<div class="panel" style="margin-top:14px"><p class="brief">Hamlen bitti. Elindeki kanıtlarla suçlamanı yap.</p>${(c.adAp || 0) < 2 && adsLeft() > 0 ? `<button class="btn primary block" id="adAp" style="margin-top:10px">Reklam izle: +2 hamle</button>` : ""}</div>` : "") +
+@@@@ E12
+  <div class="sec" id="evidence"><h2>Kanıt panosu</h2><div class="board">${found.length ? found.map(x => `<div class="pin-note" data-clue="${x.id}" style="--r:${(((hsh(x.id + c.title) % 7) - 3) * .7).toFixed(1)}deg">${esc(x.text)}<small>${srcIcon(x.source)}${esc(srcName(x.source))}</small></div>`).join("") : `<p class="board-empty">Pano boş. Bir mekanı ara, ağını ara ya da birini sorgula.</p>`}</div></div>
+  ${c.draft ? (() => { const d = c.draft, ds = sus(d.sid); return `<div class="sec draft" id="draft"><h2>Suçlama dosyası: ${esc(ds.name)}</h2><p class="lede">Mahkemeyi ikna etmek için nasıl ve neden yaptığını da göster. Hepsi doğruysa tam ödül.</p><h3>Nasıl yaptı?</h3><div class="list">${c.how.opts.map((o, i) => `<button class="btn block opt${d.how === i ? " sel" : ""}" data-how="${i}">${esc(o)}</button>`).join("")}</div><h3>Neden yaptı?</h3><div class="list">${c.why.opts.map((o, i) => `<button class="btn block opt${d.why === i ? " sel" : ""}" data-why="${i}">${esc(o)}</button>`).join("")}</div><div class="row" style="margin-top:14px"><button class="btn primary block" id="draftGo">Suçlamayı yap</button><button class="btn block" id="draftCancel">Vazgeç</button></div></div>`; })() : ""}
+  <div class="sec"><h2>Suçlama</h2><p class="lede">Doğru kişiyi seçersen ödül senin. Yanlış seçim itibarına mal olur.${c.reopened ? " Bu son şansın: bir yanlış daha olursa dosya kapanır." : ""}</p>
+@@@@ E13
+  on("adAp", adAp);
+  v.querySelectorAll("[data-how]").forEach(b => b.onclick = () => { S.case.draft.how = +b.dataset.how; save(); render(); });
+  v.querySelectorAll("[data-why]").forEach(b => b.onclick = () => { S.case.draft.why = +b.dataset.why; save(); render(); });
+  on("draftCancel", () => { S.case.draft = null; save(); render(); });
+  on("draftGo", () => { const c = S.case, d = c.draft; if (d.how == null || d.why == null){ toast("Yöntemi ve sebebi seç."); return; } c.howOk = d.how === c.how.ok; c.whyOk = d.why === c.why.ok; c.draftGo = true; accuse(d.sid); });
+  v.querySelectorAll("[data-pskip]").forEach(b => b.onclick = () => showAd("skip", () => { const c = S.case, p = c && (c.pending || []).find(x => x.id === b.dataset.pskip); if (!p) return; p.ready -= PEND_CUT; notifyCancel("pend:" + p.id + c.title); notifyAt("pend:" + p.id + c.title, "Sonuç geldi", `${p.label} tamamlandı. Yeni ipucu panonda.`, p.ready); save(); if (!processPending()) render(); }));
+  v.querySelectorAll("[data-inf]").forEach(b => b.onclick = () => { const inf = INF.find(x => x.id === b.dataset.inf), lv = S.inf[inf.id] || 0, cost = infUp(inf, lv); if (lv >= 5 || S.money < cost || S.debt > 0) return; S.money -= cost; S.inf[inf.id] = lv + 1; news(lv ? `${inf.name} artık seviye ${lv + 1}.` : `${inf.name} artık senin için çalışıyor.`); toast(lv ? `${inf.name}: seviye ${lv + 1}` : `${inf.name} kiralandı.`); save(); render(); });
