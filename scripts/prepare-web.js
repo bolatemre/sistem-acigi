@@ -2,8 +2,11 @@
 // www/    -> uygulamanın içine gömülen oyun
 // assets/ -> simge ve açılış ekranı kaynakları
 //
-// yamalar.json: index.html'e derleme sırasında uygulanan küçük değişiklikler.
-//   Her yama {"find": "...", "replace": "..."} şeklindedir ve dosyada tam olarak bir kez geçmelidir.
+// yamalar.json: index.html'e derleme sırasında uygulanan değişiklikler. Her yama:
+//   {"find": "eski metin"}                 -> bu metin (dosyada tam bir kez geçmeli) değiştirilir
+//   {"from": "başlangıç", "to": "bitiş"}   -> başlangıçtan bitişe kadar olan kısım değiştirilir (bitiş korunur)
+//   ve yeni metin {"replace": "..."} ya da {"block": "NN"} ile verilir.
+// yamalar.txt: büyük yeni kod parçaları; her biri "@@@@ NN" satırıyla başlar.
 // kuzgun-piramidi.json: yerleşik içerik paketi; www/icerik.js olarak gömülür.
 // vakalar/vaka-XX.json: elle yazılmış hikâye dosyaları; sırayla www/vakalar.js olarak gömülür.
 const fs = require("fs");
@@ -13,6 +16,7 @@ const root = path.join(__dirname, "..");
 const www = path.join(root, "www");
 const fail = msg => { console.error("HATA: " + msg); process.exit(1); };
 const need = file => { const p = path.join(root, file); if (!fs.existsSync(p)) fail(`Eksik dosya: ${file}`); return p; };
+const count = (s, x) => s.split(x).length - 1;
 fs.mkdirSync(www, { recursive: true });
 
 // 1) index.html + yamalar
@@ -20,10 +24,25 @@ let html = fs.readFileSync(need("index.html"), "utf8").replace(/\r\n/g, "\n");
 const yp = path.join(root, "yamalar.json");
 if (fs.existsSync(yp)){
   const patches = JSON.parse(fs.readFileSync(yp, "utf8"));
+  const blocks = {};
+  const bp = path.join(root, "yamalar.txt");
+  if (fs.existsSync(bp)){
+    const parts = fs.readFileSync(bp, "utf8").replace(/\r\n/g, "\n").split(/^@@@@ (\w+)\n/m);
+    for (let i = 1; i < parts.length; i += 2) blocks[parts[i]] = parts[i + 1];
+  }
   patches.forEach((p, i) => {
-    const n = html.split(p.find).length - 1;
-    if (n !== 1) fail(`Yama ${i + 1} index.html içinde ${n} kez bulundu (1 olmalı). Başlangıcı: ${JSON.stringify(p.find.slice(0, 60))}`);
-    html = html.replace(p.find, () => p.replace);
+    const rep = p.block != null ? blocks[p.block] : p.replace;
+    if (rep == null) fail(`Yama ${i + 1}: yeni metin yok (blok ${p.block}).`);
+    if (p.find != null){
+      const n = count(html, p.find);
+      if (n !== 1) fail(`Yama ${i + 1} index.html içinde ${n} kez bulundu (1 olmalı). Başlangıcı: ${JSON.stringify(p.find.slice(0, 60))}`);
+      html = html.replace(p.find, () => rep);
+    } else {
+      if (count(html, p.from) !== 1 || count(html, p.to) !== 1) fail(`Yama ${i + 1}: başlangıç ya da bitiş çapası tek değil. ${JSON.stringify(p.from.slice(0, 50))}`);
+      const a = html.indexOf(p.from), b = html.indexOf(p.to, a);
+      if (b < 0) fail(`Yama ${i + 1}: bitiş çapası başlangıçtan sonra yok.`);
+      html = html.slice(0, a) + rep + html.slice(b);
+    }
   });
   console.log(`${patches.length} yama uygulandı.`);
 }
