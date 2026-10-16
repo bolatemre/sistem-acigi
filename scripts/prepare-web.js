@@ -4,7 +4,8 @@
 //
 // yamalar.json: index.html'e derleme sırasında uygulanan küçük değişiklikler.
 //   Her yama {"find": "...", "replace": "..."} şeklindedir ve dosyada tam olarak bir kez geçmelidir.
-// kuzgun-piramidi.json: oyunun yerleşik içerik paketi; www/icerik.js olarak gömülür.
+// kuzgun-piramidi.json: yerleşik içerik paketi; www/icerik.js olarak gömülür.
+// vakalar/vaka-XX.json: elle yazılmış hikâye dosyaları; sırayla www/vakalar.js olarak gömülür.
 const fs = require("fs");
 const path = require("path");
 
@@ -38,17 +39,33 @@ if (fs.existsSync(path.join(root, "kuzgun-piramidi.json"))){
   console.log(`İçerik paketi gömüldü: ${pack.id} sürüm ${pack.version}.`);
 }
 
-// 4) native.js + reklam ayarları
+// 4) elle yazılmış hikâye dosyaları
+const vdir = path.join(root, "vakalar");
+if (fs.existsSync(vdir)){
+  const files = fs.readdirSync(vdir).filter(f => /^vaka-\d+\.json$/.test(f)).sort();
+  const cases = files.map(f => {
+    let d;
+    try { d = JSON.parse(fs.readFileSync(path.join(vdir, f), "utf8")); } catch (e) { fail(`${f} okunamadı: ${e.message}`); }
+    const ids = new Set(d.suspects.map(s => s.id));
+    if (!ids.has(d.culprit)) fail(`${f}: suçlu (${d.culprit}) şüpheliler arasında yok.`);
+    d.clues.forEach(c => { if (c.points && !ids.has(c.points)) fail(`${f}: ${c.id} ipucu olmayan bir şüpheliyi gösteriyor.`); });
+    return d;
+  });
+  fs.writeFileSync(path.join(www, "vakalar.js"), `const STORY_CASES = ${JSON.stringify(cases)};\n`);
+  console.log(`${cases.length} hikâye dosyası gömüldü.`);
+}
+
+// 5) native.js + reklam ayarları
 const ads = JSON.parse(fs.readFileSync(need("ads.config.json"), "utf8"));
 delete ads._not;
 fs.writeFileSync(path.join(www, "native.js"), `window.ADS_CONFIG = ${JSON.stringify(ads)};\n${fs.readFileSync(need("native.js"), "utf8")}`);
 
-// 5) index.html'in istediği her dosya www içinde var mı?
+// 6) index.html'in istediği her dosya www içinde var mı?
 const wanted = [...html.matchAll(/(?:src|href)="([^":]+\.(?:js|css))"/g)].map(m => m[1]);
 const missing = wanted.filter(f => !fs.existsSync(path.join(www, f)));
 if (missing.length) fail("index.html şu dosyaları istiyor ama bulunamadı: " + missing.join(", "));
 
-// 6) simge ve açılış ekranı
+// 7) simge ve açılış ekranı
 fs.mkdirSync(path.join(root, "assets"), { recursive: true });
 ["icon.png", "splash.png", "splash-dark.png"].forEach(f => fs.copyFileSync(need(f), path.join(root, "assets", f)));
 
