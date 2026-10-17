@@ -1,8 +1,15 @@
 {
-  "_not": "Gerçek AdMob kimlikleri, canlı mod (App Store sürümü). Kendi reklamlarına tıklama; deneme için testing değerini true yap.",
+  "_not": "iOS: gerçek AdMob kimlikleri, canlı mod. android: AdMob'da Android uygulaması açılana kadar Google'ın deneme kimlikleri; gerçek kimlikler gelince değiştir ve android.testing değerini false yap.",
   "appId": "ca-app-pub-6236520075152909~2891561609",
   "rewarded": "ca-app-pub-6236520075152909/3899811936",
   "interstitial": "ca-app-pub-6236520075152909/9568650596",
   "banner": "ca-app-pub-6236520075152909/8551082393",
-  "testing": false
+  "testing": false,
+  "android": {
+    "appId": "ca-app-pub-3940256099942544~3347511713",
+    "rewarded": "ca-app-pub-3940256099942544/5224354917",
+    "interstitial": "ca-app-pub-3940256099942544/1033173712",
+    "banner": "ca-app-pub-3940256099942544/6300978111",
+    "testing": true
+  }
 }
