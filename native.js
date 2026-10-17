@@ -6,7 +6,10 @@
   const C = window.Capacitor;
   const isNative = !!(C && typeof C.isNativePlatform === "function" && C.isNativePlatform());
   const P = isNative ? C.Plugins : {};
-  const CFG = window.ADS_CONFIG || {};
+  // Android kendi reklam kimliklerini ads.config.json > android bölümünden alır.
+  const PLAT = isNative && typeof C.getPlatform === "function" ? C.getPlatform() : "web";
+  const BASE = window.ADS_CONFIG || {};
+  const CFG = PLAT === "android" ? Object.assign({}, BASE, BASE.android || {}) : BASE;
   const AdMob = P.AdMob, Prefs = P.Preferences, LN = P.LocalNotifications;
 
   /* ---------- kalıcı kayıt ---------- */
