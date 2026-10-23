@@ -9,7 +9,28 @@
   // Android kendi reklam kimliklerini ads.config.json > android bölümünden alır.
   const PLAT = isNative && typeof C.getPlatform === "function" ? C.getPlatform() : "web";
   const BASE = window.ADS_CONFIG || {};
-  const CFG = PLAT === "android" ? Object.assign({}, BASE, BASE.android || {}) : BASE;
+  const pick = src => PLAT === "android" ? Object.assign({}, src, src.android || {}) : Object.assign({}, src);
+  const CFG = pick(BASE);
+
+  // Reklam birimleri ve deneme/canlı modu açılışta depodan okunur; böylece değiştirmek için güncelleme gerekmez.
+  // Uygulama kimliği (appId) pakete gömülüdür ve buradan değişmez.
+  const REMOTE = "https://raw.githubusercontent.com/bolatemre/sistem-acigi/main/ads.config.json";
+  const UNIT = /^ca-app-pub-\d+\/\d+$/;
+  function applyRemote(j) {
+    if (!j || typeof j !== "object") return;
+    const p = pick(j);
+    ["rewarded", "interstitial", "banner"].forEach(k => { if (UNIT.test(String(p[k] || ""))) CFG[k] = p[k]; });
+    if (typeof p.testing === "boolean") CFG.testing = p.testing;
+  }
+  async function loadRemote() {
+    try { const c = localStorage.getItem("ads-remote"); if (c) applyRemote(JSON.parse(c)); } catch (e) {}
+    try {
+      const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 4000);
+      const r = await fetch(REMOTE + "?t=" + Date.now(), { signal: ctl.signal, cache: "no-store" });
+      clearTimeout(t);
+      if (r.ok) { const j = await r.json(); applyRemote(j); localStorage.setItem("ads-remote", JSON.stringify(j)); }
+    } catch (e) {}
+  }
   const AdMob = P.AdMob, Prefs = P.Preferences, LN = P.LocalNotifications;
 
   /* ---------- kalıcı kayıt ---------- */
@@ -38,7 +59,9 @@
   const prepInter = () => AdMob.prepareInterstitial({ adId: CFG.interstitial, isTesting: !!CFG.testing }).then(() => { interLoaded = true; }).catch(() => { interLoaded = false; });
 
   async function init() {
-    if (!AdMob || !CFG.rewarded) return;
+    if (!AdMob) return;
+    await loadRemote();
+    if (!CFG.rewarded) return;
     try {
       await AdMob.initialize({ initializeForTesting: !!CFG.testing });
       // iOS takip izni (App Tracking Transparency)
