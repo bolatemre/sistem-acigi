@@ -125,7 +125,8 @@
       if (!(await notifReady())) return;
       try {
         await LN.cancel({ notifications: [{ id }] }).catch(() => {});
-        await LN.schedule({ notifications: [{ id, title, body, schedule: { at: new Date(at), allowWhileIdle: true } }] });
+        // isExactNotification:false -> Android "Alarmlar ve hatırlatıcılar" iznini istemez; birkaç dakikalık gecikme sorun değil.
+        await LN.schedule({ notifications: [{ id, title, body, schedule: { at: new Date(at), allowWhileIdle: true }, isExactNotification: false }] });
       } catch (e) {}
     },
     cancel(id) { if (LN) LN.cancel({ notifications: [{ id }] }).catch(() => {}); }
