@@ -1,5 +1,5 @@
 {
-  "_not": "Bu dosya derlemede pakete gömülür ve uygulama açılışta da buradan okur. Reklam birimleri ve testing değeri güncelleme gerekmeden değişir; appId değişirse yeni derleme gerekir. android: gerçek uygulama kimliği; reklam birimleri gelene kadar Google deneme birimleri.",
+  "_not": "Bu dosya derlemede pakete gömülür ve uygulama açılışta da buradan okur. Reklam birimleri ve testing değeri güncelleme gerekmeden değişir; appId değişirse yeni derleme gerekir. Kendi reklamlarına tıklama.",
   "appId": "ca-app-pub-6236520075152909~2891561609",
   "rewarded": "ca-app-pub-6236520075152909/3899811936",
   "interstitial": "ca-app-pub-6236520075152909/9568650596",
@@ -7,9 +7,9 @@
   "testing": false,
   "android": {
     "appId": "ca-app-pub-6236520075152909~3804027873",
-    "rewarded": "ca-app-pub-3940256099942544/5224354917",
-    "interstitial": "ca-app-pub-3940256099942544/1033173712",
-    "banner": "ca-app-pub-3940256099942544/6300978111",
-    "testing": true
+    "rewarded": "ca-app-pub-6236520075152909/1644146277",
+    "interstitial": "ca-app-pub-6236520075152909/6238619523",
+    "banner": "ca-app-pub-6236520075152909/8772575687",
+    "testing": false
   }
 }
