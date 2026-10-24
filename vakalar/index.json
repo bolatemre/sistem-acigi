@@ -1,0 +1,15 @@
+{
+  "_not": "Oyun açılışta bu listeyi okur ve telefonda olmayan vakaları indirir. Yeni vaka eklerken: vakalar/vaka-XX.json dosyasını ekle ve buraya {id, file} satırını ekle. Sıra, oyundaki dosya sırasıdır.",
+  "files": [
+    {"id": "v01", "file": "vaka-01.json"},
+    {"id": "v02", "file": "vaka-02.json"},
+    {"id": "v03", "file": "vaka-03.json"},
+    {"id": "v04", "file": "vaka-04.json"},
+    {"id": "v05", "file": "vaka-05.json"},
+    {"id": "v06", "file": "vaka-06.json"},
+    {"id": "v07", "file": "vaka-07.json"},
+    {"id": "v08", "file": "vaka-08.json"},
+    {"id": "v09", "file": "vaka-09.json"},
+    {"id": "v10", "file": "vaka-10.json"}
+  ]
+}
