@@ -10,6 +10,16 @@
     {"id": "v07", "file": "vaka-07.json"},
     {"id": "v08", "file": "vaka-08.json"},
     {"id": "v09", "file": "vaka-09.json"},
-    {"id": "v10", "file": "vaka-10.json"}
+    {"id": "v10", "file": "vaka-10.json"},
+    {"id": "v11", "file": "vaka-11.json"},
+    {"id": "v12", "file": "vaka-12.json"},
+    {"id": "v13", "file": "vaka-13.json"},
+    {"id": "v14", "file": "vaka-14.json"},
+    {"id": "v15", "file": "vaka-15.json"},
+    {"id": "v16", "file": "vaka-16.json"},
+    {"id": "v17", "file": "vaka-17.json"},
+    {"id": "v18", "file": "vaka-18.json"},
+    {"id": "v19", "file": "vaka-19.json"},
+    {"id": "v20", "file": "vaka-20.json"}
   ]
 }
